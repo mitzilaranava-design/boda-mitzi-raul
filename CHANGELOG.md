@@ -1,0 +1,41 @@
+# Changelog — Boda Mitzi & Raúl
+
+Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más reciente primero.
+
+---
+
+## Formato de entradas
+
+```markdown
+### YYYY-MM-DD — [Resumen del cambio]
+- **Quién**: Nombre o iniciales
+- **Qué**: Descripción breve
+- **Archivos**: archivos modificados (opcional)
+```
+
+---
+
+## Registro
+
+### 2026-02-18 — Hero quitado, .ics, Supabase
+- **Quién**: —
+- **Qué**: Invitation sin Hero (header mínimo). Botón calendario descarga .ics. Integración Supabase con fallback a mock.
+- **Archivos**: Invitation.jsx, Hero.jsx, utils/calendar.js, api/invitations.js, lib/supabase.js, .env.example, supabase-schema.sql
+
+---
+
+### 2026-02-18 — Creación de CHANGELOG y complemento de requisitos
+- **Quién**: —
+- **Qué**: Revisión de cambios-boda-mitzi-raul.txt. Respuestas y estructura añadida.
+- **Archivos**: CHANGELOG.md, docs/CAMBIOS-Y-REQUISITOS.txt
+
+---
+
+### 2026-02-18 — Migración proyecto unificado boda-mitzi-raul
+- **Quién**: —
+- **Qué**: Proyecto basado en save-date-react. Rutas / y /inv/:id. Formulario de confirmación.
+- **Archivos**: boda-mitzi-raul/*
+
+---
+
+*Agregar nuevas entradas arriba de esta línea.*

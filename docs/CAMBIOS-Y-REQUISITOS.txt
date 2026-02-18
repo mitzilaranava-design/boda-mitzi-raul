@@ -1,0 +1,40 @@
+# Cambios y requisitos — Boda Mitzi & Raúl
+
+Control compartido para 2 personas. Ver CHANGELOG.md para historial por fecha.
+
+==============================================================================
+REQUISITOS / PENDIENTES
+==============================================================================
+
+[1] CONTROL DE CAMBIOS
+    - Llevar control en CHANGELOG.md por fecha
+    - Formato: fecha, quién, qué, archivos
+    ESTADO: CHANGELOG.md creado
+
+[2] ENFOQUE MÓVIL
+    - El proyecto debe ir enfocado a móviles (mobile-first)
+    - Revisar viewport, touch targets, responsive
+    ESTADO: Pendiente optimizar
+
+[3] INVITACIÓN vs SAVE THE DATE
+    - Invitación en página separada /inv/:id
+    - Hero QUITADO de Invitation. Header mínimo con link a /
+    ESTADO: Hecho
+
+[4] CALENDARIO DEL DISPOSITIVO
+    - Botón descarga archivo .ics → el SO abre app predeterminada
+    ESTADO: Hecho (src/utils/calendar.js)
+
+[5] BASE DE DATOS
+    - Supabase integrado. Sin .env: usa mock. Con .env: usa Supabase.
+    - Ejecutar supabase-schema.sql en Supabase. Copiar .env.example a .env
+    ESTADO: Hecho
+
+==============================================================================
+IDEAS OTRAS (agregar aquí)
+==============================================================================
+
+- 
+- 
+
+==============================================================================

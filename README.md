@@ -2,6 +2,19 @@
 
 Proyecto web para invitaciones de boda con confirmación de asistencia.
 
+## 📚 Documentación y contexto
+
+- **[CHANGELOG.md](./CHANGELOG.md)** — Control de cambios por fecha (trabajo en equipo).
+- **[docs/](./docs/)** — Contexto del proyecto y flujo:
+  - `docs/README.md` — Índice y resumen del flujo.
+  - `docs/CAMBIOS-Y-REQUISITOS.txt` — Requisitos y pendientes.
+  - `docs/PLAN-RESTRUCTURA-BODA.md` — Plan, comparativa y flujo de invitaciones.
+  - `docs/PROMPT-SAVE-THE-DATE.md` — Contexto Save the Date y prompt para IA.
+  - `docs/GUIA-SAVE-THE-DATE-REACT.md` — Guía técnica Save the Date en React.
+  - `docs/SAVE-DATE-CLON-IDENTICO.md` — Guía para clonar invitación base.
+
+Para dar contexto a la IA: *"Revisa docs/ y CHANGELOG.md del proyecto boda-mitzi-raul."*
+
 ## 🚀 Características
 
 - **Save the Date**: Página pública con countdown y calendario (.ics)
