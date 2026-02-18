@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  min-height: 100%;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  overflow-x: hidden;
+}
+
+.app {
+  width: 100%;
+}
+
+/* HERO */
+.hero {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(to bottom right, var(--color-cream), var(--color-cream-dark));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  opacity: 0.03;
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: var(--color-text);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.save {
+  letter-spacing: 4px;
+  font-size: 0.9rem;
+  color: var(--color-gold);
+  margin-bottom: 10px;
+}
+
+.hero h1 {
+  font-family: var(--font-serif, 'Playfair Display'), serif;
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin: 10px 0;
+}
+
+.hero h1 span {
+  color: var(--color-gold);
+}
+
+.line {
+  height: 2px;
+  background: var(--color-gold);
+  margin: 20px auto;
+  border-radius: 2px;
+}
+
+.date {
+  letter-spacing: 3px;
+  font-size: 1rem;
+  margin-top: 10px;
+  color: var(--color-text-muted);
+}
+
+.btn {
+  margin-top: 25px;
+  padding: 14px 35px;
+  border-radius: 50px;
+  border: none;
+  background: var(--color-gold);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.btn:hover {
+  background: var(--color-gold-hover);
+}
+
+/* INFO */
+.info {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--color-bg-info);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.info h2 {
+  font-family: var(--font-serif), serif;
+  font-size: 2rem;
+  color: var(--color-text);
+  margin-bottom: 15px;
+}
+
+.info p {
+  max-width: 320px;
+  font-weight: 300;
+  color: var(--color-text-muted);
+  margin-bottom: 25px;
+}
+
+/* COUNTDOWN */
+.countdown {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.countdown div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.countdown span {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-gold);
+}
+
+.countdown small {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  letter-spacing: 1px;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.8rem;
+  color: #aaa;
+  letter-spacing: 1px;
+}
+
+/* INVITATION PAGE */
+.invitation-page {
+  min-height: 100vh;
+  background: var(--color-bg-info);
+}
+
+.invitation-header {
+  padding: 16px 20px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  text-align: center;
+}
+
+.invitation-header a {
+  font-family: var(--font-serif), serif;
+  font-size: 1.2rem;
+  color: var(--color-gold);
+  text-decoration: none;
+}
+
+.invitation-card {
+  background: var(--color-bg-info);
+  padding: 40px 24px;
+  margin: 0;
+  text-align: center;
+}
+
+.invitation-card h2 {
+  font-family: var(--font-serif), serif;
+  font-size: 1.8rem;
+  color: var(--color-text);
+  margin-bottom: 12px;
+}
+
+.invitation-card p {
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+}
+
+.confirm-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.confirm-form label {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.confirm-form select {
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  min-width: 160px;
+}
+
+.btn-confirmar {
+  margin-top: 8px !important;
+}
+
+.confirmado-msg {
+  padding: 24px;
+  background: #e8f5e9;
+  border-radius: 12px;
+  color: #2e7d32;
+}
+
+.confirmado-msg .check {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.confirmado-msg small {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.loading,
+.invitation-error {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: var(--color-text-muted);
+}
+
+.invitation-error a {
+  color: var(--color-gold);
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+  .date {
+    font-size: 0.9rem;
+  }
+  .btn {
+    padding: 12px 28px;
+    font-size: 0.9rem;
+  }
+  .info h2 {
+    font-size: 1.6rem;
+  }
+  .countdown span {
+    font-size: 1.2rem;
+  }
+}

@@ -1,0 +1,12 @@
+/* Paleta boda Mitzi & Raúl */
+:root {
+  --color-cream: #f9f5ef;
+  --color-cream-dark: #f2e8d5;
+  --color-gold: #b49b6b;
+  --color-gold-hover: #9d8558;
+  --color-text: #222;
+  --color-text-muted: #555;
+  --color-bg-info: #fff8f0;
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Poppins', sans-serif;
+}
