@@ -17,6 +17,13 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-02-18 — Música en Save the Date con enlace Spotify
+- **Quién**: —
+- **Qué**: Widget incrustado de Spotify en la página Save the Date. Se configura pegando un enlace de canción, playlist o álbum en la constante `SPOTIFY_LINK` en `SaveTheDate.jsx`. El reproductor aparece fijo en la esquina inferior derecha.
+- **Archivos**: SaveTheDate.jsx, App.css
+
+---
+
 ### 2026-02-18 — Hero quitado, .ics, Supabase
 - **Quién**: —
 - **Qué**: Invitation sin Hero (header mínimo). Botón calendario descarga .ics. Integración Supabase con fallback a mock.

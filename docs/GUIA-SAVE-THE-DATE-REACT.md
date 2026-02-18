@@ -34,7 +34,7 @@ Fade al cargar, slide en textos, countdown progresivo, hover en botón.
 
 ## Opcional
 
-Música, pantalla "Abrir invitación", overlay oscuro, URL por invitado, confirmación en Supabase (implementado).
+Música (widget Spotify con enlace de canción/playlist/álbum en `SPOTIFY_LINK`, ver SaveTheDate.jsx), pantalla "Abrir invitación", overlay oscuro, URL por invitado, confirmación en Supabase (implementado).
 
 ## Checklist
 

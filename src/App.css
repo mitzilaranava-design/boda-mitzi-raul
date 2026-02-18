@@ -273,3 +273,20 @@ html, body, #root {
     font-size: 1.2rem;
   }
 }
+
+/* Widget de Spotify Save the Date */
+.spotify-widget {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  width: 300px;
+  max-width: calc(100vw - 48px);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+}
+
+.spotify-widget iframe {
+  display: block;
+}

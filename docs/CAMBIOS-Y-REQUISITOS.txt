@@ -34,7 +34,9 @@ REQUISITOS / PENDIENTES
 IDEAS OTRAS (agregar aquí)
 ==============================================================================
 
-- 
+- Música en Save the Date con enlace de Spotify (canción/playlist/álbum). Widget
+  incrustado en esquina. Configurar SPOTIFY_LINK en SaveTheDate.jsx.
+  ESTADO: Hecho (2026-02-18)
 - 
 
 ==============================================================================
