@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;600&display=swap');
 
 * {
   margin: 0;
@@ -148,6 +148,38 @@ html {
   opacity: 0.9;
 }
 
+
+/* MONOGRAM */
+.monogram-wrap {
+  margin: 0 auto 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+}
+
+.monogram-float {
+  animation: monogram-glow 3.5s ease-in-out infinite;
+  animation-delay: 2.2s;
+}
+
+.monogram-svg {
+  width: 215px;
+  height: 215px;
+  display: block;
+}
+
+@keyframes monogram-glow {
+  0%, 100% { filter: drop-shadow(0 4px 14px rgba(180, 155, 107, 0.15)); }
+  50%       { filter: drop-shadow(0 8px 28px rgba(180, 155, 107, 0.52)); }
+}
+
+@media (max-width: 480px) {
+  .monogram-svg {
+    width: 168px;
+    height: 168px;
+  }
+}
 
 /* INFO */
 .info {

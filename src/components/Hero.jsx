@@ -1,14 +1,18 @@
 import { motion } from "framer-motion";
 import { downloadIcs } from "../utils/calendar";
+import Monogram from "./Monogram";
 
 export default function Hero() {
   return (
     <section className="hero">
       <div className="hero-overlay">
+        {/* Anagrama primero: pieza visual central */}
+        <Monogram />
+
         <motion.p
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ delay: 1.5, duration: 0.7 }}
           className="save"
         >
           RESERVA LA FECHA
@@ -17,7 +21,7 @@ export default function Hero() {
         <motion.h1
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
+          transition={{ delay: 1.8, duration: 0.9 }}
         >
           Mitzi <span>&</span> Raúl
         </motion.h1>
@@ -26,13 +30,13 @@ export default function Hero() {
           className="line"
           initial={{ width: 0 }}
           animate={{ width: "60%" }}
-          transition={{ delay: 1.2, duration: 1.2 }}
+          transition={{ delay: 2.3, duration: 1.0 }}
         />
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5 }}
+          transition={{ delay: 2.5 }}
           className="date"
         >
           14 · Noviembre · 2026
@@ -45,7 +49,7 @@ export default function Hero() {
           whileTap={{ scale: 0.95 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2, type: "spring", stiffness: 100 }}
+          transition={{ delay: 2.9, type: "spring", stiffness: 100 }}
           className="btn"
         >
           Agregar a calendario
