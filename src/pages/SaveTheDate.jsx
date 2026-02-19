@@ -54,7 +54,7 @@ export default function SaveTheDate() {
         viewport={{ once: false, amount: 0.2 }}
         transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
-        Creado con ❤️ por Mitzi y Raúl
+        By ❤️ Mitzi & Raúl
       </motion.footer>
     </div>
   );

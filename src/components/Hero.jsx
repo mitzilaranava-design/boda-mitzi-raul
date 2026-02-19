@@ -11,7 +11,7 @@ export default function Hero() {
           transition={{ duration: 1 }}
           className="save"
         >
-          SAVE THE DATE
+          RESERVA LA FECHA
         </motion.p>
 
         <motion.h1
@@ -35,7 +35,7 @@ export default function Hero() {
           transition={{ delay: 1.5 }}
           className="date"
         >
-          04 · Octubre · 2026
+          14 · Noviembre · 2026
         </motion.p>
 
         <motion.button
