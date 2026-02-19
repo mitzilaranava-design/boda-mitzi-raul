@@ -39,7 +39,7 @@ export default function Hero() {
           transition={{ delay: 2.5 }}
           className="date"
         >
-          14 · Noviembre · 2026
+          21 · Noviembre · 2026
         </motion.p>
 
         <motion.button
