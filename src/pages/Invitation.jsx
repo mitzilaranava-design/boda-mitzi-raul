@@ -13,13 +13,19 @@ export default function Invitation() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const ID_REGEX = /^[a-zA-Z0-9_-]{1,80}$/;
+    if (!ID_REGEX.test(id)) {
+      setError("Invitación no válida");
+      setLoading(false);
+      return;
+    }
     getInvitado(id)
       .then((data) => {
         setInvitado(data);
         if (data) setNumAsistentes(1);
-        setError(!data ? "Invitación no encontrada" : null);
+        setError(!data ? "Invitación no válida" : null);
       })
-      .catch(() => setError("Error al cargar"))
+      .catch(() => setError("Invitación no válida"))
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -48,8 +54,7 @@ export default function Invitation() {
     return (
       <div className="app invitation-page">
         <div className="invitation-error">
-          <h2>{error}</h2>
-          <a href="/">Volver al inicio</a>
+          <p>Este enlace no es válido.</p>
         </div>
       </div>
     );

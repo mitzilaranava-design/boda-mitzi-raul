@@ -38,6 +38,22 @@ IDEAS OTRAS (agregar aquí)
   (rayitas animadas). Archivo en public/music/save-the-date.mp3. Configurar
   AUDIO_SRC en SaveTheDate.jsx.
   ESTADO: Hecho (2026-02-18)
-- 
+
+- Seguridad con token en URL (WhatsApp-friendly).
+  Save the Date: sitio.com/?t=TOKEN → token guardado en sessionStorage.
+  Invitaciones: /inv/:id → sin redirección ni links si ID inválido.
+  ESTADO: Hecho (2026-02-19)
+
+- PENDIENTE FUTURO: Migrar IDs de invitados de inv-001 a UUIDs (gen_random_uuid()
+  en Supabase) para hacer imposible el brute force. Requiere actualizar los
+  links de WhatsApp de cada invitado.
+
+- PENDIENTE FUTURO: Auto-confirmación tras 3 semanas sin respuesta.
+  Opciones: Supabase Edge Function + pg_cron, o SQL manual:
+  UPDATE invitados SET confirmado=true
+  WHERE confirmado=false AND created_at < NOW() - INTERVAL '3 weeks';
+
+- PENDIENTE: Ejecutar RLS en Supabase Dashboard → SQL Editor.
+  Ver instrucciones en src/api/invitations.js (comentario al inicio del archivo).
 
 ==============================================================================

@@ -1,6 +1,23 @@
 /**
  * API de invitaciones — Supabase
  * Sin credenciales: usa mock. Con .env configurado: usa Supabase.
+ *
+ * SUPABASE RLS — Ejecutar en Supabase Dashboard → SQL Editor:
+ * ─────────────────────────────────────────────────────────────
+ * ALTER TABLE invitados ENABLE ROW LEVEL SECURITY;
+ *
+ * -- Permitir leer un registro por ID (el front filtra con .eq("id", id))
+ * CREATE POLICY "leer por id" ON invitados
+ *   FOR SELECT USING (true);
+ *
+ * -- Permitir actualizar solo el campo de confirmación
+ * CREATE POLICY "confirmar propio" ON invitados
+ *   FOR UPDATE USING (true) WITH CHECK (true);
+ *
+ * -- INSERT y DELETE quedan bloqueados (sin política = denegado con RLS activo)
+ * ─────────────────────────────────────────────────────────────
+ * RECOMENDACIÓN: Migrar IDs de inv-001 a UUIDs con gen_random_uuid()
+ * para hacer imposible el brute force de IDs.
  */
 
 import { supabase } from "../lib/supabase";
