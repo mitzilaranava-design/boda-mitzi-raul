@@ -1,61 +1,58 @@
 import { motion } from "framer-motion";
 import Hero from "../components/Hero";
 import Countdown from "../components/Countdown";
+import MusicEqualizer from "../components/MusicEqualizer";
 
-// Pega aquí el enlace de Spotify (canción, playlist o álbum)
-// Ejemplo: https://open.spotify.com/track/xxxxx  o  https://open.spotify.com/playlist/xxxxx
-const SPOTIFY_LINK = "https://open.spotify.com/intl-es/track/3rUMH7i22tlkymhDPOmXUv?utm_source=chatgpt.com";
-
-function getSpotifyEmbedUrl(link) {
-  if (!link || typeof link !== "string") return null;
-  const trimmed = link.trim();
-  // Acepta: open.spotify.com/track/xxx, open.spotify.com/playlist/xxx, open.spotify.com/album/xxx
-  const match = trimmed.match(/spotify\.com\/(track|playlist|album)\/([a-zA-Z0-9]+)/);
-  if (!match) return null;
-  const [, type, id] = match;
-  return `https://open.spotify.com/embed/${type}/${id}?utm_source=generator`;
-}
+// Botón de música: reproduce un solo MP3.
+// Dónde colocar el archivo: carpeta public/music/ (ej. public/music/save-the-date.mp3)
+const AUDIO_SRC = "/music/save-the-date.mp3";
 
 export default function SaveTheDate() {
-  const embedUrl = getSpotifyEmbedUrl(SPOTIFY_LINK);
-
   return (
     <div className="app">
-      {embedUrl && (
-        <div className="spotify-widget">
-          <iframe
-            src={embedUrl}
-            width="100%"
-            height="152"
-            frameBorder="0"
-            allowFullScreen
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            loading="lazy"
-            title="Reproducir en Spotify"
-          />
-        </div>
-      )}
+      {AUDIO_SRC && <MusicEqualizer src={AUDIO_SRC} />}
 
       <Hero />
 
       <motion.section
         className="info"
-        initial={{ opacity: 0, y: 50 }}
+        initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
+        viewport={{ once: false, amount: 0.25 }}
+        transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
-        <h2>¡Nos casamos!</h2>
-        <p>
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          ¡Nos casamos!
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
           Muy pronto celebraremos juntos el inicio de nuestra nueva historia.
-        </p>
-        <Countdown />
+        </motion.p>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          <Countdown />
+        </motion.div>
       </motion.section>
 
       <motion.footer
         className="footer"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 3, duration: 1 }}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         Creado con ❤️ por Mitzi y Raúl
       </motion.footer>

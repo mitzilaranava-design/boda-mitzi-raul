@@ -19,7 +19,7 @@ Esta carpeta contiene la documentación y el historial de decisiones del proyect
 ## Flujo del proyecto
 
 1. **Página pública** (`/`)  
-   Save the Date: hero, countdown, botón “Agregar a calendario” (descarga .ics), widget de música (Spotify, enlace configurable en SaveTheDate.jsx).
+   Save the Date: hero, countdown, botón “Agregar a calendario” (descarga .ics), reproductor de música (MP3, archivo en public/music/save-the-date.mp3).
 
 2. **Invitación personalizada** (`/inv/:id`)  
    El invitado llega por enlace (ej. WhatsApp). Ve su nombre, cupo y formulario para confirmar asistencia (cuántos van). Al confirmar se guarda en Supabase.

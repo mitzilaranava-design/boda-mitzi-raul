@@ -50,7 +50,29 @@ export default function Hero() {
         >
           Agregar a calendario
         </motion.button>
+
       </div>
+      <motion.div
+        className="hero-scroll-hint"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2.8, duration: 0.6 }}
+        aria-hidden="true"
+      >
+
+
+        {/* Flecha animada */}
+        <motion.span
+          className="hero-scroll-hint__arrow"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 5v14M7 12l5 5 5-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
+            />
+          </svg>
+        </motion.span>
+      </motion.div>
     </section>
   );
 }
