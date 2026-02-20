@@ -1,13 +1,26 @@
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import Hero from "../components/Hero";
 import Countdown from "../components/Countdown";
 import MusicEqualizer from "../components/MusicEqualizer";
+import { marcarSaveTheDateLeido } from "../api/invitations";
 
 // Botón de música: reproduce un solo MP3.
 // Dónde colocar el archivo: carpeta public/music/ (ej. public/music/save-the-date.mp3)
 const AUDIO_SRC = "/music/save-the-date.mp3";
 
 export default function SaveTheDate() {
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (id) {
+      marcarSaveTheDateLeido(id).catch((err) => console.warn("[STD] Error al marcar leído:", err));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="app">
       {AUDIO_SRC && <MusicEqualizer src={AUDIO_SRC} />}

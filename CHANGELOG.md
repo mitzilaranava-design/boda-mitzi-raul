@@ -17,6 +17,13 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-02-20 — Tracking de lectura del Save the Date
+- **Quién**: Claude
+- **Qué**: Al abrir el link del Save the Date (`/?t=TOKEN&id=UUID`) se registra automáticamente `save_the_date_leido=true` en Supabase (fire-and-forget, silencioso para el invitado). El panel admin muestra "Leído: Sí ✓ / No" en cada tarjeta y agrega la stat "STD Leídos" al resumen. `TokenGate` ahora preserva params extra (como `id`) al hacer el redirect. Nueva función `marcarSaveTheDateLeido` en el API. Nueva columna en Supabase.
+- **Archivos**: src/components/TokenGate.jsx, src/pages/SaveTheDate.jsx, src/pages/Admin.jsx, src/api/invitations.js, supabase-schema.sql, docs/CAMBIOS-Y-REQUISITOS.txt
+
+---
+
 ### 2026-02-20 — Optimización mobile-first
 - **Quién**: Claude
 - **Qué**: Breakpoint 360px añadido (Galaxy A, iPhone SE). Reducción de `letter-spacing` en `.save` y `.date` en móvil. Gap del countdown ajustado. Grid de estadísticas del Admin cambiado de 5 columnas fijas a responsivo (5 → 3 → 2 cols). Touch targets de botones del Admin aumentados a mínimo 44px (iOS/Android).

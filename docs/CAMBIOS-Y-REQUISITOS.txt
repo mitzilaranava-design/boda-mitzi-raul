@@ -54,8 +54,13 @@ IDEAS OTRAS (agregar aquí)
   ESTADO: Hecho (2026-02-19). Ejecutar ALTER TABLE en Supabase (ver supabase-schema.sql).
 
 - Botón Save the Date en panel admin. Mensaje anuncia la boda (no confirmación), link a
-  /?t=ACCESS_TOKEN. Una sola vez por persona. Nueva columna save_the_date_enviado en Supabase.
+  /?t=ACCESS_TOKEN&id=UUID. Una sola vez por persona. Nueva columna save_the_date_enviado en Supabase.
   ESTADO: Hecho (2026-02-20). Ejecutar ALTER TABLE en Supabase (ver supabase-schema.sql).
+
+- Tracking de lectura del Save the Date. Al abrir el link /?t=TOKEN&id=UUID se registra
+  save_the_date_leido=true en Supabase. El panel admin muestra "Leído: Sí/No" por tarjeta
+  y el contador "STD Leídos" en las estadísticas. TokenGate preserva params extra en el redirect.
+  ESTADO: Hecho (2026-02-20). Ejecutar ALTER TABLE save_the_date_leido en Supabase.
 
 - PENDIENTE: Ejecutar RLS en Supabase Dashboard → SQL Editor.
   Ver instrucciones en src/api/invitations.js (comentario al inicio del archivo).
