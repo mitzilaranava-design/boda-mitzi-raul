@@ -60,6 +60,64 @@ export default function Invitation() {
     );
   }
 
+  if (invitado?.confirmado && !invitado?.auto_confirmado) {
+    return (
+      <div className="app invitation-page">
+        <header className="invitation-header">
+          <Link to="/">Mitzi & Raúl</Link>
+        </header>
+        <motion.section
+          className="invitation-card"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="ya-confirmado-msg">
+            <span className="ya-confirmado-msg__icon">💍</span>
+            <h2>¡Gracias, {invitado.nombre}!</h2>
+            <p>
+              Tu asistencia a nuestra boda ha sido confirmada.
+              Es un honor contar con tu presencia en este día tan especial.
+            </p>
+            <p className="ya-confirmado-msg__detalle">
+              Asistirán <strong>{invitado.num_confirmados} persona{invitado.num_confirmados !== 1 ? "s" : ""}</strong>.
+              ¡Con mucho gusto los esperamos el <strong>21 de noviembre de 2026</strong>!
+            </p>
+          </div>
+        </motion.section>
+      </div>
+    );
+  }
+
+  if (invitado?.auto_confirmado) {
+    return (
+      <div className="app invitation-page">
+        <header className="invitation-header">
+          <Link to="/">Mitzi & Raúl</Link>
+        </header>
+        <motion.section
+          className="invitation-card"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="auto-confirmado-msg">
+            <span className="auto-confirmado-msg__icon">🕊️</span>
+            <h2>Hola, {invitado.nombre}</h2>
+            <p>
+              Lo sentimos mucho. El plazo para confirmar tu asistencia ha concluido
+              y tu lugar se encuentra pendiente de revisión por parte de los novios.
+            </p>
+            <p className="auto-confirmado-msg__contacto">
+              Si crees que hubo un error o deseas aclarar tu situación, por favor
+              comunícate directamente con Mitzi y Raúl. Será un gusto atenderte. 💛
+            </p>
+          </div>
+        </motion.section>
+      </div>
+    );
+  }
+
   return (
     <div className="app invitation-page">
       <header className="invitation-header">

@@ -17,6 +17,20 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-02-20 — Bloqueo de invitación para asistencia ya confirmada y auto-confirmada
+- **Quién**: Claude
+- **Qué**: Si el invitado ya confirmó su asistencia (`confirmado=true`), al reabrir su link ve un mensaje de agradecimiento con el número de personas y la fecha del evento, sin posibilidad de modificar. Si fue auto-confirmado por el admin, ve el mensaje de plazo vencido. El formulario de confirmación solo aparece a invitados aún pendientes.
+- **Archivos**: src/pages/Invitation.jsx, src/App.css
+
+---
+
+### 2026-02-20 — Mensaje de plazo vencido en invitación auto-confirmada
+- **Quién**: Claude
+- **Qué**: Si el admin auto-confirmó a un invitado (tras 3 recordatorios sin respuesta) y el invitado intenta abrir su link de invitación, ve un mensaje cálido indicando que el plazo concluyó y que se comunique con los novios. No se muestra el formulario de confirmación.
+- **Archivos**: src/pages/Invitation.jsx, src/App.css
+
+---
+
 ### 2026-02-20 — Tracking de lectura del Save the Date
 - **Quién**: Claude
 - **Qué**: Al abrir el link del Save the Date (`/?t=TOKEN&id=UUID`) se registra automáticamente `save_the_date_leido=true` en Supabase (fire-and-forget, silencioso para el invitado). El panel admin muestra "Leído: Sí ✓ / No" en cada tarjeta y agrega la stat "STD Leídos" al resumen. `TokenGate` ahora preserva params extra (como `id`) al hacer el redirect. Nueva función `marcarSaveTheDateLeido` en el API. Nueva columna en Supabase.

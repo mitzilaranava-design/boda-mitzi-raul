@@ -334,6 +334,78 @@ html {
   color: #555;
 }
 
+.ya-confirmado-msg {
+  padding: 28px 20px;
+  background: #f0faf2;
+  border: 1px solid #c6e6cc;
+  border-radius: 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ya-confirmado-msg__icon {
+  font-size: 2.2rem;
+}
+
+.ya-confirmado-msg h2 {
+  font-family: var(--font-serif), serif;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.ya-confirmado-msg p {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.ya-confirmado-msg__detalle {
+  font-size: 0.88rem !important;
+  color: #555 !important;
+  border-top: 1px solid #c6e6cc;
+  padding-top: 12px;
+}
+
+.auto-confirmado-msg {
+  padding: 28px 20px;
+  background: #fdf6ec;
+  border: 1px solid #e8dcc8;
+  border-radius: 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auto-confirmado-msg__icon {
+  font-size: 2.2rem;
+}
+
+.auto-confirmado-msg h2 {
+  font-family: var(--font-serif), serif;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.auto-confirmado-msg p {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.auto-confirmado-msg__contacto {
+  font-size: 0.85rem !important;
+  color: #999 !important;
+  border-top: 1px solid #e8dcc8;
+  padding-top: 12px;
+}
+
 .loading,
 .invitation-error {
   min-height: 100vh;
