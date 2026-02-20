@@ -17,6 +17,27 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-02-20 11:00 — Save the Date desde el panel de administración
+- **Quién**: —
+- **Qué**: Botón "Enviar Save the Date" en cada tarjeta del panel admin. Mensaje diferenciado (anuncia la boda, no confirmación). Link a `/?t=ACCESS_TOKEN` (página informativa). Se envía una única vez por persona; tras el envío el botón queda deshabilitado ("Ya enviado"). Nueva columna `save_the_date_enviado` en Supabase. Estadística de Save the Date añadida al resumen del panel (5 columnas). Nueva función `marcarSaveTheDate(id)` en el API.
+- **Archivos**: src/pages/Admin.jsx, src/api/invitations.js, supabase-schema.sql
+
+---
+
+### 2026-02-20 10:00 — Migración de IDs a UUID
+- **Quién**: —
+- **Qué**: IDs de invitados migrados de `inv-001` a UUID. La columna `id` ahora tiene `DEFAULT gen_random_uuid()::text` — al insertar un invitado sin especificar id, Supabase genera el UUID automáticamente. Mock de desarrollo actualizado con UUIDs reales. Mensaje del 1er envío de WhatsApp diferenciado como invitación (vs recordatorio).
+- **Archivos**: supabase-schema.sql, src/api/invitations.js, src/pages/Admin.jsx, docs/CAMBIOS-Y-REQUISITOS.txt
+
+---
+
+### 2026-02-19 18:00 — Panel de administración con recordatorios y WhatsApp
+- **Quién**: —
+- **Qué**: Panel admin en `/admin?t=ADMIN_TOKEN` con listado de invitados, stats (total/confirmados/pendientes/auto-conf.), botón "Enviar recordatorio" (abre wa.me con mensaje pre-llenado), registro en Supabase del envío, intervalo configurable por `VITE_REMINDER_INTERVAL_MINUTES` (default 10080 min = 1 semana, 1 para testing). Tras 3 recordatorios sin respuesta: botón "Auto-confirmar". Nuevas columnas en Supabase: `recordatorios_enviados`, `ultimo_recordatorio`, `auto_confirmado`.
+- **Archivos**: src/pages/Admin.jsx (nuevo), src/App.jsx, src/api/invitations.js, supabase-schema.sql, .env, .env.example
+
+---
+
 ### 2026-02-19 17:00 — Seguridad con token en URL
 - **Quién**: —
 - **Qué**: Token de acceso en la URL (`?t=TOKEN`) para proteger la página `/`. El token se valida contra `VITE_ACCESS_TOKEN` del `.env` y se guarda en sessionStorage. Links inválidos en `/inv/:id` ya no muestran navegación ni redirigen. Ruta 404 sin links. Validación de formato de ID antes de llamar a Supabase. Comentario con SQL de RLS en invitations.js. Pendientes documentados: migrar IDs a UUID y auto-confirmación futura.

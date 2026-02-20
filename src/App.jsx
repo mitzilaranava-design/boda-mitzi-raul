@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SaveTheDate from "./pages/SaveTheDate";
 import Invitation from "./pages/Invitation";
+import Admin from "./pages/Admin";
 import TokenGate from "./components/TokenGate";
 import "./styles/variables.css";
 import "./App.css";
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<TokenGate><SaveTheDate /></TokenGate>} />
         <Route path="/inv/:id" element={<Invitation />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

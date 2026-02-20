@@ -44,14 +44,18 @@ IDEAS OTRAS (agregar aquí)
   Invitaciones: /inv/:id → sin redirección ni links si ID inválido.
   ESTADO: Hecho (2026-02-19)
 
-- PENDIENTE FUTURO: Migrar IDs de invitados de inv-001 a UUIDs (gen_random_uuid()
-  en Supabase) para hacer imposible el brute force. Requiere actualizar los
-  links de WhatsApp de cada invitado.
+- IDs de invitados migrados a UUID (gen_random_uuid()::text como DEFAULT en Supabase).
+  Al insertar sin id se genera automáticamente. Mock actualizado con UUIDs reales.
+  ESTADO: Hecho (2026-02-20)
 
-- PENDIENTE FUTURO: Auto-confirmación tras 3 semanas sin respuesta.
-  Opciones: Supabase Edge Function + pg_cron, o SQL manual:
-  UPDATE invitados SET confirmado=true
-  WHERE confirmado=false AND created_at < NOW() - INTERVAL '3 weeks';
+- Panel de administración /admin con recordatorios WhatsApp (wa.me) y auto-confirmación.
+  3 recordatorios máx, intervalo configurable (VITE_REMINDER_INTERVAL_MINUTES).
+  Tras 3 recordatorios sin respuesta: botón auto-confirmar desde el panel.
+  ESTADO: Hecho (2026-02-19). Ejecutar ALTER TABLE en Supabase (ver supabase-schema.sql).
+
+- Botón Save the Date en panel admin. Mensaje anuncia la boda (no confirmación), link a
+  /?t=ACCESS_TOKEN. Una sola vez por persona. Nueva columna save_the_date_enviado en Supabase.
+  ESTADO: Hecho (2026-02-20). Ejecutar ALTER TABLE en Supabase (ver supabase-schema.sql).
 
 - PENDIENTE: Ejecutar RLS en Supabase Dashboard → SQL Editor.
   Ver instrucciones en src/api/invitations.js (comentario al inicio del archivo).
