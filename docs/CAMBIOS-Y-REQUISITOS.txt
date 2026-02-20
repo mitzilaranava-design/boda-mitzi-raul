@@ -14,7 +14,7 @@ REQUISITOS / PENDIENTES
 [2] ENFOQUE MÓVIL
     - El proyecto debe ir enfocado a móviles (mobile-first)
     - Revisar viewport, touch targets, responsive
-    ESTADO: Pendiente optimizar
+    ESTADO: Hecho (2026-02-20). Breakpoint 360px, letter-spacing móvil, admin grid responsivo, touch targets 44px.
 
 [3] INVITACIÓN vs SAVE THE DATE
     - Invitación en página separada /inv/:id

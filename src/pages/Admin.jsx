@@ -187,13 +187,17 @@ function btnStyle(disabled, color) {
     color: disabled ? "#9ca3af" : "#fff",
     border: "none",
     borderRadius: 8,
-    padding: "7px 14px",
+    padding: "10px 16px",
+    minHeight: 44,
     fontFamily: "Poppins, sans-serif",
     fontSize: 13,
     fontWeight: 500,
     cursor: disabled ? "default" : "pointer",
     transition: "background 0.2s",
     whiteSpace: "nowrap",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
   };
 }
 
@@ -300,7 +304,7 @@ export default function Admin() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
-          style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8, marginBottom: 24 }}
+          className="admin-stats"
         >
           {[
             { label: "Total", value: total, color: "#222" },

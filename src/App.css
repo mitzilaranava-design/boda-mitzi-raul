@@ -349,13 +349,18 @@ html {
   color: var(--color-gold);
 }
 
-/* MOBILE */
+/* MOBILE ≤ 480px */
 @media (max-width: 480px) {
   .hero h1 {
     font-size: 2rem;
   }
+  .save {
+    letter-spacing: 2px;
+    font-size: 0.82rem;
+  }
   .date {
     font-size: 0.9rem;
+    letter-spacing: 2px;
   }
   .btn {
     padding: 12px 28px;
@@ -364,8 +369,45 @@ html {
   .info h2 {
     font-size: 1.6rem;
   }
+  .countdown {
+    gap: 12px;
+  }
   .countdown span {
     font-size: 1.2rem;
+  }
+}
+
+/* MOBILE ≤ 360px — teléfonos pequeños (Galaxy A, iPhone SE…) */
+@media (max-width: 360px) {
+  .hero h1 {
+    font-size: 1.7rem;
+  }
+  .save {
+    letter-spacing: 1.5px;
+    font-size: 0.75rem;
+  }
+  .date {
+    font-size: 0.78rem;
+    letter-spacing: 1.5px;
+  }
+  .btn {
+    padding: 12px 22px;
+    font-size: 0.85rem;
+  }
+  .info h2 {
+    font-size: 1.35rem;
+  }
+  .info p {
+    font-size: 0.9rem;
+  }
+  .countdown {
+    gap: 10px;
+  }
+  .countdown span {
+    font-size: 1.1rem;
+  }
+  .invitation-card h2 {
+    font-size: 1.5rem;
   }
 }
 
@@ -477,5 +519,25 @@ html {
   }
   to {
     transform: scaleY(1);
+  }
+}
+
+/* ADMIN — stats grid responsivo */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 540px) {
+  .admin-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 360px) {
+  .admin-stats {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

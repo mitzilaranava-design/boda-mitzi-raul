@@ -17,6 +17,13 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-02-20 — Optimización mobile-first
+- **Quién**: Claude
+- **Qué**: Breakpoint 360px añadido (Galaxy A, iPhone SE). Reducción de `letter-spacing` en `.save` y `.date` en móvil. Gap del countdown ajustado. Grid de estadísticas del Admin cambiado de 5 columnas fijas a responsivo (5 → 3 → 2 cols). Touch targets de botones del Admin aumentados a mínimo 44px (iOS/Android).
+- **Archivos**: src/App.css, src/pages/Admin.jsx
+
+---
+
 ### 2026-02-20 11:00 — Save the Date desde el panel de administración
 - **Quién**: —
 - **Qué**: Botón "Enviar Save the Date" en cada tarjeta del panel admin. Mensaje diferenciado (anuncia la boda, no confirmación). Link a `/?t=ACCESS_TOKEN` (página informativa). Se envía una única vez por persona; tras el envío el botón queda deshabilitado ("Ya enviado"). Nueva columna `save_the_date_enviado` en Supabase. Estadística de Save the Date añadida al resumen del panel (5 columnas). Nueva función `marcarSaveTheDate(id)` en el API.
