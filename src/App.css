@@ -17,10 +17,11 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Scroll tipo Apple: contenedor con snap entre secciones */
+/* ===== APP CONTAINER ===== */
+/* height exacto para que el scroll-snap funcione en móvil */
 .app {
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
   overflow-x: hidden;
   scroll-snap-type: y mandatory;
@@ -28,11 +29,78 @@ html {
   -webkit-overflow-scrolling: touch;
 }
 
-/* HERO */
+/* ===== INTRO ===== */
+/* Solo fondo y textura — el layout lo maneja .intro-clean */
+.intro {
+  background: linear-gradient(to bottom right, var(--color-cream), var(--color-cream-dark));
+  position: relative;
+}
+
+.intro::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+.intro-clean {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.intro-clean__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.intro-clean__mono {
+  cursor: pointer;
+  position: relative;
+  touch-action: manipulation;
+}
+
+/* Glow sutil elegante */
+.intro-clean__mono::after {
+  content: "";
+  position: absolute;
+  inset: -15px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(180, 155, 107, 0.25) 0%,
+    transparent 70%
+  );
+  opacity: 0.6;
+  z-index: -1;
+  transition: opacity 0.4s ease;
+}
+
+.intro-clean__mono:hover::after {
+  opacity: 1;
+}
+
+.intro-clean__hint {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--color-gold);
+  opacity: 0.6;
+}
+
+/* ===== HERO ===== */
 .hero {
   width: 100%;
-  min-height: 100vh;
-  height: 100vh;
+  min-height: 100dvh;
   flex-shrink: 0;
   scroll-snap-align: start;
   scroll-snap-stop: normal;
@@ -64,14 +132,15 @@ html {
 
 .save {
   letter-spacing: 4px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--color-gold);
   margin-bottom: 10px;
 }
 
+/* Mobile-first: tamaño base para móvil */
 .hero h1 {
   font-family: var(--font-serif, 'Playfair Display'), serif;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 600;
   margin: 10px 0;
 }
@@ -89,29 +158,31 @@ html {
 
 .date {
   letter-spacing: 3px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   margin-top: 10px;
   color: var(--color-text-muted);
 }
 
 .btn {
   margin-top: 25px;
-  padding: 14px 35px;
+  padding: 12px 28px;
+  min-height: 48px;
   border-radius: 50px;
   border: none;
   background: var(--color-gold);
   color: white;
-  font-size: 1rem;
+  font-size: 0.9rem;
   cursor: pointer;
   text-decoration: none;
-  transition: 0.3s ease;
+  transition: background 0.3s ease;
+  touch-action: manipulation;
 }
 
 .btn:hover {
   background: var(--color-gold-hover);
 }
 
-/* Indicador de scroll mejorado para móviles: flecha con efecto pulso */
+/* Indicador de scroll: flecha animada */
 .hero-scroll-hint {
   position: absolute;
   bottom: 24px;
@@ -125,31 +196,14 @@ html {
   pointer-events: none;
 }
 
-.hero-scroll-hint__pulse {
-  position: absolute;
-  width: 48px;
-  height: 48px;
-  border: 2px solid var(--color-gold);
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 .hero-scroll-hint__arrow {
   color: var(--color-gold);
   opacity: 0.55;
-  transition: opacity 0.4s ease;
   position: absolute;
   bottom: 30px;
 }
 
-.hero-scroll-hint__arrow:hover {
-  opacity: 0.9;
-}
-
-
-/* MONOGRAM */
+/* ===== MONOGRAMA ===== */
 .monogram-wrap {
   margin: 0 auto 6px;
   display: flex;
@@ -163,9 +217,10 @@ html {
   animation-delay: 2.2s;
 }
 
+/* Mobile-first: tamaño base para móvil */
 .monogram-svg {
-  width: 215px;
-  height: 215px;
+  width: 168px;
+  height: 168px;
   display: block;
 }
 
@@ -174,17 +229,10 @@ html {
   50%       { filter: drop-shadow(0 8px 28px rgba(180, 155, 107, 0.52)); }
 }
 
-@media (max-width: 480px) {
-  .monogram-svg {
-    width: 168px;
-    height: 168px;
-  }
-}
-
-/* INFO */
+/* ===== INFO ===== */
 .info {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
   flex-shrink: 0;
   scroll-snap-align: start;
   scroll-snap-stop: normal;
@@ -197,9 +245,10 @@ html {
   padding: 40px 20px;
 }
 
+/* Mobile-first */
 .info h2 {
   font-family: var(--font-serif), serif;
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: var(--color-text);
   margin-bottom: 15px;
 }
@@ -211,7 +260,7 @@ html {
   margin-bottom: 25px;
 }
 
-/* COUNTDOWN */
+/* ===== COUNTDOWN ===== */
 .countdown {
   display: flex;
   gap: 15px;
@@ -224,8 +273,9 @@ html {
   align-items: center;
 }
 
+/* Mobile-first */
 .countdown span {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: var(--color-gold);
 }
@@ -236,7 +286,7 @@ html {
   letter-spacing: 1px;
 }
 
-/* FOOTER */
+/* ===== FOOTER ===== */
 .footer {
   flex-shrink: 0;
   scroll-snap-align: start;
@@ -252,16 +302,16 @@ html {
   justify-content: center;
 }
 
-/* INVITATION PAGE */
+/* ===== INVITATION PAGE ===== */
 .invitation-page {
-  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--color-bg-info);
 }
 
 .invitation-header {
   padding: 16px 20px;
   background: white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   text-align: center;
 }
 
@@ -310,6 +360,8 @@ html {
   border-radius: 8px;
   background: white;
   min-width: 160px;
+  min-height: 48px;
+  touch-action: manipulation;
 }
 
 .btn-confirmar {
@@ -336,7 +388,7 @@ html {
 
 .loading,
 .invitation-error {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -349,28 +401,34 @@ html {
   color: var(--color-gold);
 }
 
-/* MOBILE */
-@media (max-width: 480px) {
+/* ===== DESKTOP: mejoras para pantallas grandes ===== */
+@media (min-width: 481px) {
   .hero h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
+  }
+  .save {
+    font-size: 0.9rem;
   }
   .date {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
   .btn {
-    padding: 12px 28px;
-    font-size: 0.9rem;
+    padding: 14px 35px;
+    font-size: 1rem;
+  }
+  .monogram-svg {
+    width: 215px;
+    height: 215px;
   }
   .info h2 {
-    font-size: 1.6rem;
+    font-size: 2rem;
   }
   .countdown span {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 }
 
-/* Reproductor solo rayitas (equalizer) — archivo de audio, minimizable */
-/* Posición: arriba a la derecha para no interferir con el scroll hint abajo */
+/* ===== MUSIC EQUALIZER ===== */
 .music-equalizer-wrap {
   position: fixed;
   top: 24px;
@@ -378,7 +436,6 @@ html {
   z-index: 100;
 }
 
-/* Botón pequeño cuando está minimizado */
 .music-equalizer-btn {
   width: 48px;
   height: 48px;
@@ -393,6 +450,7 @@ html {
   justify-content: center;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   transition: transform 0.2s, background 0.2s, color 0.2s;
+  touch-action: manipulation;
 }
 
 .music-equalizer-btn:hover {
@@ -405,7 +463,6 @@ html {
   line-height: 1;
 }
 
-/* Panel expandido: botón minimizar + rayitas */
 .music-equalizer-panel {
   display: flex;
   align-items: center;
@@ -432,6 +489,7 @@ html {
   justify-content: center;
   padding: 0;
   transition: background 0.2s, color 0.2s;
+  touch-action: manipulation;
 }
 
 .music-equalizer-panel__minimize:hover {
@@ -452,6 +510,7 @@ html {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
+  touch-action: manipulation;
 }
 
 .music-equalizer:hover {
@@ -472,10 +531,6 @@ html {
 }
 
 @keyframes music-bar {
-  from {
-    transform: scaleY(0.4);
-  }
-  to {
-    transform: scaleY(1);
-  }
+  from { transform: scaleY(0.4); }
+  to   { transform: scaleY(1); }
 }

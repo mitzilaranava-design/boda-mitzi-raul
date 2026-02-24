@@ -17,6 +17,20 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-02-24 — Intro movido a pages/ y sello unificado para invitación y Save the Date
+- **Quién**: —
+- **Qué**: `Intro.jsx` movido de `components/` a `pages/` (es página completa con ruta propia). El componente ahora maneja dos flujos: si recibe `:id` en la URL navega a `/inv/:id` (invitación); si no, navega a `/` preservando el token (Save the Date). Nueva ruta `/intro/:id` en App.jsx. Links de invitación/recordatorio en el panel admin actualizados a `/intro/:id` para que el invitado vea el sello antes de su invitación.
+- **Archivos**: src/pages/Intro.jsx (nuevo), src/components/Intro.jsx (eliminado), src/App.jsx, src/pages/Admin.jsx
+
+---
+
+### 2026-02-24 — Sello (Intro) integrado en el flujo del Save the Date
+- **Quién**: —
+- **Qué**: El link del Save the Date que envía el panel admin ahora apunta a `/intro?t=TOKEN` en lugar de `/?t=TOKEN`. Así el invitado ve primero el sello (monograma animado) y al tocarlo llega al Save the Date. El token se sigue validando en TokenGate al navegar de `/intro` a `/`. Visitas de retorno (con sessionStorage) siguen entrando directamente a `/` sin necesidad del sello.
+- **Archivos**: src/pages/Admin.jsx
+
+---
+
 ### 2026-02-20 11:00 — Save the Date desde el panel de administración
 - **Quién**: —
 - **Qué**: Botón "Enviar Save the Date" en cada tarjeta del panel admin. Mensaje diferenciado (anuncia la boda, no confirmación). Link a `/?t=ACCESS_TOKEN` (página informativa). Se envía una única vez por persona; tras el envío el botón queda deshabilitado ("Ya enviado"). Nueva columna `save_the_date_enviado` en Supabase. Estadística de Save the Date añadida al resumen del panel (5 columnas). Nueva función `marcarSaveTheDate(id)` en el API.

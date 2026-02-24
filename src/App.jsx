@@ -3,6 +3,7 @@ import SaveTheDate from "./pages/SaveTheDate";
 import Invitation from "./pages/Invitation";
 import Admin from "./pages/Admin";
 import TokenGate from "./components/TokenGate";
+import Intro from "./pages/Intro";
 import "./styles/variables.css";
 import "./App.css";
 
@@ -18,9 +19,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<TokenGate><SaveTheDate /></TokenGate>} />
         <Route path="/inv/:id" element={<Invitation />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/" element={<TokenGate><SaveTheDate /></TokenGate>} />
+        <Route path="/intro" element={<Intro />} />
+        <Route path="/intro/:id" element={<Intro />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

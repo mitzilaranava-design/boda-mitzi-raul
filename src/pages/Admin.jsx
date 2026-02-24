@@ -30,14 +30,14 @@ function tiempoHastaProximo(inv) {
 
 function buildSaveTheDateLink(inv) {
   const celular = (inv.celular ?? "").replace(/[\s+\-()]/g, "");
-  const link = `${SITE_URL}/?t=${ACCESS_TOKEN}`;
+  const link = `${SITE_URL}/intro?t=${ACCESS_TOKEN}`;
   const msg = `Hola ${inv.nombre} 💍 Mitzi y Raúl tienen el honor de anunciarte que se casan el 21 de noviembre de 2026. ¡Reserva la fecha! Más información aquí: ${link}`;
   return `https://wa.me/${celular}?text=${encodeURIComponent(msg)}`;
 }
 
 function buildWhatsAppLink(inv) {
   const celular = (inv.celular ?? "").replace(/[\s+\-()]/g, "");
-  const link = `${SITE_URL}/inv/${inv.id}`;
+  const link = `${SITE_URL}/intro/${inv.id}`;
   const esInvitacion = (inv.recordatorios_enviados ?? 0) === 0;
   const msg = esInvitacion
     ? `Hola ${inv.nombre} 💍 Mitzi y Raúl tienen el placer de invitarte a celebrar su boda. Esperamos contar con tu valiosa compañía en este día tan especial. Confirma tu asistencia aquí: ${link}`
