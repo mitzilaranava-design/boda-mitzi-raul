@@ -458,6 +458,119 @@ html {
   padding-top: 12px;
 }
 
+/* ── Pregunta Sí / No ── */
+.asistencia-pregunta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.asistencia-pregunta__texto {
+  font-family: var(--font-serif), serif;
+  font-size: 1.15rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.asistencia-btns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-si {
+  background: var(--color-gold);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.2s;
+}
+
+.btn-si:hover {
+  background: var(--color-gold-hover);
+}
+
+.btn-no {
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 44px;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-no:hover {
+  border-color: #aaa;
+  color: var(--color-text);
+}
+
+/* ── No asiste ── */
+.no-asiste-aviso {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin: 0 0 4px;
+}
+
+.btn-no-asiste {
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 44px;
+  transition: border-color 0.2s;
+}
+
+.btn-no-asiste:hover {
+  border-color: #aaa;
+}
+
+.no-asiste-msg {
+  padding: 28px 20px;
+  background: #fdf6ec;
+  border: 1px solid #e8dcc8;
+  border-radius: 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.no-asiste-msg__icon {
+  font-size: 2.2rem;
+}
+
+.no-asiste-msg h2 {
+  font-family: var(--font-serif), serif;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.no-asiste-msg p {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
 .loading,
 .invitation-error {
   min-height: 100dvh;

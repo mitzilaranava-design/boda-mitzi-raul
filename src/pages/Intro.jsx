@@ -1,17 +1,20 @@
 import { motion } from "framer-motion";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import Monogram from "../components/Monogram";
 
 export default function Intro() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
 
   const handleOpen = () => {
     if (id) {
       navigate(`/inv/${id}`);
     } else {
-      navigate("/" + location.search);
+      // Guardar id de tracking en sessionStorage antes de navegar (no visible en URL)
+      const trackingId = searchParams.get("id");
+      if (trackingId) sessionStorage.setItem("boda_std_tracking", trackingId);
+      navigate("/");
     }
   };
 

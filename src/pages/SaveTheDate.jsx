@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import Hero from "../components/Hero";
 import Countdown from "../components/Countdown";
@@ -11,11 +10,11 @@ import { marcarSaveTheDateLeido } from "../api/invitations";
 const AUDIO_SRC = "/music/save-the-date.mp3";
 
 export default function SaveTheDate() {
-  const [searchParams] = useSearchParams();
-
   useEffect(() => {
-    const id = searchParams.get("id");
+    // El id de tracking viene de sessionStorage (puesto por Intro, no visible en URL)
+    const id = sessionStorage.getItem("boda_std_tracking");
     if (id) {
+      sessionStorage.removeItem("boda_std_tracking");
       marcarSaveTheDateLeido(id).catch((err) => console.warn("[STD] Error al marcar leído:", err));
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

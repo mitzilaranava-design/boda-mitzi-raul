@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { getAllInvitados, marcarRecordatorio, autoConfirmar, marcarSaveTheDate } from "../api/invitations";
+import { getAllInvitados, marcarInvitacionEnviada, marcarRecordatorio, autoConfirmar, marcarSaveTheDate } from "../api/invitations";
 
 const ADMIN_KEY = "boda_admin";
 const VALID_ADMIN_TOKEN = import.meta.env.VITE_ADMIN_TOKEN;
@@ -11,7 +11,7 @@ const INTERVAL_MS =
   Number(import.meta.env.VITE_REMINDER_INTERVAL_MINUTES ?? 10080) * 60 * 1000;
 
 function puedeEnviar(inv) {
-  if (inv.confirmado) return false;
+  if (inv.confirmado || inv.no_asiste) return false;
   if ((inv.recordatorios_enviados ?? 0) >= 3) return false;
   if (!inv.ultimo_recordatorio) return true;
   return Date.now() - new Date(inv.ultimo_recordatorio).getTime() >= INTERVAL_MS;
@@ -30,14 +30,14 @@ function tiempoHastaProximo(inv) {
 
 function buildSaveTheDateLink(inv) {
   const celular = (inv.celular ?? "").replace(/[\s+\-()]/g, "");
-  const link = `${SITE_URL}/intro/${inv.id}`;
+  const link = `${SITE_URL}/intro?t=${ACCESS_TOKEN}&id=${inv.id}`;
   const msg = `Hola ${inv.nombre} 💍 Mitzi y Raúl tienen el honor de anunciarte que se casan el 21 de noviembre de 2026. ¡Reserva la fecha! Más información aquí: ${link}`;
   return `https://wa.me/${celular}?text=${encodeURIComponent(msg)}`;
 }
 
 function buildWhatsAppLink(inv) {
   const celular = (inv.celular ?? "").replace(/[\s+\-()]/g, "");
-  const link = `${SITE_URL}/intro/${inv.id}`;
+  const link = `${SITE_URL}/intro/${inv.id}?t=${ACCESS_TOKEN}`;
   const esInvitacion = (inv.recordatorios_enviados ?? 0) === 0;
   const msg = esInvitacion
     ? `Hola ${inv.nombre} 💍 Mitzi y Raúl tienen el placer de invitarte a celebrar su boda. Esperamos contar con tu valiosa compañía en este día tan especial. Confirma tu asistencia aquí: ${link}`
@@ -48,6 +48,8 @@ function buildWhatsAppLink(inv) {
 function StatusPill({ inv }) {
   if (inv.auto_confirmado)
     return <span style={pill("#6b7280")}>Auto-confirmado</span>;
+  if (inv.no_asiste)
+    return <span style={pill("#9ca3af")}>No asiste</span>;
   if (inv.confirmado)
     return <span style={pill("#16a34a")}>Confirmado ✓</span>;
   return <span style={pill("#b49b6b")}>Pendiente</span>;
@@ -83,9 +85,14 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate }) {
   const handleRecordatorio = async () => {
     setLoading(true);
     window.open(buildWhatsAppLink(inv), "_blank", "noopener");
+    const esInvitacion = (inv.recordatorios_enviados ?? 0) === 0;
     try {
-      await marcarRecordatorio(inv.id);
-      onRecordatorio(inv.id);
+      if (esInvitacion) {
+        await marcarInvitacionEnviada(inv.id);
+      } else {
+        await marcarRecordatorio(inv.id);
+      }
+      onRecordatorio(inv.id, esInvitacion);
     } finally {
       setLoading(false);
     }
@@ -241,13 +248,16 @@ export default function Admin() {
     if (authorized) cargar();
   }, [authorized, cargar]);
 
-  const handleRecordatorio = (id) => {
+  const handleRecordatorio = (id, esInvitacion) => {
     setInvitados((prev) =>
       prev.map((inv) =>
         inv.id === id
           ? {
               ...inv,
-              recordatorios_enviados: (inv.recordatorios_enviados ?? 0) + 1,
+              // La invitación no suma al conteo; solo los recordatorios cuentan
+              recordatorios_enviados: esInvitacion
+                ? (inv.recordatorios_enviados ?? 0)
+                : (inv.recordatorios_enviados ?? 0) + 1,
               ultimo_recordatorio: new Date().toISOString(),
             }
           : inv
@@ -282,9 +292,10 @@ export default function Admin() {
   }
 
   const total = invitados.length;
-  const confirmados = invitados.filter((i) => i.confirmado && !i.auto_confirmado).length;
+  const confirmados = invitados.filter((i) => i.confirmado && !i.auto_confirmado && !i.no_asiste).length;
+  const noAsisten = invitados.filter((i) => i.no_asiste).length;
   const autoConfirmados = invitados.filter((i) => i.auto_confirmado).length;
-  const pendientes = invitados.filter((i) => !i.confirmado).length;
+  const pendientes = invitados.filter((i) => !i.confirmado && !i.no_asiste).length;
   const stdEnviados = invitados.filter((i) => i.save_the_date_enviado).length;
   const stdLeidos = invitados.filter((i) => i.save_the_date_leido).length;
 
@@ -317,6 +328,7 @@ export default function Admin() {
             { label: "STD Enviados", value: stdEnviados, color: "#9d8558" },
             { label: "STD Leídos", value: stdLeidos, color: "#0ea5e9" },
             { label: "Confirmados", value: confirmados, color: "#16a34a" },
+            { label: "No asisten", value: noAsisten, color: "#9ca3af" },
             { label: "Pendientes", value: pendientes, color: "#b49b6b" },
             { label: "Auto-conf.", value: autoConfirmados, color: "#6b7280" },
           ].map(({ label, value, color }) => (

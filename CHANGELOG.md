@@ -17,7 +17,48 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
-<<<<<<< HEAD
+### 2026-02-25 — Campo `no_asiste` para invitados que declinan
+- **Quién**: Claude
+- **Qué**: Se separó la lógica de "no asistirá" del campo `confirmado`. Nueva columna `no_asiste BOOLEAN DEFAULT false` en la BD. Nueva función `marcarNoAsiste(id)` en el API. El Admin muestra pill "No asiste" en gris y nueva stat "No asisten" en el resumen. `puedeEnviar` bloquea recordatorios para `no_asiste=true`. Las stats "Confirmados" y "Pendientes" excluyen correctamente a quienes declinaron. La invitación detecta `no_asiste` en la DB al reabrir el link.
+- **Archivos**: supabase-schema.sql, src/api/invitations.js, src/pages/Admin.jsx, src/pages/Invitation.jsx
+
+---
+
+### 2026-02-24 — Pregunta Sí/No en la invitación antes de confirmar
+- **Quién**: Claude
+- **Qué**: El formulario de confirmación ahora empieza con "¿Podrás acompañarnos?" y dos botones: "Sí, estaré" / "No podré asistir". Si elige Sí, aparece el selector de personas y el botón de confirmar asistencia (flujo existente). Si elige No, aparece un botón para confirmar la no asistencia (guarda `num_confirmados=0`). Mensajes de éxito y de revisita diferenciados para cada caso. Nuevo bloque de estilos en App.css: `.asistencia-pregunta`, `.asistencia-btns`, `.btn-si`, `.btn-no`, `.btn-no-asiste`, `.no-asiste-msg`.
+- **Archivos**: src/pages/Invitation.jsx, src/App.css
+
+---
+
+### 2026-02-24 — Primer envío de invitación no cuenta como recordatorio
+- **Quién**: Claude
+- **Qué**: El botón "Enviar invitación" (primer envío) ya no incrementa `recordatorios_enviados`. Solo actualiza `ultimo_recordatorio` para respetar el cooldown entre envíos. Los recordatorios reales (2.º, 3.º, 4.º envío) sí incrementan el contador. El auto-confirmar sigue activándose a los 3 recordatorios. Nueva función `marcarInvitacionEnviada` en el API.
+- **Archivos**: src/api/invitations.js, src/pages/Admin.jsx
+
+---
+
+### 2026-02-24 — Tracking id oculto de la URL en Save the Date (via sessionStorage)
+- **Quién**: Claude
+- **Qué**: El parámetro `?id=UUID` ya no aparece en la URL al navegar al Save the Date. `Intro.jsx` guarda el `id` en `sessionStorage` con clave `boda_std_tracking` antes de navegar a `/`. `SaveTheDate.jsx` lo lee de `sessionStorage`, lo borra inmediatamente y llama a `marcarSaveTheDateLeido`. La URL queda limpia como `/` y el tracking funciona de forma confiable (independiente del state del router).
+- **Archivos**: src/pages/Intro.jsx, src/pages/SaveTheDate.jsx
+
+---
+
+### 2026-02-24 — Token obligatorio en todas las rutas (invitación, intro e inv/:id)
+- **Quién**: Claude
+- **Qué**: `TokenGate` ahora redirige a la ruta actual (pathname) al validar el token, en lugar de siempre ir a `/`. Esto permite proteger `/intro`, `/intro/:id` e `/inv/:id` con el mismo componente. `App.jsx` actualizado para envolver esas rutas con `TokenGate`. `buildWhatsAppLink` en Admin actualizado para incluir `?t=TOKEN` en el link de invitación/recordatorio. Flujo completo: `/intro/UUID?t=TOKEN` → TokenGate valida, guarda sessionStorage → Sello → `/inv/UUID` → TokenGate verifica sessionStorage → Invitación.
+- **Archivos**: src/components/TokenGate.jsx, src/App.jsx, src/pages/Admin.jsx
+
+---
+
+### 2026-02-24 — Corrección merge: link Save the Date restaurado con sello y tracking
+- **Quién**: Claude
+- **Qué**: El merge previo resolvió mal el conflicto en `buildSaveTheDateLink` usando `/intro/${inv.id}` (ruta de invitación), haciendo que el Save the Date llevara al invitado a la invitación en lugar del Save the Date. Corregido a `/intro?t=TOKEN&id=UUID` para que el invitado vea primero el sello y al tocarlo llegue al Save the Date, preservando el tracking de lectura. También resuelto el conflicto de merge en CHANGELOG.md.
+- **Archivos**: src/pages/Admin.jsx, CHANGELOG.md
+
+---
+
 ### 2026-02-24 — Intro movido a pages/ y sello unificado para invitación y Save the Date
 - **Quién**: —
 - **Qué**: `Intro.jsx` movido de `components/` a `pages/` (es página completa con ruta propia). El componente ahora maneja dos flujos: si recibe `:id` en la URL navega a `/inv/:id` (invitación); si no, navega a `/` preservando el token (Save the Date). Nueva ruta `/intro/:id` en App.jsx. Links de invitación/recordatorio en el panel admin actualizados a `/intro/:id` para que el invitado vea el sello antes de su invitación.
@@ -27,9 +68,11 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ### 2026-02-24 — Sello (Intro) integrado en el flujo del Save the Date
 - **Quién**: —
-- **Qué**: El link del Save the Date que envía el panel admin ahora apunta a `/intro?t=TOKEN` en lugar de `/?t=TOKEN`. Así el invitado ve primero el sello (monograma animado) y al tocarlo llega al Save the Date. El token se sigue validando en TokenGate al navegar de `/intro` a `/`. Visitas de retorno (con sessionStorage) siguen entrando directamente a `/` sin necesidad del sello.
+- **Qué**: El link del Save the Date que envía el panel admin ahora apunta a `/intro?t=TOKEN&id=UUID` en lugar de `/?t=TOKEN&id=UUID`. Así el invitado ve primero el sello (monograma animado) y al tocarlo llega al Save the Date. El token se valida en TokenGate al navegar de `/intro` a `/`. El `id` se preserva en la query para el tracking de lectura.
 - **Archivos**: src/pages/Admin.jsx
-=======
+
+---
+
 ### 2026-02-20 — Bloqueo de invitación para asistencia ya confirmada y auto-confirmada
 - **Quién**: Claude
 - **Qué**: Si el invitado ya confirmó su asistencia (`confirmado=true`), al reabrir su link ve un mensaje de agradecimiento con el número de personas y la fecha del evento, sin posibilidad de modificar. Si fue auto-confirmado por el admin, ve el mensaje de plazo vencido. El formulario de confirmación solo aparece a invitados aún pendientes.
@@ -55,7 +98,6 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 - **Quién**: Claude
 - **Qué**: Breakpoint 360px añadido (Galaxy A, iPhone SE). Reducción de `letter-spacing` en `.save` y `.date` en móvil. Gap del countdown ajustado. Grid de estadísticas del Admin cambiado de 5 columnas fijas a responsivo (5 → 3 → 2 cols). Touch targets de botones del Admin aumentados a mínimo 44px (iOS/Android).
 - **Archivos**: src/App.css, src/pages/Admin.jsx
->>>>>>> 4bffc9164b7678df7e3729d9e9e85cd4abc9b348
 
 ---
 

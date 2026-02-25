@@ -31,6 +31,7 @@ const MOCK_INVITADOS = {
     num_invitados: 2,
     num_confirmados: 0,
     confirmado: false,
+    no_asiste: false,
     recordatorios_enviados: 0,
     ultimo_recordatorio: null,
     auto_confirmado: false,
@@ -44,6 +45,7 @@ const MOCK_INVITADOS = {
     num_invitados: 4,
     num_confirmados: 0,
     confirmado: false,
+    no_asiste: false,
     recordatorios_enviados: 0,
     ultimo_recordatorio: null,
     auto_confirmado: false,
@@ -95,6 +97,37 @@ export async function confirmarAsistencia(id, numConfirmados) {
   if (MOCK_INVITADOS[id]) {
     MOCK_INVITADOS[id].confirmado = true;
     MOCK_INVITADOS[id].num_confirmados = numConfirmados;
+  }
+  return { ok: true };
+}
+
+export async function marcarNoAsiste(id) {
+  if (supabase) {
+    const { error } = await supabase
+      .from("invitados")
+      .update({ no_asiste: true })
+      .eq("id", id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  }
+  if (MOCK_INVITADOS[id]) {
+    MOCK_INVITADOS[id].no_asiste = true;
+  }
+  return { ok: true };
+}
+
+export async function marcarInvitacionEnviada(id) {
+  // Registra el envío de la invitación sin contar como recordatorio
+  if (supabase) {
+    const { error } = await supabase
+      .from("invitados")
+      .update({ ultimo_recordatorio: new Date().toISOString() })
+      .eq("id", id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  }
+  if (MOCK_INVITADOS[id]) {
+    MOCK_INVITADOS[id].ultimo_recordatorio = new Date().toISOString();
   }
   return { ok: true };
 }
