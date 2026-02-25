@@ -30,11 +30,7 @@ function tiempoHastaProximo(inv) {
 
 function buildSaveTheDateLink(inv) {
   const celular = (inv.celular ?? "").replace(/[\s+\-()]/g, "");
-<<<<<<< HEAD
-  const link = `${SITE_URL}/intro?t=${ACCESS_TOKEN}`;
-=======
-  const link = `${SITE_URL}/?t=${ACCESS_TOKEN}&id=${inv.id}`;
->>>>>>> 4bffc9164b7678df7e3729d9e9e85cd4abc9b348
+  const link = `${SITE_URL}/intro/${inv.id}`;
   const msg = `Hola ${inv.nombre} 💍 Mitzi y Raúl tienen el honor de anunciarte que se casan el 21 de noviembre de 2026. ¡Reserva la fecha! Más información aquí: ${link}`;
   return `https://wa.me/${celular}?text=${encodeURIComponent(msg)}`;
 }

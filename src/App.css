@@ -473,13 +473,8 @@ html {
   color: var(--color-gold);
 }
 
-<<<<<<< HEAD
-/* ===== DESKTOP: mejoras para pantallas grandes ===== */
-@media (min-width: 481px) {
-=======
 /* MOBILE ≤ 480px */
 @media (max-width: 480px) {
->>>>>>> 4bffc9164b7678df7e3729d9e9e85cd4abc9b348
   .hero h1 {
     font-size: 2.5rem;
   }
@@ -491,12 +486,8 @@ html {
     font-size: 0.82rem;
   }
   .date {
-<<<<<<< HEAD
-    font-size: 1rem;
-=======
     font-size: 0.9rem;
     letter-spacing: 2px;
->>>>>>> 4bffc9164b7678df7e3729d9e9e85cd4abc9b348
   }
   .btn {
     padding: 14px 35px;
@@ -517,9 +508,6 @@ html {
   }
 }
 
-<<<<<<< HEAD
-/* ===== MUSIC EQUALIZER ===== */
-=======
 /* MOBILE ≤ 360px — teléfonos pequeños (Galaxy A, iPhone SE…) */
 @media (max-width: 360px) {
   .hero h1 {
@@ -554,9 +542,7 @@ html {
   }
 }
 
-/* Reproductor solo rayitas (equalizer) — archivo de audio, minimizable */
-/* Posición: arriba a la derecha para no interferir con el scroll hint abajo */
->>>>>>> 4bffc9164b7678df7e3729d9e9e85cd4abc9b348
+/* ===== MUSIC EQUALIZER ===== */
 .music-equalizer-wrap {
   position: fixed;
   top: 24px;
