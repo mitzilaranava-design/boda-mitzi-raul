@@ -35,6 +35,7 @@ const MOCK_INVITADOS = {
     ultimo_recordatorio: null,
     auto_confirmado: false,
     save_the_date_enviado: false,
+    save_the_date_leido: false,
   },
   "1211463d-e6a6-41c7-bf40-3e50853eea30": {
     id: "1211463d-e6a6-41c7-bf40-3e50853eea30",
@@ -47,6 +48,7 @@ const MOCK_INVITADOS = {
     ultimo_recordatorio: null,
     auto_confirmado: false,
     save_the_date_enviado: false,
+    save_the_date_leido: false,
   },
 };
 
@@ -133,6 +135,21 @@ export async function marcarSaveTheDate(id) {
   }
   if (MOCK_INVITADOS[id]) {
     MOCK_INVITADOS[id].save_the_date_enviado = true;
+  }
+  return { ok: true };
+}
+
+export async function marcarSaveTheDateLeido(id) {
+  if (supabase) {
+    const { error } = await supabase
+      .from("invitados")
+      .update({ save_the_date_leido: true })
+      .eq("id", id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  }
+  if (MOCK_INVITADOS[id]) {
+    MOCK_INVITADOS[id].save_the_date_leido = true;
   }
   return { ok: true };
 }

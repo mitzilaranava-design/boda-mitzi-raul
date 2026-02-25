@@ -30,7 +30,11 @@ function tiempoHastaProximo(inv) {
 
 function buildSaveTheDateLink(inv) {
   const celular = (inv.celular ?? "").replace(/[\s+\-()]/g, "");
+<<<<<<< HEAD
   const link = `${SITE_URL}/intro?t=${ACCESS_TOKEN}`;
+=======
+  const link = `${SITE_URL}/?t=${ACCESS_TOKEN}&id=${inv.id}`;
+>>>>>>> 4bffc9164b7678df7e3729d9e9e85cd4abc9b348
   const msg = `Hola ${inv.nombre} 💍 Mitzi y Raúl tienen el honor de anunciarte que se casan el 21 de noviembre de 2026. ¡Reserva la fecha! Más información aquí: ${link}`;
   return `https://wa.me/${celular}?text=${encodeURIComponent(msg)}`;
 }
@@ -139,6 +143,11 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate }) {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8, borderTop: "1px solid #f2e8d5", paddingTop: 8 }}>
         <p style={{ margin: 0, fontFamily: "Poppins, sans-serif", fontSize: 12, color: stdEnviado ? "#16a34a" : "#999" }}>
           Save the Date: {stdEnviado ? "Enviado ✓" : "Pendiente"}
+          {stdEnviado && (
+            <span style={{ color: inv.save_the_date_leido ? "#0ea5e9" : "#bbb", marginLeft: 6 }}>
+              · Leído: {inv.save_the_date_leido ? "Sí ✓" : "No"}
+            </span>
+          )}
         </p>
         <button
           onClick={handleSaveTheDate}
@@ -187,13 +196,17 @@ function btnStyle(disabled, color) {
     color: disabled ? "#9ca3af" : "#fff",
     border: "none",
     borderRadius: 8,
-    padding: "7px 14px",
+    padding: "10px 16px",
+    minHeight: 44,
     fontFamily: "Poppins, sans-serif",
     fontSize: 13,
     fontWeight: 500,
     cursor: disabled ? "default" : "pointer",
     transition: "background 0.2s",
     whiteSpace: "nowrap",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
   };
 }
 
@@ -277,6 +290,7 @@ export default function Admin() {
   const autoConfirmados = invitados.filter((i) => i.auto_confirmado).length;
   const pendientes = invitados.filter((i) => !i.confirmado).length;
   const stdEnviados = invitados.filter((i) => i.save_the_date_enviado).length;
+  const stdLeidos = invitados.filter((i) => i.save_the_date_leido).length;
 
   return (
     <div style={{ minHeight: "100vh", background: "#f9f5ef", padding: "32px 16px" }}>
@@ -300,11 +314,12 @@ export default function Admin() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
-          style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8, marginBottom: 24 }}
+          className="admin-stats"
         >
           {[
             { label: "Total", value: total, color: "#222" },
-            { label: "Save the Date", value: stdEnviados, color: "#9d8558" },
+            { label: "STD Enviados", value: stdEnviados, color: "#9d8558" },
+            { label: "STD Leídos", value: stdLeidos, color: "#0ea5e9" },
             { label: "Confirmados", value: confirmados, color: "#16a34a" },
             { label: "Pendientes", value: pendientes, color: "#b49b6b" },
             { label: "Auto-conf.", value: autoConfirmados, color: "#6b7280" },

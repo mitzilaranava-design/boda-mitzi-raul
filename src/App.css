@@ -386,6 +386,78 @@ html {
   color: #555;
 }
 
+.ya-confirmado-msg {
+  padding: 28px 20px;
+  background: #f0faf2;
+  border: 1px solid #c6e6cc;
+  border-radius: 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ya-confirmado-msg__icon {
+  font-size: 2.2rem;
+}
+
+.ya-confirmado-msg h2 {
+  font-family: var(--font-serif), serif;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.ya-confirmado-msg p {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.ya-confirmado-msg__detalle {
+  font-size: 0.88rem !important;
+  color: #555 !important;
+  border-top: 1px solid #c6e6cc;
+  padding-top: 12px;
+}
+
+.auto-confirmado-msg {
+  padding: 28px 20px;
+  background: #fdf6ec;
+  border: 1px solid #e8dcc8;
+  border-radius: 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auto-confirmado-msg__icon {
+  font-size: 2.2rem;
+}
+
+.auto-confirmado-msg h2 {
+  font-family: var(--font-serif), serif;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.auto-confirmado-msg p {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.auto-confirmado-msg__contacto {
+  font-size: 0.85rem !important;
+  color: #999 !important;
+  border-top: 1px solid #e8dcc8;
+  padding-top: 12px;
+}
+
 .loading,
 .invitation-error {
   min-height: 100dvh;
@@ -401,16 +473,30 @@ html {
   color: var(--color-gold);
 }
 
+<<<<<<< HEAD
 /* ===== DESKTOP: mejoras para pantallas grandes ===== */
 @media (min-width: 481px) {
+=======
+/* MOBILE ≤ 480px */
+@media (max-width: 480px) {
+>>>>>>> 4bffc9164b7678df7e3729d9e9e85cd4abc9b348
   .hero h1 {
     font-size: 2.5rem;
   }
   .save {
     font-size: 0.9rem;
   }
+  .save {
+    letter-spacing: 2px;
+    font-size: 0.82rem;
+  }
   .date {
+<<<<<<< HEAD
     font-size: 1rem;
+=======
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+>>>>>>> 4bffc9164b7678df7e3729d9e9e85cd4abc9b348
   }
   .btn {
     padding: 14px 35px;
@@ -423,12 +509,54 @@ html {
   .info h2 {
     font-size: 2rem;
   }
+  .countdown {
+    gap: 12px;
+  }
   .countdown span {
     font-size: 1.5rem;
   }
 }
 
+<<<<<<< HEAD
 /* ===== MUSIC EQUALIZER ===== */
+=======
+/* MOBILE ≤ 360px — teléfonos pequeños (Galaxy A, iPhone SE…) */
+@media (max-width: 360px) {
+  .hero h1 {
+    font-size: 1.7rem;
+  }
+  .save {
+    letter-spacing: 1.5px;
+    font-size: 0.75rem;
+  }
+  .date {
+    font-size: 0.78rem;
+    letter-spacing: 1.5px;
+  }
+  .btn {
+    padding: 12px 22px;
+    font-size: 0.85rem;
+  }
+  .info h2 {
+    font-size: 1.35rem;
+  }
+  .info p {
+    font-size: 0.9rem;
+  }
+  .countdown {
+    gap: 10px;
+  }
+  .countdown span {
+    font-size: 1.1rem;
+  }
+  .invitation-card h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Reproductor solo rayitas (equalizer) — archivo de audio, minimizable */
+/* Posición: arriba a la derecha para no interferir con el scroll hint abajo */
+>>>>>>> 4bffc9164b7678df7e3729d9e9e85cd4abc9b348
 .music-equalizer-wrap {
   position: fixed;
   top: 24px;
@@ -533,4 +661,24 @@ html {
 @keyframes music-bar {
   from { transform: scaleY(0.4); }
   to   { transform: scaleY(1); }
+}
+
+/* ADMIN — stats grid responsivo */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 540px) {
+  .admin-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 360px) {
+  .admin-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

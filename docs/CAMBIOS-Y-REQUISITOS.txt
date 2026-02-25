@@ -14,7 +14,7 @@ REQUISITOS / PENDIENTES
 [2] ENFOQUE MÓVIL
     - El proyecto debe ir enfocado a móviles (mobile-first)
     - Revisar viewport, touch targets, responsive
-    ESTADO: Pendiente optimizar
+    ESTADO: Hecho (2026-02-20). Breakpoint 360px, letter-spacing móvil, admin grid responsivo, touch targets 44px.
 
 [3] INVITACIÓN vs SAVE THE DATE
     - Invitación en página separada /inv/:id
@@ -29,6 +29,59 @@ REQUISITOS / PENDIENTES
     - Supabase integrado. Sin .env: usa mock. Con .env: usa Supabase.
     - Ejecutar supabase-schema.sql en Supabase. Copiar .env.example a .env
     ESTADO: Hecho
+
+==============================================================================
+DESPLIEGUE EN PRODUCCIÓN — VERCEL
+==============================================================================
+
+Stack: React + Vite → deploy estático en Vercel (gratuito, plan Hobby).
+
+[PASO 1] vercel.json — OBLIGATORIO para React Router
+  Sin este archivo, rutas como /inv/:id o /admin dan 404 al acceder directo.
+  Crear en la raíz del proyecto:
+
+    {
+      "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+    }
+
+[PASO 2] Conectar repo en Vercel
+  - Entrar a vercel.com → "Add New Project" → importar repo de GitHub
+  - Framework preset: Vite (se detecta automático)
+  - Build command:  npm run build   (o vite build)
+  - Output dir:     dist
+  - Node version:   18 o superior
+
+[PASO 3] Variables de entorno en Vercel
+  Settings → Environment Variables → agregar todas las del .env.example:
+
+    VITE_SUPABASE_URL              https://xxx.supabase.co
+    VITE_SUPABASE_ANON_KEY         eyJ...
+    VITE_ACCESS_TOKEN              token-para-save-the-date
+    VITE_ADMIN_TOKEN               token-para-panel-admin
+    VITE_SITE_URL                  https://tu-dominio.vercel.app  (sin / al final)
+    VITE_REMINDER_INTERVAL_MINUTES 10080
+
+  IMPORTANTE: VITE_SITE_URL debe ser el dominio real de producción.
+  Los links de WhatsApp usan esta variable.
+
+[PASO 4] Supabase — verificar que se ejecutaron todos los ALTER TABLE
+  Correr en Supabase Dashboard → SQL Editor (si no se ha hecho):
+
+    ALTER TABLE invitados ADD COLUMN IF NOT EXISTS recordatorios_enviados int default 0;
+    ALTER TABLE invitados ADD COLUMN IF NOT EXISTS ultimo_recordatorio timestamptz;
+    ALTER TABLE invitados ADD COLUMN IF NOT EXISTS auto_confirmado boolean default false;
+    ALTER TABLE invitados ADD COLUMN IF NOT EXISTS save_the_date_enviado boolean default false;
+    ALTER TABLE invitados ADD COLUMN IF NOT EXISTS save_the_date_leido boolean default false;
+
+[PASO 5] Primer deploy
+  - Vercel hace deploy automático al hacer push a main (o a la rama configurada)
+  - Para producción: hacer merge de feature/ a main antes de conectar Vercel,
+    o configurar la rama de producción en Vercel Settings → Git → Production Branch
+
+[NOTAS]
+  - El archivo .env NO se sube al repo (.gitignore). Las variables van en Vercel.
+  - El panel admin queda en: https://tu-dominio/admin?t=VITE_ADMIN_TOKEN
+  - El Save the Date queda en: https://tu-dominio/?t=VITE_ACCESS_TOKEN
 
 ==============================================================================
 IDEAS OTRAS (agregar aquí)
@@ -54,8 +107,13 @@ IDEAS OTRAS (agregar aquí)
   ESTADO: Hecho (2026-02-19). Ejecutar ALTER TABLE en Supabase (ver supabase-schema.sql).
 
 - Botón Save the Date en panel admin. Mensaje anuncia la boda (no confirmación), link a
-  /?t=ACCESS_TOKEN. Una sola vez por persona. Nueva columna save_the_date_enviado en Supabase.
+  /?t=ACCESS_TOKEN&id=UUID. Una sola vez por persona. Nueva columna save_the_date_enviado en Supabase.
   ESTADO: Hecho (2026-02-20). Ejecutar ALTER TABLE en Supabase (ver supabase-schema.sql).
+
+- Tracking de lectura del Save the Date. Al abrir el link /?t=TOKEN&id=UUID se registra
+  save_the_date_leido=true en Supabase. El panel admin muestra "Leído: Sí/No" por tarjeta
+  y el contador "STD Leídos" en las estadísticas. TokenGate preserva params extra en el redirect.
+  ESTADO: Hecho (2026-02-20). Ejecutar ALTER TABLE save_the_date_leido en Supabase.
 
 - PENDIENTE: Ejecutar RLS en Supabase Dashboard → SQL Editor.
   Ver instrucciones en src/api/invitations.js (comentario al inicio del archivo).

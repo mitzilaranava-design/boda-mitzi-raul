@@ -28,6 +28,7 @@ alter table invitados add column if not exists recordatorios_enviados int defaul
 alter table invitados add column if not exists ultimo_recordatorio timestamptz;
 alter table invitados add column if not exists auto_confirmado boolean default false;
 alter table invitados add column if not exists save_the_date_enviado boolean default false;
+alter table invitados add column if not exists save_the_date_leido boolean default false;
 
 -- Datos de prueba (UUIDs generados — reemplazar con los IDs reales de producción)
 insert into invitados (id, nombre, celular, num_invitados)

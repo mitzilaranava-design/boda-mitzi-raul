@@ -17,6 +17,7 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+<<<<<<< HEAD
 ### 2026-02-24 — Intro movido a pages/ y sello unificado para invitación y Save the Date
 - **Quién**: —
 - **Qué**: `Intro.jsx` movido de `components/` a `pages/` (es página completa con ruta propia). El componente ahora maneja dos flujos: si recibe `:id` en la URL navega a `/inv/:id` (invitación); si no, navega a `/` preservando el token (Save the Date). Nueva ruta `/intro/:id` en App.jsx. Links de invitación/recordatorio en el panel admin actualizados a `/intro/:id` para que el invitado vea el sello antes de su invitación.
@@ -28,6 +29,33 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 - **Quién**: —
 - **Qué**: El link del Save the Date que envía el panel admin ahora apunta a `/intro?t=TOKEN` en lugar de `/?t=TOKEN`. Así el invitado ve primero el sello (monograma animado) y al tocarlo llega al Save the Date. El token se sigue validando en TokenGate al navegar de `/intro` a `/`. Visitas de retorno (con sessionStorage) siguen entrando directamente a `/` sin necesidad del sello.
 - **Archivos**: src/pages/Admin.jsx
+=======
+### 2026-02-20 — Bloqueo de invitación para asistencia ya confirmada y auto-confirmada
+- **Quién**: Claude
+- **Qué**: Si el invitado ya confirmó su asistencia (`confirmado=true`), al reabrir su link ve un mensaje de agradecimiento con el número de personas y la fecha del evento, sin posibilidad de modificar. Si fue auto-confirmado por el admin, ve el mensaje de plazo vencido. El formulario de confirmación solo aparece a invitados aún pendientes.
+- **Archivos**: src/pages/Invitation.jsx, src/App.css
+
+---
+
+### 2026-02-20 — Mensaje de plazo vencido en invitación auto-confirmada
+- **Quién**: Claude
+- **Qué**: Si el admin auto-confirmó a un invitado (tras 3 recordatorios sin respuesta) y el invitado intenta abrir su link de invitación, ve un mensaje cálido indicando que el plazo concluyó y que se comunique con los novios. No se muestra el formulario de confirmación.
+- **Archivos**: src/pages/Invitation.jsx, src/App.css
+
+---
+
+### 2026-02-20 — Tracking de lectura del Save the Date
+- **Quién**: Claude
+- **Qué**: Al abrir el link del Save the Date (`/?t=TOKEN&id=UUID`) se registra automáticamente `save_the_date_leido=true` en Supabase (fire-and-forget, silencioso para el invitado). El panel admin muestra "Leído: Sí ✓ / No" en cada tarjeta y agrega la stat "STD Leídos" al resumen. `TokenGate` ahora preserva params extra (como `id`) al hacer el redirect. Nueva función `marcarSaveTheDateLeido` en el API. Nueva columna en Supabase.
+- **Archivos**: src/components/TokenGate.jsx, src/pages/SaveTheDate.jsx, src/pages/Admin.jsx, src/api/invitations.js, supabase-schema.sql, docs/CAMBIOS-Y-REQUISITOS.txt
+
+---
+
+### 2026-02-20 — Optimización mobile-first
+- **Quién**: Claude
+- **Qué**: Breakpoint 360px añadido (Galaxy A, iPhone SE). Reducción de `letter-spacing` en `.save` y `.date` en móvil. Gap del countdown ajustado. Grid de estadísticas del Admin cambiado de 5 columnas fijas a responsivo (5 → 3 → 2 cols). Touch targets de botones del Admin aumentados a mínimo 44px (iOS/Android).
+- **Archivos**: src/App.css, src/pages/Admin.jsx
+>>>>>>> 4bffc9164b7678df7e3729d9e9e85cd4abc9b348
 
 ---
 
