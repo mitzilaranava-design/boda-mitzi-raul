@@ -22,7 +22,6 @@ function App() {
         <Route path="/inv/:id" element={<TokenGate><Invitation /></TokenGate>} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/" element={<TokenGate><SaveTheDate /></TokenGate>} />
-        <Route path="/intro" element={<TokenGate><Intro /></TokenGate>} />
         <Route path="/intro/:id" element={<TokenGate><Intro /></TokenGate>} />
         <Route path="*" element={<NotFound />} />
       </Routes>

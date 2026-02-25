@@ -17,6 +17,13 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-02-25 — Sello eliminado del flujo Save the Date
+- **Quién**: Claude
+- **Qué**: El Save the Date va directo a `/?t=TOKEN&id=UUID` sin pasar por el sello (Intro). El sello solo aplica al flujo de invitación (`/intro/:id`). La ruta `/intro` (sin `:id`) fue eliminada. `SaveTheDate.jsx` vuelve a leer el `id` de tracking desde `searchParams`. `Intro.jsx` simplificado: solo maneja el caso de invitación (`:id` siempre presente).
+- **Archivos**: src/pages/Admin.jsx, src/App.jsx, src/pages/SaveTheDate.jsx, src/pages/Intro.jsx
+
+---
+
 ### 2026-02-25 — Campo `no_asiste` para invitados que declinan
 - **Quién**: Claude
 - **Qué**: Se separó la lógica de "no asistirá" del campo `confirmado`. Nueva columna `no_asiste BOOLEAN DEFAULT false` en la BD. Nueva función `marcarNoAsiste(id)` en el API. El Admin muestra pill "No asiste" en gris y nueva stat "No asisten" en el resumen. `puedeEnviar` bloquea recordatorios para `no_asiste=true`. Las stats "Confirmados" y "Pendientes" excluyen correctamente a quienes declinaron. La invitación detecta `no_asiste` en la DB al reabrir el link.
