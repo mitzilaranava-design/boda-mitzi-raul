@@ -17,6 +17,13 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-02-26 — Calendario: .ics reemplazado por Google Calendar
+- **Quién**: Claude
+- **Qué**: Botón "Agregar a calendario" ahora abre Google Calendar en nueva pestaña en lugar de descargar un `.ics`. Fecha corregida de oct 4 → nov 21 de 2026. Horario: 2pm–12am CST (UTC-6). Se eliminó `downloadIcs` y se reemplazó por `openGoogleCalendar`.
+- **Archivos**: src/utils/calendar.js, src/components/Hero.jsx
+
+---
+
 ### 2026-02-26 — Flag enviar_save_the_date para habilitar/deshabilitar contacto
 - **Quién**: Claude
 - **Qué**: Nueva columna `enviar_save_the_date BOOLEAN DEFAULT false`. Cuando es `false`, la tarjeta del invitado en el Admin se muestra con opacidad reducida, badge "Pendiente de activar" y todos los botones de contacto deshabilitados (STD, invitación, recordatorio, auto-confirmar). El invitado sigue visible en el sistema. Se activa cambiando el flag a `true` desde Supabase. Mock data actualizado con `enviar_save_the_date: true` para los invitados de prueba.
