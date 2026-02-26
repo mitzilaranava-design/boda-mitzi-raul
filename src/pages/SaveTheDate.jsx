@@ -1,32 +1,73 @@
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import Hero from "../components/Hero";
 import Countdown from "../components/Countdown";
+import MusicEqualizer from "../components/MusicEqualizer";
+import { marcarSaveTheDateLeido } from "../api/invitations";
+
+// Botón de música: reproduce un solo MP3.
+// Dónde colocar el archivo: carpeta public/music/ (ej. public/music/save-the-date.mp3)
+const AUDIO_SRC = "/music/save-the-date.mp3";
 
 export default function SaveTheDate() {
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (id) {
+      marcarSaveTheDateLeido(id).catch((err) => console.warn("[STD] Error al marcar leído:", err));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="app">
+      {AUDIO_SRC && <MusicEqualizer src={AUDIO_SRC} />}
+
       <Hero />
 
       <motion.section
         className="info"
-        initial={{ opacity: 0, y: 50 }}
+        initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
+        viewport={{ once: false, amount: 0.25 }}
+        transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
-        <h2>¡Nos casamos!</h2>
-        <p>
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          ¡Nos casamos!
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
           Muy pronto celebraremos juntos el inicio de nuestra nueva historia.
-        </p>
-        <Countdown />
+        </motion.p>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          <Countdown />
+        </motion.div>
       </motion.section>
 
       <motion.footer
         className="footer"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 3, duration: 1 }}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
-        Creado con ❤️ por Mitzi y Raúl
+        By ❤️ Mitzi & Raúl
       </motion.footer>
     </div>
   );

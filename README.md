@@ -17,7 +17,7 @@ Para dar contexto a la IA: *"Revisa docs/ y CHANGELOG.md del proyecto boda-mitzi
 
 ## 🚀 Características
 
-- **Save the Date**: Página pública con countdown y calendario (.ics)
+- **Save the Date**: Página pública con countdown, calendario (.ics) y música (reproductor MP3 con archivo en public/music/)
 - **Invitaciones personalizadas**: Rutas `/inv/:id` con formulario de confirmación
 - **Base de datos**: Supabase (PostgreSQL) con fallback a mock
 - **Mobile-first**: Diseño optimizado para móviles
