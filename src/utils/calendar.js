@@ -1,36 +1,26 @@
 /**
- * Genera archivo .ics para agregar al calendario del dispositivo.
- * Al descargar, el SO ofrece abrir con la app predeterminada (Google, Apple, Outlook, etc.)
+ * Abre Google Calendar con el evento de la boda precargado.
+ * 21 de noviembre de 2026 · 2pm – 12am (CST, UTC-6)
  */
 
 const EVENT = {
-  summary: "Mitzi & Raúl - Boda",
-  description: "Save the Date - Te esperamos",
+  text: "Boda Mitzi & Raúl",
+  dates: "20261121T200000Z/20261122T060000Z",
+  details: "Save the Date — ¡Te esperamos!",
   location: "Por confirmar",
-  start: "20261004T180000Z",
-  end: "20261004T210000Z",
 };
 
-export function downloadIcs() {
-  const ics = [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//Boda Mitzi Raul//ES",
-    "BEGIN:VEVENT",
-    `DTSTART:${EVENT.start}`,
-    `DTEND:${EVENT.end}`,
-    `SUMMARY:${EVENT.summary}`,
-    `DESCRIPTION:${EVENT.description}`,
-    `LOCATION:${EVENT.location}`,
-    "END:VEVENT",
-    "END:VCALENDAR",
-  ].join("\r\n");
-
-  const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "boda-mitzi-raul.ics";
-  a.click();
-  URL.revokeObjectURL(url);
+export function openGoogleCalendar() {
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: EVENT.text,
+    dates: EVENT.dates,
+    details: EVENT.details,
+    location: EVENT.location,
+  });
+  window.open(
+    `https://calendar.google.com/calendar/render?${params.toString()}`,
+    "_blank",
+    "noopener,noreferrer"
+  );
 }

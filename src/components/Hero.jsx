@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { downloadIcs } from "../utils/calendar";
+import { openGoogleCalendar } from "../utils/calendar";
 import Monogram from "./Monogram";
 
 export default function Hero() {
@@ -44,7 +44,7 @@ export default function Hero() {
 
         <motion.button
           type="button"
-          onClick={downloadIcs}
+          onClick={openGoogleCalendar}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           initial={{ opacity: 0, y: 20 }}
