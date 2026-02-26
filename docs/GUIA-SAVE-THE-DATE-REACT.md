@@ -34,7 +34,7 @@ Fade al cargar, slide en textos, countdown progresivo, hover en botón.
 
 ## Opcional
 
-Música, pantalla "Abrir invitación", overlay oscuro, URL por invitado, confirmación en Supabase (implementado).
+Música (reproductor MP3 con equalizer minimizable, archivo en `public/music/save-the-date.mp3`, ver SaveTheDate.jsx), pantalla "Abrir invitación", overlay oscuro, URL por invitado, confirmación en Supabase (implementado).
 
 ## Checklist
 
