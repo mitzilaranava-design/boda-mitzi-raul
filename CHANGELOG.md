@@ -17,6 +17,13 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-02-26 — Flag enviar_save_the_date para habilitar/deshabilitar contacto
+- **Quién**: Claude
+- **Qué**: Nueva columna `enviar_save_the_date BOOLEAN DEFAULT false`. Cuando es `false`, la tarjeta del invitado en el Admin se muestra con opacidad reducida, badge "Pendiente de activar" y todos los botones de contacto deshabilitados (STD, invitación, recordatorio, auto-confirmar). El invitado sigue visible en el sistema. Se activa cambiando el flag a `true` desde Supabase. Mock data actualizado con `enviar_save_the_date: true` para los invitados de prueba.
+- **Archivos**: supabase-schema.sql, src/api/invitations.js, src/pages/Admin.jsx
+
+---
+
 ### 2026-02-25 — Sello eliminado del flujo Save the Date
 - **Quién**: Claude
 - **Qué**: El Save the Date va directo a `/?t=TOKEN&id=UUID` sin pasar por el sello (Intro). El sello solo aplica al flujo de invitación (`/intro/:id`). La ruta `/intro` (sin `:id`) fue eliminada. `SaveTheDate.jsx` vuelve a leer el `id` de tracking desde `searchParams`. `Intro.jsx` simplificado: solo maneja el caso de invitación (`:id` siempre presente).
