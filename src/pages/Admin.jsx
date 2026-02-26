@@ -112,6 +112,7 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate }) {
   const recordatorios = inv.recordatorios_enviados ?? 0;
   const necesitaAutoConfirmar = !inv.confirmado && recordatorios >= 3;
   const stdEnviado = inv.save_the_date_enviado ?? false;
+  const habilitado = inv.enviar_save_the_date ?? false;
 
   return (
     <motion.div
@@ -120,12 +121,13 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate }) {
       animate={{ opacity: 1, y: 0 }}
       style={{
         background: "#fff",
-        border: "1px solid #e8dcc8",
+        border: `1px solid ${habilitado ? "#e8dcc8" : "#e5e7eb"}`,
         borderRadius: 12,
         padding: "16px 20px",
         display: "flex",
         flexDirection: "column",
         gap: 10,
+        opacity: habilitado ? 1 : 0.75,
       }}
     >
       {/* Nombre + estado */}
@@ -139,7 +141,14 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate }) {
             {inv.confirmado && ` · Confirman: ${inv.num_confirmados}`}
           </p>
         </div>
-        <StatusPill inv={inv} />
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
+          <StatusPill inv={inv} />
+          {!habilitado && (
+            <span style={{ fontFamily: "Poppins, sans-serif", fontSize: 11, color: "#9ca3af", background: "#f3f4f6", borderRadius: 99, padding: "2px 8px" }}>
+              Pendiente de activar
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Save the Date */}
@@ -154,15 +163,15 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate }) {
         </p>
         <button
           onClick={handleSaveTheDate}
-          disabled={stdEnviado || loading}
-          style={btnStyle(stdEnviado || loading, "#9d8558")}
+          disabled={!habilitado || stdEnviado || loading}
+          style={btnStyle(!habilitado || stdEnviado || loading, "#9d8558")}
         >
           {loading ? "..." : stdEnviado ? "Ya enviado" : "Enviar Save the Date"}
         </button>
       </div>
 
       {/* Recordatorios / invitación */}
-      {!inv.confirmado && (
+      {!inv.confirmado && !inv.no_asiste && (
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8, borderTop: "1px solid #f2e8d5", paddingTop: 8 }}>
           <p style={{ margin: 0, fontFamily: "Poppins, sans-serif", fontSize: 12, color: "#999" }}>
             Invitación/recordatorios: {recordatorios}/3 · {tiempoHastaProximo(inv)}
@@ -171,8 +180,8 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate }) {
             {!necesitaAutoConfirmar && (
               <button
                 onClick={handleRecordatorio}
-                disabled={!puede || loading}
-                style={btnStyle(!puede || loading, "#b49b6b")}
+                disabled={!habilitado || !puede || loading}
+                style={btnStyle(!habilitado || !puede || loading, "#b49b6b")}
               >
                 {loading ? "..." : recordatorios === 0 ? "Enviar invitación" : "Enviar recordatorio"}
               </button>
@@ -180,8 +189,8 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate }) {
             {necesitaAutoConfirmar && (
               <button
                 onClick={handleAutoConfirmar}
-                disabled={loading}
-                style={btnStyle(loading, "#6b7280")}
+                disabled={!habilitado || loading}
+                style={btnStyle(!habilitado || loading, "#6b7280")}
               >
                 {loading ? "..." : "Auto-confirmar"}
               </button>

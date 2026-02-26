@@ -30,6 +30,7 @@ alter table invitados add column if not exists auto_confirmado boolean default f
 alter table invitados add column if not exists save_the_date_enviado boolean default false;
 alter table invitados add column if not exists save_the_date_leido boolean default false;
 alter table invitados add column if not exists no_asiste boolean default false;
+alter table invitados add column if not exists enviar_save_the_date boolean default false;
 
 -- Datos de prueba (UUIDs generados — reemplazar con los IDs reales de producción)
 insert into invitados (id, nombre, celular, num_invitados)
