@@ -75,6 +75,10 @@ INSERT INTO invitados (nombre, celular, num_invitados, enviar_save_the_date) VAL
   ('Carlos Álvarez',         '+525511347616', 2,  true),
   ('Cesar Jerónimo',         '+525620133983', 3,  true);
 
+
+INSERT INTO invitados (nombre, celular, num_invitados, enviar_save_the_date) VALUES
+('Omar Ramírez',         '+527773635604', 4,  true);
+
 -- ============================================================
 -- Resumen:
 --   Total insertados  : 65
