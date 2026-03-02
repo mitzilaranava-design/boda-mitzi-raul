@@ -228,6 +228,7 @@ export default function Admin() {
   const [invitados, setInvitados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [pagina, setPagina] = useState(1);
 
   useEffect(() => {
     const tokenUrl = searchParams.get("t");
@@ -246,6 +247,7 @@ export default function Admin() {
     try {
       const data = await getAllInvitados();
       setInvitados(data ?? []);
+      setPagina(1);
     } catch (e) {
       setError(e.message);
     } finally {
@@ -299,6 +301,10 @@ export default function Admin() {
       </div>
     );
   }
+
+  const POR_PAGINA = 10;
+  const totalPaginas = Math.ceil(invitados.length / POR_PAGINA);
+  const invitadosPagina = invitados.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
 
   const total = invitados.length;
   const confirmados = invitados.filter((i) => i.confirmado && !i.auto_confirmado && !i.no_asiste).length;
@@ -361,7 +367,7 @@ export default function Admin() {
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <AnimatePresence>
-            {invitados.map((inv) => (
+            {invitadosPagina.map((inv) => (
               <CardInvitado
                 key={inv.id}
                 inv={inv}
@@ -372,6 +378,29 @@ export default function Admin() {
             ))}
           </AnimatePresence>
         </div>
+
+        {/* Paginador */}
+        {totalPaginas > 1 && (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginTop: 20 }}>
+            <button
+              onClick={() => setPagina((p) => Math.max(1, p - 1))}
+              disabled={pagina === 1}
+              style={btnStyle(pagina === 1, "#b49b6b")}
+            >
+              ← Anterior
+            </button>
+            <span style={{ fontFamily: "Poppins, sans-serif", fontSize: 13, color: "#555" }}>
+              {pagina} / {totalPaginas}
+            </span>
+            <button
+              onClick={() => setPagina((p) => Math.min(totalPaginas, p + 1))}
+              disabled={pagina === totalPaginas}
+              style={btnStyle(pagina === totalPaginas, "#b49b6b")}
+            >
+              Siguiente →
+            </button>
+          </div>
+        )}
 
         {/* Refresh */}
         {!loading && (

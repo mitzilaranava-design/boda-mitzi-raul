@@ -17,6 +17,13 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-02-27 — Paginador en lista de invitados del Admin
+- **Quién**: Claude
+- **Qué**: Se agregó paginador de 10 invitados por página en el panel de administración. Controles de Anterior / Siguiente con indicador de página actual. La página se resetea a 1 al actualizar la lista.
+- **Archivos**: src/pages/Admin.jsx
+
+---
+
 ### 2026-02-26 — Calendario: .ics reemplazado por Google Calendar
 - **Quién**: Claude
 - **Qué**: Botón "Agregar a calendario" ahora abre Google Calendar en nueva pestaña en lugar de descargar un `.ics`. Fecha corregida de oct 4 → nov 21 de 2026. Horario: 2pm–12am CST (UTC-6). Se eliminó `downloadIcs` y se reemplazó por `openGoogleCalendar`.
