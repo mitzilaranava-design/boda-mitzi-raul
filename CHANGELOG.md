@@ -17,6 +17,20 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-03-02 — Reestructura visual de la invitación: cover, pases y fecha
+- **Quién**: Claude
+- **Qué**: Rediseño completo de las primeras 3 secciones de `/inv/:id` basado en referencias visuales de otra invitación elegante. Puntos clave:
+  - **CSS separado**: `src/styles/Invitation.css` exclusivo para la invitación. `App.css` queda solo para Save the Date y globales. Nunca se tocan entre sí.
+  - **InvCover**: imagen `cover.jpg` como fondo (position absolute, contenida en la sección), nombres en Great Vibes dorado, banner dorado en la parte inferior con efecto wipe-reveal (clipPath) que se activa 1.8s después del fade-in de la foto.
+  - **InvPasses**: fondo dorado sólido, tarjeta centrada con `texture.jpg` de fondo y gold visible a los lados. RSVP completo en español (sí/no, selector de personas, mensajes de confirmado/no asiste).
+  - **InvDate**: estilo visual idéntico al Save the Date — "¡Nos Casamos!" en script, fecha en versales, countdown con cajas doradas, botón "Agregar a Calendario" (aparece cuando `WEDDING.googleCalendarUrl` esté configurado).
+  - **scroll-snap**: restaurado para la invitación (igual al efecto Apple del Save the Date).
+  - **AUDIO_SRC = null**: música desactivada en la invitación hasta tener archivo.
+  - **`src/data/wedding.js`**: datos centralizados del evento (WEDDING object, AUDIO_SRC, googleCalendarUrl).
+- **Archivos**: `src/styles/Invitation.css` (nuevo), `src/components/invitation/` (InvCover, InvPasses, InvDate rediseñados), `src/data/wedding.js` (nuevo), `src/App.css`, `src/pages/Invitation.jsx`, `public/assets/cover.jpg`, `public/assets/texture.jpg`, `public/context-inv/` (referencias visuales)
+
+---
+
 ### 2026-02-27 — Paginador en lista de invitados del Admin
 - **Quién**: Claude
 - **Qué**: Se agregó paginador de 10 invitados por página en el panel de administración. Controles de Anterior / Siguiente con indicador de página actual. La página se resetea a 1 al actualizar la lista.
