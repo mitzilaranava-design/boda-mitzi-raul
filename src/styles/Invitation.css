@@ -1,0 +1,1170 @@
+/* ============================================================ */
+/* INVITATION — Estilos exclusivos de la página de invitación  */
+/* No tocar desde SaveTheDate ni componentes globales          */
+/* ============================================================ */
+
+/* ===== GUARD STATES (loading / error / confirmado) ===== */
+.invitation-page {
+  min-height: 100dvh;
+  background: var(--color-bg-info);
+}
+
+.invitation-header {
+  padding: 16px 20px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  text-align: center;
+}
+
+.invitation-header a {
+  font-family: var(--font-serif), serif;
+  font-size: 1.2rem;
+  color: var(--color-gold);
+  text-decoration: none;
+}
+
+.invitation-card {
+  background: var(--color-bg-info);
+  padding: 40px 24px;
+  margin: 0;
+  text-align: center;
+}
+
+.invitation-card h2 {
+  font-family: var(--font-serif), serif;
+  font-size: 1.8rem;
+  color: var(--color-text);
+  margin-bottom: 12px;
+}
+
+.invitation-card p {
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+}
+
+.confirm-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.confirm-form label {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.confirm-form select {
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  min-width: 160px;
+  min-height: 48px;
+  touch-action: manipulation;
+}
+
+.btn-confirmar {
+  margin-top: 8px !important;
+}
+
+.confirmado-msg {
+  padding: 24px;
+  background: #e8f5e9;
+  border-radius: 12px;
+  color: #2e7d32;
+}
+
+.confirmado-msg .check {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.confirmado-msg small {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.ya-confirmado-msg {
+  padding: 28px 20px;
+  background: #f0faf2;
+  border: 1px solid #c6e6cc;
+  border-radius: 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ya-confirmado-msg__icon {
+  font-size: 2.2rem;
+}
+
+.ya-confirmado-msg h2 {
+  font-family: var(--font-serif), serif;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.ya-confirmado-msg p {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.ya-confirmado-msg__detalle {
+  font-size: 0.88rem !important;
+  color: #555 !important;
+  border-top: 1px solid #c6e6cc;
+  padding-top: 12px;
+}
+
+.auto-confirmado-msg {
+  padding: 28px 20px;
+  background: #fdf6ec;
+  border: 1px solid #e8dcc8;
+  border-radius: 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auto-confirmado-msg__icon {
+  font-size: 2.2rem;
+}
+
+.auto-confirmado-msg h2 {
+  font-family: var(--font-serif), serif;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.auto-confirmado-msg p {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.auto-confirmado-msg__contacto {
+  font-size: 0.85rem !important;
+  color: #999 !important;
+  border-top: 1px solid #e8dcc8;
+  padding-top: 12px;
+}
+
+/* ── Pregunta Sí / No ── */
+.asistencia-pregunta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.asistencia-pregunta__texto {
+  font-family: var(--font-serif), serif;
+  font-size: 1.15rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.asistencia-btns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-si {
+  background: var(--color-gold);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.2s;
+}
+
+.btn-si:hover {
+  background: var(--color-gold-hover);
+}
+
+.btn-no {
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 44px;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-no:hover {
+  border-color: #aaa;
+  color: var(--color-text);
+}
+
+/* ── No asiste ── */
+.no-asiste-aviso {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin: 0 0 4px;
+}
+
+.btn-no-asiste {
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 44px;
+  transition: border-color 0.2s;
+}
+
+.btn-no-asiste:hover {
+  border-color: #aaa;
+}
+
+.no-asiste-msg {
+  padding: 28px 20px;
+  background: #fdf6ec;
+  border: 1px solid #e8dcc8;
+  border-radius: 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.no-asiste-msg__icon {
+  font-size: 2.2rem;
+}
+
+.no-asiste-msg h2 {
+  font-family: var(--font-serif), serif;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.no-asiste-msg p {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.loading,
+.invitation-error {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: var(--color-text-muted);
+}
+
+.invitation-error a {
+  color: var(--color-gold);
+}
+
+/* ── invitation-card: pantallas pequeñas ── */
+@media (max-width: 360px) {
+  .invitation-card h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* ============================================================ */
+/* INVITATION — MULTI-SECTION                                   */
+/* ============================================================ */
+
+/* La invitación hereda el scroll-snap del .app (igual que el Save the Date) */
+
+/* ── Shared section ── */
+.inv-section {
+  width: 100%;
+  min-height: 100dvh;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 56px 20px 48px;
+  position: relative;
+  background: var(--color-cream);
+}
+
+.inv-section:nth-child(even) {
+  background: var(--color-bg-info);
+}
+
+.inv-section__inner {
+  width: 100%;
+  max-width: 480px;
+}
+
+.inv-section__inner--center {
+  text-align: center;
+}
+
+.inv-section h2 {
+  font-family: var(--font-serif), serif;
+  font-size: 1.8rem;
+  color: var(--color-text);
+  margin-bottom: 20px;
+}
+
+.inv-section__label {
+  font-size: 0.68rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 8px;
+}
+
+.inv-section__sub {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* ── 1. Cover ── */
+.inv-cover {
+  background: var(--color-cream-dark) !important; /* fallback si la imagen no carga */
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  justify-content: center;
+}
+
+/* Imagen de portada — absoluta dentro del cover */
+.inv-cover__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 20%; /* móvil: enfoca la parte superior (caras) */
+  filter: brightness(75%);
+  z-index: 0;
+}
+
+@media (min-width: 640px) {
+  .inv-cover__bg {
+    object-position: 50% 50%; /* desktop: centrado */
+  }
+}
+
+/* Gradiente suave — ayuda a leer los nombres sobre la foto */
+.inv-cover__top-fade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50dvh;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.15) 0%,
+    transparent 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Botón home — círculo top-right */
+.inv-cover__home-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.80);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  transition: background 0.2s, transform 0.2s;
+  text-decoration: none;
+}
+
+.inv-cover__home-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.08);
+}
+
+/* Contenedor de nombres — ocupa el top 50vh y centra verticalmente */
+.inv-cover__names-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+
+/* Nombres en tipografía script elegante */
+.inv-cover__names-script {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3.6rem;
+  font-weight: 400;
+  color: var(--color-gold);
+  line-height: 1.2;
+  text-align: center;
+  letter-spacing: 0.1em;
+  text-shadow: 1px 1px black;
+  margin: 0;
+  padding: 0 24px;
+}
+
+.inv-scroll-hint {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--color-gold);
+  opacity: 0.5;
+  font-size: 1.1rem;
+  animation: inv-bounce 2s ease-in-out infinite;
+}
+
+@keyframes inv-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(6px); }
+}
+
+/* ── 1b. Banner mensaje — pegado al fondo del cover ── */
+.inv-cover__mensaje {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-gold);
+  padding: 20px;
+  z-index: 5;
+}
+
+.inv-cover__mensaje-text {
+  font-family: var(--font-serif), serif;
+  font-size: 1.875rem;
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.5;
+  margin: 0;
+  padding: 4px 12px;
+}
+
+/* ── 2. Passes ── */
+.inv-passes {
+  background: var(--color-gold) !important;
+  padding: 0 28px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Tarjeta con textura — centrada con dorado visible a los lados */
+.inv-passes__card {
+  width: 100%;
+  max-width: 380px;
+  background-image: url("/assets/texture.jpg");
+  background-size: cover;
+  background-position: center;
+  background-color: white; /* fallback */
+  padding: 28px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  text-align: center;
+  box-shadow: 0 -6px 32px rgba(0,0,0,0.2);
+}
+
+.inv-passes__title {
+  font-family: var(--font-serif), serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.25;
+  margin: 0 0 10px;
+}
+
+.inv-passes__greeting {
+  font-size: 0.83rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+.inv-passes__count-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 18px;
+}
+
+.inv-passes__count-num {
+  font-family: var(--font-serif), serif;
+  font-size: 5rem;
+  font-weight: 400;
+  color: var(--color-gold);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.inv-passes__count-label {
+  font-size: 0.65rem;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* ── Pregunta ── */
+.passes-pregunta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.passes-btn {
+  width: 100%;
+  padding: 14px 20px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  min-height: 48px;
+  border-radius: 0;
+  transition: background 0.2s, color 0.2s;
+  background: none;
+}
+
+.passes-btn--si {
+  color: var(--color-text);
+  border: 1px solid var(--color-text);
+}
+
+.passes-btn--si:hover {
+  background: var(--color-text);
+  color: #fff;
+}
+
+.passes-btn--si:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Botón "No podré asistir" como link de texto sutil */
+.passes-btn--link {
+  background: none;
+  border: none;
+  padding: 8px 0;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #bbb;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.passes-btn--link:hover {
+  color: var(--color-text-muted);
+}
+
+/* ── Confirm form ── */
+.passes-confirm-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.passes-confirm-form__label {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.passes-confirm-form__select {
+  padding: 12px 20px;
+  font-size: 0.9rem;
+  border: 1px solid var(--color-cream-dark);
+  border-radius: 0;
+  background: white;
+  min-height: 48px;
+  touch-action: manipulation;
+  color: var(--color-text);
+  width: 100%;
+}
+
+.passes-no-aviso {
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ── Confirmado / No asiste messages ── */
+.passes-si-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 18px 16px;
+  background: #f0faf2;
+  border: 1px solid #c6e6cc;
+  width: 100%;
+  color: #2e7d32;
+}
+
+.passes-si-msg__check {
+  font-size: 1.8rem;
+  display: block;
+}
+
+.passes-si-msg p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.passes-si-msg small {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.passes-no-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 18px 16px;
+  background: #fdf6ec;
+  border: 1px solid #e8dcc8;
+  width: 100%;
+}
+
+.passes-no-msg p {
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── 3. The Date ── */
+.inv-date-section {
+  background: var(--color-cream) !important;
+}
+
+.inv-date__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+  width: 100%;
+  max-width: 420px;
+}
+
+.inv-date__script {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3.6rem;
+  font-weight: 400;
+  color: var(--color-gold);
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+.inv-date__str {
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* Countdown — cajas doradas con texto claro, igual que la referencia */
+.inv-date-section .countdown {
+  gap: 8px;
+}
+
+.inv-date-section .countdown > div {
+  background: var(--color-gold);
+  padding: 12px 14px;
+  min-width: 68px;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.inv-date-section .countdown span {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: var(--font-serif), serif;
+}
+
+.inv-date-section .countdown small {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.62rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.inv-date__cal-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  border: 1px solid var(--color-text-muted);
+  border-radius: 6px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.inv-date__cal-btn:hover {
+  background: var(--color-text);
+  border-color: var(--color-text);
+  color: #fff;
+}
+
+/* ── 4. Families ── */
+.inv-families__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.inv-family-card {
+  background: white;
+  border: 1px solid var(--color-cream-dark);
+  border-radius: 14px;
+  padding: 22px 20px;
+  text-align: center;
+}
+
+.inv-family-card__role {
+  font-size: 0.65rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 14px;
+}
+
+.inv-family-card__name {
+  font-family: var(--font-serif), serif;
+  font-size: 1rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.inv-family-card__amp {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--color-gold);
+  margin: 6px 0;
+}
+
+/* ── 5. Sponsors ── */
+.inv-sponsors__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.inv-sponsor-item {
+  background: white;
+  border: 1px solid var(--color-cream-dark);
+  border-radius: 12px;
+  padding: 14px 10px;
+  text-align: center;
+}
+
+.inv-sponsor-item__category {
+  font-size: 0.62rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 6px;
+}
+
+.inv-sponsor-item__names {
+  font-family: var(--font-serif), serif;
+  font-size: 0.88rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+/* ── 6. Schedule ── */
+.inv-timeline {
+  list-style: none;
+  margin: 24px auto 0;
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+}
+
+.inv-timeline__item {
+  display: grid;
+  grid-template-columns: 72px 14px 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-cream-dark);
+}
+
+.inv-timeline__item:last-child {
+  border-bottom: none;
+}
+
+.inv-timeline__time {
+  font-size: 0.75rem;
+  color: var(--color-gold);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: right;
+}
+
+.inv-timeline__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  justify-self: center;
+  flex-shrink: 0;
+}
+
+.inv-timeline__event {
+  font-size: 0.88rem;
+  color: var(--color-text);
+  text-align: left;
+}
+
+/* ── 7. Venues ── */
+.inv-venues__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.inv-venue-card {
+  background: white;
+  border: 1px solid var(--color-cream-dark);
+  border-radius: 14px;
+  padding: 22px 20px;
+  text-align: center;
+}
+
+.inv-venue-card__type {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 10px;
+}
+
+.inv-venue-card__name {
+  font-family: var(--font-serif), serif;
+  font-size: 1.1rem;
+  color: var(--color-text);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.inv-venue-card__address {
+  font-size: 0.83rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.inv-venue-card__link {
+  font-size: 0.78rem;
+  color: var(--color-gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-gold);
+  padding-bottom: 1px;
+  transition: opacity 0.2s;
+}
+
+.inv-venue-card__link:hover {
+  opacity: 0.7;
+}
+
+/* ── 8. Weather ── */
+.inv-weather__note {
+  font-size: 0.83rem;
+  color: var(--color-text-muted);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.inv-weather__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin: 16px 0;
+}
+
+.inv-weather__day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: white;
+  border: 1px solid var(--color-cream-dark);
+  border-radius: 10px;
+  padding: 10px 4px;
+}
+
+.inv-weather__day--wedding {
+  border-color: var(--color-gold);
+  background: #fdf9f0;
+}
+
+.inv-weather__day-name {
+  font-size: 0.58rem;
+  color: var(--color-gold);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.inv-weather__day-date {
+  font-size: 0.62rem;
+  color: var(--color-text-muted);
+}
+
+.inv-weather__icon {
+  font-size: 1.1rem;
+}
+
+.inv-weather__temp {
+  font-size: 0.6rem;
+  color: var(--color-text-muted);
+}
+
+.inv-weather__disclaimer {
+  font-size: 0.68rem;
+  color: #aaa;
+  font-style: italic;
+}
+
+/* ── 9. Gift Registry ── */
+.inv-registry__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.inv-registry__item {
+  display: block;
+  padding: 14px 20px;
+  background: white;
+  border: 1px solid var(--color-cream-dark);
+  border-radius: 12px;
+  font-family: var(--font-serif), serif;
+  font-size: 1rem;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.inv-registry__item:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+/* ── 10. Dress Code ── */
+.inv-dresscode__card {
+  background: white;
+  border: 1px solid var(--color-cream-dark);
+  border-radius: 16px;
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.inv-dresscode__title {
+  font-family: var(--font-serif), serif;
+  font-size: 1.25rem;
+  color: var(--color-gold);
+  font-weight: 600;
+}
+
+.inv-dresscode__note {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.inv-dresscode__avoid {
+  font-size: 0.78rem;
+  color: #999;
+  font-style: italic;
+  border-top: 1px solid var(--color-cream-dark);
+  padding-top: 12px;
+}
+
+/* ── 11. Good to Know ── */
+.inv-notes__list {
+  list-style: none;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.inv-notes__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  background: white;
+  border: 1px solid var(--color-cream-dark);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.inv-notes__item::before {
+  content: "✦";
+  color: var(--color-gold);
+  flex-shrink: 0;
+  font-size: 0.65rem;
+  margin-top: 3px;
+}
+
+/* ── 12. Farewell ── */
+.inv-farewell {
+  background: linear-gradient(
+    to bottom,
+    var(--color-cream-dark),
+    var(--color-cream)
+  ) !important;
+  text-align: center;
+}
+
+.inv-farewell .inv-section__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.inv-farewell__message {
+  font-family: var(--font-serif), serif;
+  font-size: 1.05rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  line-height: 1.8;
+  max-width: 320px;
+}
+
+.inv-farewell__names {
+  font-family: var(--font-serif), serif;
+  font-size: 2rem;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.inv-farewell__names span {
+  color: var(--color-gold);
+}
+
+.inv-farewell__date {
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.inv-farewell__footer {
+  font-size: 0.72rem;
+  color: #bbb;
+  margin-top: 4px;
+}
+
+/* ── Weather: pantallas pequeñas ── */
+@media (max-width: 400px) {
+  .inv-weather__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .inv-weather__grid > :nth-child(n+5):not(.inv-weather__day--wedding) {
+    display: none;
+  }
+}
+
+/* ── Cover: pantallas pequeñas ── */
+@media (max-width: 480px) {
+  .inv-cover__names-script {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .inv-cover__names-script {
+    font-size: 2.4rem;
+  }
+
+  .inv-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .inv-sponsors__grid {
+    grid-template-columns: 1fr;
+  }
+}
