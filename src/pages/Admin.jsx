@@ -230,6 +230,7 @@ export default function Admin() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pagina, setPagina] = useState(1);
+  const [busqueda, setBusqueda] = useState("");
   const [galeriaActiva, setGaleriaActiva] = useState(false);
   const [galeriaLoading, setGaleriaLoading] = useState(false);
 
@@ -321,8 +322,16 @@ export default function Admin() {
   }
 
   const POR_PAGINA = 7;
-  const totalPaginas = Math.ceil(invitados.length / POR_PAGINA);
-  const invitadosPagina = invitados.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
+  const query = busqueda.trim().toLowerCase();
+  const filtrados = query
+    ? invitados.filter(
+        (i) =>
+          i.nombre.toLowerCase().includes(query) ||
+          (i.celular ?? "").includes(query)
+      )
+    : invitados;
+  const totalPaginas = Math.ceil(filtrados.length / POR_PAGINA);
+  const invitadosPagina = filtrados.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
 
   const total = invitados.length;
   const confirmados = invitados.filter((i) => i.confirmado && !i.auto_confirmado && !i.no_asiste).length;
@@ -371,6 +380,55 @@ export default function Admin() {
             </div>
           ))}
         </motion.div>
+
+        {/* Filtro de búsqueda */}
+        <div style={{ margin: "20px 0 12px", position: "relative" }}>
+          <input
+            type="text"
+            placeholder="Buscar por nombre o celular..."
+            value={busqueda}
+            onChange={(e) => { setBusqueda(e.target.value); setPagina(1); }}
+            style={{
+              width: "100%",
+              boxSizing: "border-box",
+              padding: "12px 40px 12px 16px",
+              fontFamily: "Poppins, sans-serif",
+              fontSize: 14,
+              color: "#222",
+              background: "#fff",
+              border: "1px solid #e8dcc8",
+              borderRadius: 10,
+              outline: "none",
+              minHeight: 44,
+            }}
+          />
+          {busqueda && (
+            <button
+              onClick={() => { setBusqueda(""); setPagina(1); }}
+              style={{
+                position: "absolute",
+                right: 12,
+                top: "50%",
+                transform: "translateY(-50%)",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: "#aaa",
+                fontSize: 18,
+                lineHeight: 1,
+                padding: 4,
+              }}
+              aria-label="Limpiar búsqueda"
+            >
+              ✕
+            </button>
+          )}
+        </div>
+        {busqueda && (
+          <p style={{ fontFamily: "Poppins, sans-serif", fontSize: 12, color: "#999", margin: "0 0 12px" }}>
+            {filtrados.length} resultado{filtrados.length !== 1 ? "s" : ""} para &ldquo;{busqueda}&rdquo;
+          </p>
+        )}
 
         {/* Lista */}
         {loading && (

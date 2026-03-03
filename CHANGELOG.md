@@ -19,6 +19,11 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-03-02 22:45 — Admin: filtro de búsqueda por nombre o celular en lista de invitados
+- **Quién**: Claude
+- **Qué**: Input de búsqueda en el panel Admin que filtra la lista de invitados en tiempo real por nombre o número de celular. Muestra contador de resultados. Botón ✕ para limpiar. Paginación se aplica sobre los resultados filtrados y se resetea a página 1 al escribir.
+- **Archivos**: `src/pages/Admin.jsx`
+
 ### 2026-03-02 22:30 — InvEventPhotos: botón CTA a /galeria en lugar de embed + CODING-STANDARDS.md
 - **Quién**: Claude
 - **Qué**: `InvEventPhotos.jsx` muestra solo un botón CTA que lleva a `/galeria?inv=ID`, sin embed del grid. Razón: usuarios que entran por QR externo solo tienen acceso a `/galeria`, no a la invitación. Botón dorado con estilos en `Invitation.css`. Creado `docs/CODING-STANDARDS.md` con reglas mínimas del proyecto (idioma, estructura, CSS, variables, mock, CHANGELOG con HH:MM obligatorio).
