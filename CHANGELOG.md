@@ -13,26 +13,33 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 - **Archivos**: archivos modificados (opcional)
 ```
 
+> ⚠️ **HH:MM es obligatorio.** Permite saber quién subió código primero cuando dos personas trabajan el mismo día.
+
 ---
 
 ## Registro
 
-### 2026-03-02 — Galería: compresión de imagen en cliente + VITE_GALLERY_TOKEN en env
+### 2026-03-02 22:30 — InvEventPhotos: botón CTA a /galeria en lugar de embed + CODING-STANDARDS.md
+- **Quién**: Claude
+- **Qué**: `InvEventPhotos.jsx` muestra solo un botón CTA que lleva a `/galeria?inv=ID`, sin embed del grid. Razón: usuarios que entran por QR externo solo tienen acceso a `/galeria`, no a la invitación. Botón dorado con estilos en `Invitation.css`. Creado `docs/CODING-STANDARDS.md` con reglas mínimas del proyecto (idioma, estructura, CSS, variables, mock, CHANGELOG con HH:MM obligatorio).
+- **Archivos**: `src/components/invitation/InvEventPhotos.jsx` (nuevo), `docs/CODING-STANDARDS.md` (nuevo), `src/pages/Invitation.jsx`, `src/styles/Invitation.css`
+
+### 2026-03-02 21:44 — Galería: compresión de imagen en cliente + VITE_GALLERY_TOKEN en env
 - **Quién**: Claude
 - **Qué**: Compresión automática antes de subir a Supabase Storage usando Canvas API (sin librerías). Max 2048px en el lado mayor, 88% calidad JPEG → ~600 KB por foto, ~1 700 fotos en el plan gratuito de 1 GB. `VITE_GALLERY_TOKEN` agregado a `.env.example`. Opciones de almacenamiento alternativas (Cloudinary, Firebase) documentadas en `docs/CAMBIOS-Y-REQUISITOS.txt` para decisión futura.
 - **Archivos**: `src/api/gallery.js`, `.env.example`, `docs/CAMBIOS-Y-REQUISITOS.txt`
 
-### 2026-03-02 — Galería: acceso dual (sesión de invitación ó token QR propio)
+### 2026-03-02 21:44 — Galería: acceso dual (sesión de invitación ó token QR propio)
 - **Quién**: Claude
 - **Qué**: Nuevo `GalleryTokenGate` para `/galeria`. Acepta dos vías: (1) el invitado ya tiene sesión `boda_access` (viene de su invitación, entra directo sin token extra); (2) link de QR externo con `?t=VITE_GALLERY_TOKEN` (token independiente, se guarda en `boda_gallery`). `TokenGate` queda sin cambios. `InvFarewell` solo pasa `?inv=id`, sin token.
 - **Archivos**: `src/components/GalleryTokenGate.jsx` (nuevo), `src/App.jsx`, `src/components/TokenGate.jsx` (revertido), `src/components/invitation/InvFarewell.jsx`
 
-### 2026-03-02 — Galería: ligar fotos al invitado o detectar QR externo
+### 2026-03-02 21:44 — Galería: ligar fotos al invitado o detectar QR externo
 - **Quién**: Claude
 - **Qué**: Al subir foto desde `/inv/:id → /galeria`, el `invitado_id` se guarda en `galeria_fotos`. Si viene de QR externo (solo token, sin id), `invitado_id` queda null. TODO de compresión de imagen documentado en `gallery.js`.
 - **Archivos**: `src/api/gallery.js`, `src/pages/Gallery.jsx`, `src/components/invitation/InvFarewell.jsx`, `supabase-schema.sql`
 
-### 2026-03-02 — Galería de fotos en tiempo real para invitados
+### 2026-03-02 21:44 — Galería de fotos en tiempo real para invitados
 - **Quién**: Claude
 - **Qué**: Implementación completa de galería compartida. Los invitados pueden subir y ver fotos del evento en tiempo real desde `/galeria`. El Admin puede activar/desactivar la galería desde el panel. Incluye lightbox con navegación prev/next, botón de descarga, y subida desde cámara o galería del móvil. Con fallback mock cuando Supabase no está configurado.
 - **Archivos**:
@@ -44,7 +51,7 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
   - `src/components/invitation/InvFarewell.jsx` — botón "Galería del evento"
   - `supabase-schema.sql` — tablas `galeria_fotos` + `galeria_config` + instrucciones Storage
 
-### 2026-03-02 — Reestructura visual de la invitación: cover, pases y fecha
+### 2026-03-02 17:22 — Reestructura visual de la invitación: cover, pases y fecha
 - **Quién**: Claude
 - **Qué**: Rediseño completo de las primeras 3 secciones de `/inv/:id` basado en referencias visuales de otra invitación elegante. Puntos clave:
   - **CSS separado**: `src/styles/Invitation.css` exclusivo para la invitación. `App.css` queda solo para Save the Date y globales. Nunca se tocan entre sí.

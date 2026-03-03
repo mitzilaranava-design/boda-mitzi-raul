@@ -17,8 +17,9 @@ import InvVenues    from "../components/invitation/InvVenues";
 import InvWeather   from "../components/invitation/InvWeather";
 import InvRegistry  from "../components/invitation/InvRegistry";
 import InvDresscode from "../components/invitation/InvDresscode";
-import InvNotes     from "../components/invitation/InvNotes";
-import InvFarewell  from "../components/invitation/InvFarewell";
+import InvNotes       from "../components/invitation/InvNotes";
+import InvEventPhotos from "../components/invitation/InvEventPhotos";
+import InvFarewell    from "../components/invitation/InvFarewell";
 
 export default function Invitation() {
   const { id } = useParams();
@@ -193,6 +194,7 @@ export default function Invitation() {
       <InvRegistry />
       <InvDresscode />
       <InvNotes />
+      <InvEventPhotos />
       <InvFarewell />
     </div>
   );

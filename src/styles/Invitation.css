@@ -1148,6 +1148,37 @@
   }
 }
 
+/* ── Event Photos section ── */
+.inv-event-photos__sub {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin: 0 0 28px;
+  line-height: 1.6;
+  max-width: 320px;
+}
+
+.inv-event-photos__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-gold);
+  text-decoration: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  min-height: 48px;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.inv-event-photos__btn:hover {
+  background: var(--color-gold-hover);
+  transform: scale(1.03);
+}
+
 /* ── Cover: pantallas pequeñas ── */
 @media (max-width: 480px) {
   .inv-cover__names-script {
