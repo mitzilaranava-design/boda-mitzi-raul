@@ -17,6 +17,33 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-03-02 — Galería: compresión de imagen en cliente + VITE_GALLERY_TOKEN en env
+- **Quién**: Claude
+- **Qué**: Compresión automática antes de subir a Supabase Storage usando Canvas API (sin librerías). Max 2048px en el lado mayor, 88% calidad JPEG → ~600 KB por foto, ~1 700 fotos en el plan gratuito de 1 GB. `VITE_GALLERY_TOKEN` agregado a `.env.example`. Opciones de almacenamiento alternativas (Cloudinary, Firebase) documentadas en `docs/CAMBIOS-Y-REQUISITOS.txt` para decisión futura.
+- **Archivos**: `src/api/gallery.js`, `.env.example`, `docs/CAMBIOS-Y-REQUISITOS.txt`
+
+### 2026-03-02 — Galería: acceso dual (sesión de invitación ó token QR propio)
+- **Quién**: Claude
+- **Qué**: Nuevo `GalleryTokenGate` para `/galeria`. Acepta dos vías: (1) el invitado ya tiene sesión `boda_access` (viene de su invitación, entra directo sin token extra); (2) link de QR externo con `?t=VITE_GALLERY_TOKEN` (token independiente, se guarda en `boda_gallery`). `TokenGate` queda sin cambios. `InvFarewell` solo pasa `?inv=id`, sin token.
+- **Archivos**: `src/components/GalleryTokenGate.jsx` (nuevo), `src/App.jsx`, `src/components/TokenGate.jsx` (revertido), `src/components/invitation/InvFarewell.jsx`
+
+### 2026-03-02 — Galería: ligar fotos al invitado o detectar QR externo
+- **Quién**: Claude
+- **Qué**: Al subir foto desde `/inv/:id → /galeria`, el `invitado_id` se guarda en `galeria_fotos`. Si viene de QR externo (solo token, sin id), `invitado_id` queda null. TODO de compresión de imagen documentado en `gallery.js`.
+- **Archivos**: `src/api/gallery.js`, `src/pages/Gallery.jsx`, `src/components/invitation/InvFarewell.jsx`, `supabase-schema.sql`
+
+### 2026-03-02 — Galería de fotos en tiempo real para invitados
+- **Quién**: Claude
+- **Qué**: Implementación completa de galería compartida. Los invitados pueden subir y ver fotos del evento en tiempo real desde `/galeria`. El Admin puede activar/desactivar la galería desde el panel. Incluye lightbox con navegación prev/next, botón de descarga, y subida desde cámara o galería del móvil. Con fallback mock cuando Supabase no está configurado.
+- **Archivos**:
+  - `src/api/gallery.js` (nuevo) — getGalleryConfig, toggleGallery, getFotos, subirFoto, subscribeFotos + mock
+  - `src/pages/Gallery.jsx` (nuevo) — página /galeria con grid, lightbox, upload modal, tiempo real
+  - `src/styles/Gallery.css` (nuevo) — estilos mobile-first, variables CSS del proyecto
+  - `src/App.jsx` — ruta `/galeria` con TokenGate
+  - `src/pages/Admin.jsx` — sección toggle galería on/off
+  - `src/components/invitation/InvFarewell.jsx` — botón "Galería del evento"
+  - `supabase-schema.sql` — tablas `galeria_fotos` + `galeria_config` + instrucciones Storage
+
 ### 2026-03-02 — Reestructura visual de la invitación: cover, pases y fecha
 - **Quién**: Claude
 - **Qué**: Rediseño completo de las primeras 3 secciones de `/inv/:id` basado en referencias visuales de otra invitación elegante. Puntos clave:

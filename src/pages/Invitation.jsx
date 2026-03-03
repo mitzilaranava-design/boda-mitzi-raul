@@ -33,7 +33,7 @@ export default function Invitation() {
   useEffect(() => {
     const ID_REGEX = /^[a-zA-Z0-9_-]{1,80}$/;
     if (!ID_REGEX.test(id)) {
-      setError("Invalid invitation");
+      setError("Invitación no válida");
       setLoading(false);
       return;
     }
@@ -41,9 +41,9 @@ export default function Invitation() {
       .then((data) => {
         setInvitado(data);
         if (data) setNumAsistentes(1);
-        setError(!data ? "Invalid invitation" : null);
+        setError(!data ? "Invitación no válida" : null);
       })
-      .catch(() => setError("Invalid invitation"))
+      .catch(() => setError("Invitación no válida"))
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -54,7 +54,7 @@ export default function Invitation() {
       await confirmarAsistencia(invitado.id, numAsistentes);
       setConfirmado(true);
     } catch {
-      setError("Could not confirm. Please try again.");
+      setError("No se pudo confirmar. Intenta de nuevo.");
     } finally {
       setConfirmando(false);
     }
@@ -67,7 +67,7 @@ export default function Invitation() {
       await marcarNoAsiste(invitado.id);
       setConfirmado(true);
     } catch {
-      setError("Could not register. Please try again.");
+      setError("No se pudo registrar. Intenta de nuevo.");
     } finally {
       setConfirmando(false);
     }
@@ -77,7 +77,7 @@ export default function Invitation() {
   if (loading) {
     return (
       <div className="app invitation-page">
-        <div className="loading">Loading your invitation...</div>
+        <div className="loading">Cargando tu invitación...</div>
       </div>
     );
   }
@@ -86,7 +86,7 @@ export default function Invitation() {
     return (
       <div className="app invitation-page">
         <div className="invitation-error">
-          <p>This link is not valid.</p>
+          <p>Este enlace no es válido.</p>
         </div>
       </div>
     );
@@ -101,10 +101,10 @@ export default function Invitation() {
         <motion.section className="invitation-card" {...fadeUp}>
           <div className="no-asiste-msg">
             <span className="no-asiste-msg__icon">💛</span>
-            <h2>Thank you for letting us know, {invitado.nombre}</h2>
+            <h2>Gracias por avisarnos, {invitado.nombre}</h2>
             <p>
-              We are sorry you cannot join us, but we truly appreciate you
-              letting us know. Wishing you all the best!
+              Lamentamos que no puedas acompañarnos, pero agradecemos mucho
+              que nos lo hayas hecho saber. ¡Te deseamos lo mejor!
             </p>
           </div>
         </motion.section>
@@ -121,19 +121,19 @@ export default function Invitation() {
         <motion.section className="invitation-card" {...fadeUp}>
           <div className="ya-confirmado-msg">
             <span className="ya-confirmado-msg__icon">💍</span>
-            <h2>Thank you, {invitado.nombre}!</h2>
+            <h2>¡Gracias, {invitado.nombre}!</h2>
             <p>
-              Your attendance at our wedding has been confirmed. It is an honor
-              to have you with us on this special day.
+              Tu asistencia a nuestra boda ha sido confirmada. Es un honor
+              tenerte con nosotros en este día tan especial.
             </p>
             <p className="ya-confirmado-msg__detalle">
-              Attending:{" "}
+              Asistirán:{" "}
               <strong>
-                {invitado.num_confirmados} guest
-                {invitado.num_confirmados !== 1 ? "s" : ""}
+                {invitado.num_confirmados}{" "}
+                {invitado.num_confirmados !== 1 ? "personas" : "persona"}
               </strong>
-              . We look forward to seeing you on{" "}
-              <strong>November 21, 2026</strong>!
+              . ¡Con ansias de verte el{" "}
+              <strong>21 de noviembre de 2026</strong>!
             </p>
           </div>
         </motion.section>
@@ -150,15 +150,14 @@ export default function Invitation() {
         <motion.section className="invitation-card" {...fadeUp}>
           <div className="auto-confirmado-msg">
             <span className="auto-confirmado-msg__icon">🕊️</span>
-            <h2>Hello, {invitado.nombre}</h2>
+            <h2>Hola, {invitado.nombre}</h2>
             <p>
-              We are sorry, the RSVP deadline has passed and your spot is
-              pending review by the bride and groom.
+              El plazo para confirmar asistencia ha concluido y tu lugar
+              está pendiente de revisión por los novios.
             </p>
             <p className="auto-confirmado-msg__contacto">
-              If you believe this is an error or would like to clarify your
-              attendance, please contact Mitzi and Raúl directly. We would love
-              to hear from you. 💛
+              Si crees que hay un error o deseas aclarar tu asistencia,
+              por favor contáctanos directamente. ¡Nos encantaría saber de ti! 💛
             </p>
           </div>
         </motion.section>

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { getAllInvitados, marcarInvitacionEnviada, marcarRecordatorio, autoConfirmar, marcarSaveTheDate } from "../api/invitations";
+import { getGalleryConfig, toggleGallery } from "../api/gallery";
 
 const ADMIN_KEY = "boda_admin";
 const VALID_ADMIN_TOKEN = import.meta.env.VITE_ADMIN_TOKEN;
@@ -229,6 +230,8 @@ export default function Admin() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pagina, setPagina] = useState(1);
+  const [galeriaActiva, setGaleriaActiva] = useState(false);
+  const [galeriaLoading, setGaleriaLoading] = useState(false);
 
   useEffect(() => {
     const tokenUrl = searchParams.get("t");
@@ -258,6 +261,21 @@ export default function Admin() {
   useEffect(() => {
     if (authorized) cargar();
   }, [authorized, cargar]);
+
+  useEffect(() => {
+    if (!authorized) return;
+    getGalleryConfig().then((cfg) => setGaleriaActiva(cfg.activa));
+  }, [authorized]);
+
+  const handleToggleGaleria = async () => {
+    setGaleriaLoading(true);
+    try {
+      await toggleGallery(!galeriaActiva);
+      setGaleriaActiva((prev) => !prev);
+    } finally {
+      setGaleriaLoading(false);
+    }
+  };
 
   const handleRecordatorio = (id, esInvitacion) => {
     setInvitados((prev) =>
@@ -302,7 +320,7 @@ export default function Admin() {
     );
   }
 
-  const POR_PAGINA = 10;
+  const POR_PAGINA = 7;
   const totalPaginas = Math.ceil(invitados.length / POR_PAGINA);
   const invitadosPagina = invitados.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
 
@@ -410,6 +428,44 @@ export default function Admin() {
             </button>
           </div>
         )}
+
+        {/* Galería */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          style={{
+            background: "#fff",
+            border: "1px solid #e8dcc8",
+            borderRadius: 12,
+            padding: "20px 24px",
+            marginTop: 28,
+          }}
+        >
+          <p style={{ margin: "0 0 4px", fontFamily: "'Playfair Display', serif", fontSize: 17, color: "#222", fontWeight: 600 }}>
+            Galería de fotos
+          </p>
+          <p style={{ margin: "0 0 16px", fontFamily: "Poppins, sans-serif", fontSize: 13, color: "#888" }}>
+            Los invitados con el link pueden subir y ver fotos en tiempo real.
+          </p>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+            <span style={{
+              fontFamily: "Poppins, sans-serif",
+              fontSize: 13,
+              color: galeriaActiva ? "#16a34a" : "#9ca3af",
+              fontWeight: 500,
+            }}>
+              Estado: {galeriaActiva ? "Activa ✓" : "Desactivada"}
+            </span>
+            <button
+              onClick={handleToggleGaleria}
+              disabled={galeriaLoading}
+              style={btnStyle(galeriaLoading, galeriaActiva ? "#6b7280" : "#b49b6b")}
+            >
+              {galeriaLoading ? "..." : galeriaActiva ? "Desactivar galería" : "Activar galería"}
+            </button>
+          </div>
+        </motion.div>
 
         <p style={{ textAlign: "center", fontFamily: "Poppins, sans-serif", fontSize: 11, color: "#ccc", marginTop: 32 }}>
           Intervalo de recordatorio: {import.meta.env.VITE_REMINDER_INTERVAL_MINUTES ?? 10080} min

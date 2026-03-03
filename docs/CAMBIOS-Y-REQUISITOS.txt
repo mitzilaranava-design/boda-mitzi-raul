@@ -118,4 +118,20 @@ IDEAS OTRAS (agregar aquí)
 - PENDIENTE: Ejecutar RLS en Supabase Dashboard → SQL Editor.
   Ver instrucciones en src/api/invitations.js (comentario al inicio del archivo).
 
+- Galería de fotos en tiempo real (/galeria). Invitados suben fotos desde cámara o
+  galería del móvil. Grid en tiempo real vía Supabase Realtime. Lightbox con prev/next
+  y descarga. Admin activa/desactiva desde el panel. Fotos ligadas al invitado si viene
+  de /inv/:id, anónimas si viene de QR externo. Token propio: VITE_GALLERY_TOKEN.
+  Compresión en cliente: max 2048px / 88% calidad JPEG (~600 KB por foto).
+  ESTADO: Hecho (2026-03-02). Requiere: bucket "gallery" en Supabase Storage (público),
+  tablas galeria_fotos + galeria_config (ver supabase-schema.sql), VITE_GALLERY_TOKEN en .env.
+
+- PENDIENTE — Almacenamiento de fotos: opciones evaluadas (todas gratuitas y permanentes):
+    · Supabase Storage (ACTUAL): 1 GB / 2 GB bandwidth. Con compresión 2048px/88%
+      alcanza ~1 700 fotos. Cero configuración extra.
+    · Cloudinary: 25 GB / 25 GB bandwidth. Unsigned uploads, CDN, redimensión por URL.
+      Solo cambia subirFoto() en gallery.js. Requiere cuenta + upload preset.
+    · Firebase Storage: 5 GB / 1 GB diario descarga. Requiere agregar SDK de Firebase.
+  Decisión pendiente si el espacio de Supabase resulta insuficiente.
+
 ==============================================================================
