@@ -26,12 +26,11 @@ export const WEDDING = {
 
   parents: {
     bride: {
-      mother: "María Elena López",
-      father: "José Antonio González",
+      mother: "Rosa Nava Loeza",
+      father: "Alejandro Lara Segura",
     },
     groom: {
-      mother: "Rosa María Hernández",
-      father: "Roberto Gutiérrez",
+      mother: "Graciela Ramírez Casillas"
     },
   },
 

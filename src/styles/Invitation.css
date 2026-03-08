@@ -690,34 +690,55 @@
 
 /* ── 3. The Date ── */
 .inv-date-section {
-  background: var(--color-cream) !important;
+  background: var(--color-gold) !important;
+  padding: 0 28px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .inv-date__content {
+  width: 100%;
+  max-width: 380px;
+  background-image: url("/assets/texture.jpg");
+  background-size: cover;
+  background-position: center;
+  background-color: white;
+  padding: 32px 24px 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
   text-align: center;
-  width: 100%;
-  max-width: 420px;
+  box-shadow: 0 -6px 32px rgba(0,0,0,0.2);
 }
 
 .inv-date__script {
   font-family: 'Great Vibes', cursive;
-  font-size: 3.6rem;
+  font-size: clamp(3.4rem, 12vw, 5rem);
   font-weight: 400;
   color: var(--color-gold);
   line-height: 1.1;
   margin: 0;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+}
+
+.inv-date__divider {
+  width: 48px;
+  height: 1px;
+  background: var(--color-gold);
+  margin: 0 auto;
+  opacity: 0.7;
 }
 
 .inv-date__str {
-  font-size: 0.75rem;
-  letter-spacing: 3px;
+  font-family: var(--font-serif);
+  font-size: clamp(0.9rem, 3.5vw, 1.05rem);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 5px;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--color-text);
   margin: 0;
 }
 
@@ -752,60 +773,95 @@
 }
 
 .inv-date__cal-btn {
-  display: inline-block;
-  padding: 12px 28px;
-  border: 1px solid var(--color-text-muted);
-  border-radius: 6px;
+  width: 100%;
+  padding: 14px 20px;
+  border: 1px solid var(--color-text);
+  border-radius: 0;
+  background: none;
   font-family: var(--font-sans), sans-serif;
-  font-size: 0.78rem;
-  letter-spacing: 1px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
   color: var(--color-text);
-  text-decoration: none;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  cursor: pointer;
+  min-height: 48px;
+  transition: background 0.2s, color 0.2s;
 }
 
 .inv-date__cal-btn:hover {
   background: var(--color-text);
-  border-color: var(--color-text);
   color: #fff;
 }
 
 /* ── 4. Families ── */
+.inv-families {
+  background: var(--color-gold) !important;
+  padding: 0 28px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.inv-families .inv-section__inner {
+  width: 100%;
+  max-width: 380px;
+  background-image: url("/assets/texture.jpg");
+  background-size: cover;
+  background-position: center;
+  background-color: white;
+  padding: 28px 24px;
+  text-align: center;
+  box-shadow: 0 -6px 32px rgba(0,0,0,0.2);
+}
+
+.inv-families h2 {
+  font-style: italic;
+  margin-bottom: 24px;
+}
+
 .inv-families__grid {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-top: 24px;
+  gap: 0;
 }
 
 .inv-family-card {
-  background: white;
-  border: 1px solid var(--color-cream-dark);
-  border-radius: 14px;
-  padding: 22px 20px;
+  background: transparent;
+  border: none;
+  padding: 20px 0;
   text-align: center;
 }
 
+.inv-family-card + .inv-family-card {
+  border-top: 1px solid rgba(180, 155, 107, 0.35);
+}
+
 .inv-family-card__role {
-  font-size: 0.65rem;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.62rem;
   letter-spacing: 2.5px;
   text-transform: uppercase;
   color: var(--color-gold);
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .inv-family-card__name {
   font-family: var(--font-serif), serif;
-  font-size: 1rem;
+  font-size: 1.05rem;
+  font-style: italic;
   color: var(--color-text);
   margin: 0;
+  line-height: 1.4;
 }
 
 .inv-family-card__amp {
   display: block;
-  font-size: 0.8rem;
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.6rem;
   color: var(--color-gold);
-  margin: 6px 0;
+  line-height: 1;
+  margin: 8px 0;
 }
 
 /* ── 5. Sponsors ── */

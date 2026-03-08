@@ -19,6 +19,21 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-03-04 17:00 — InvDate + InvFamilies: diseño consistente con InvPasses (fondo dorado + tarjeta textura)
+- **Quién**: Claude
+- **Qué**: Ambas secciones ahora siguen el patrón visual de InvPasses: fondo de sección en dorado sólido, recuadro centrado con `texture.jpg` como fondo (max-width 380px, box-shadow). En InvDate el botón "Agregar a Calendario" adopta el estilo `passes-btn` (borde oscuro, uppercase, sin border-radius, hover oscuro). En InvFamilies el `inv-section__inner` se convierte en la tarjeta con textura; las tarjetas de familia son transparentes sin borde propio, separadas por una línea dorada sutil.
+- **Archivos**: `src/styles/Invitation.css`
+
+### 2026-03-04 16:30 — InvFamilies: texto en español + tipografía elegante
+- **Quién**: Claude
+- **Qué**: Texto visible al invitado traducido al español: "Con la Bendición de", "Nuestras Familias", "Padres de la Novia", "Padres del Novio". Tipografía mejorada: h2 de sección en Playfair italic, nombres de padres en Playfair italic 1.05rem, `&` entre nombres en Great Vibes dorado (1.6rem). Borde de tarjeta con tinte dorado sutil.
+- **Archivos**: `src/components/invitation/InvFamilies.jsx`, `src/styles/Invitation.css`
+
+### 2026-03-04 16:00 — InvDate: tipografía elegante + botón Agregar a Calendario siempre visible
+- **Quién**: Claude
+- **Qué**: "¡Nos Casamos!" mantiene Great Vibes cursiva con `clamp` responsivo (3.4–5rem). Separador dorado delgado entre título y fecha. Fecha "21 · Noviembre · 2026" ahora usa Playfair Display, letter-spacing 5px, uppercase, color oscuro — no cursiva. Botón "Agregar a Calendario" siempre visible usando `openGoogleCalendar()` del utils (ya no depende de `googleCalendarUrl` en wedding.js). Botón rediseñado: outline dorado sin border-radius, hover fondo dorado.
+- **Archivos**: `src/components/invitation/InvDate.jsx`, `src/styles/Invitation.css`
+
 ### 2026-03-02 22:45 — Admin: filtro de búsqueda por nombre o celular en lista de invitados
 - **Quién**: Claude
 - **Qué**: Input de búsqueda en el panel Admin que filtra la lista de invitados en tiempo real por nombre o número de celular. Muestra contador de resultados. Botón ✕ para limpiar. Paginación se aplica sobre los resultados filtrados y se resetea a página 1 al escribir.
