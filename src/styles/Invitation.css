@@ -316,9 +316,7 @@
   background: var(--color-cream);
 }
 
-.inv-section:nth-child(even) {
-  background: var(--color-bg-info);
-}
+/* Section backgrounds set explicitly per section (see each section below) */
 
 .inv-section__inner {
   width: 100%;
@@ -690,7 +688,7 @@
 
 /* ── 3. The Date ── */
 .inv-date-section {
-  background: var(--color-gold) !important;
+  background: var(--color-cream) !important;
   padding: 0 28px;
   justify-content: center;
   align-items: center;
@@ -865,34 +863,134 @@
 }
 
 /* ── 5. Sponsors ── */
-.inv-sponsors__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 24px;
+.inv-sponsors {
+  background: var(--color-cream) !important;
+  padding: 0 28px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.inv-sponsor-item {
-  background: white;
-  border: 1px solid var(--color-cream-dark);
-  border-radius: 12px;
-  padding: 14px 10px;
+.inv-sponsors__inner {
+  width: 100%;
+  max-width: 380px;
+  background-image: url("/assets/texture.jpg");
+  background-size: cover;
+  background-position: center;
+  background-color: white;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.08);
+  overflow: hidden;
+  padding: 0;
   text-align: center;
+  border: 1px solid var(--color-cream-dark);
 }
 
-.inv-sponsor-item__category {
-  font-size: 0.62rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+.inv-sponsors__photo {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+}
+
+.inv-sponsors__body {
+  padding: 28px 24px 32px;
+}
+
+.inv-sponsors__heading {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(2.2rem, 9vw, 2.8rem);
+  font-weight: 400;
+  color: var(--color-text);
+  margin: 0 0 16px;
+  font-style: normal;
+}
+
+.inv-sponsors__icon {
+  display: block;
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 12px;
   color: var(--color-gold);
-  margin-bottom: 6px;
 }
 
-.inv-sponsor-item__names {
+.inv-sponsors__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Carousel */
+.inv-sponsors__carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 0 20px;
+}
+
+.inv-sponsors__arrow {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--color-gold);
+  cursor: pointer;
+  padding: 0 6px;
+  line-height: 1;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.inv-sponsors__arrow:hover {
+  opacity: 0.7;
+}
+
+.inv-sponsors__slide {
+  flex: 1;
+  min-width: 0;
+}
+
+.inv-sponsors__category {
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin: 0 0 10px;
+}
+
+.inv-sponsors__name {
   font-family: var(--font-serif), serif;
-  font-size: 0.88rem;
+  font-size: 0.95rem;
+  font-style: italic;
   color: var(--color-text);
   margin: 0;
+  line-height: 1.5;
+}
+
+/* Dots */
+.inv-sponsors__dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.inv-sponsors__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-cream-dark);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.2s;
+  min-width: unset;
+  min-height: unset;
+}
+
+.inv-sponsors__dot--active {
+  background: var(--color-gold);
 }
 
 /* ── 6. Schedule ── */
@@ -1235,7 +1333,60 @@
   transform: scale(1.03);
 }
 
-/* ── Cover: pantallas pequeñas ── */
+/* ── Dark sections (Schedule · Weather · Dresscode · EventPhotos) ── */
+.inv-schedule,
+.inv-weather,
+.inv-dresscode,
+.inv-event-photos {
+  background: #1a1410 !important;
+}
+
+/* h2 white on dark */
+.inv-schedule h2,
+.inv-weather h2,
+.inv-dresscode h2,
+.inv-event-photos h2 {
+  color: var(--color-cream);
+}
+
+/* Schedule — timeline on dark */
+.inv-schedule .inv-timeline__event {
+  color: var(--color-cream);
+}
+
+.inv-schedule .inv-timeline__item {
+  border-bottom-color: rgba(255,255,255,0.1);
+}
+
+/* Weather — text on dark */
+.inv-weather .inv-weather__note,
+.inv-weather .inv-weather__day-date,
+.inv-weather .inv-weather__temp,
+.inv-weather .inv-weather__disclaimer {
+  color: rgba(249,245,239,0.55);
+}
+
+.inv-weather .inv-weather__day {
+  border-color: rgba(255,255,255,0.12);
+  background: transparent;
+}
+
+.inv-weather .inv-weather__day--wedding {
+  border-color: var(--color-gold);
+  background: rgba(180,155,107,0.15);
+}
+
+/* Dresscode — card floats on dark bg */
+.inv-dresscode .inv-dresscode__card {
+  background: rgba(255,255,255,0.95);
+}
+
+/* EventPhotos — sub text on dark */
+.inv-event-photos .inv-event-photos__sub {
+  color: rgba(249,245,239,0.65);
+}
+
+/* Cover: pantallas pequeñas ── */
 @media (max-width: 480px) {
   .inv-cover__names-script {
     font-size: 3rem;
@@ -1251,7 +1402,7 @@
     font-size: 1.5rem;
   }
 
-  .inv-sponsors__grid {
-    grid-template-columns: 1fr;
+  .inv-sponsors__photo {
+    height: 180px;
   }
 }

@@ -35,12 +35,11 @@ export const WEDDING = {
   },
 
   sponsors: [
-    { category: "Unity Coins",     names: "Name & Name" },
-    { category: "Unity Cord",      names: "Name & Name" },
-    { category: "Bouquet",         names: "Name & Name" },
-    { category: "Wedding Candles", names: "Name & Name" },
-    { category: "Wedding Rings",   names: "Name & Name" },
-    { category: "Wedding Mass",    names: "Name & Name" },
+    { category: "Velación",  padrino: "Evi Alexander Lara",  madrina: "Sheila Villalobos" },
+    { category: "Lazo",      padrino: "Aldo Vargas",  madrina: "Zaudizaret Lopez"  },
+    { category: "Arras",     padrino: "Juan Miguel Sotelo",  madrina: "Elizabeth Lara"  },
+    { category: "Ramo",      madrina: "Naydelyn Yaretzy Sotelo"},
+    { category: "Anillos",   padrino: "Nombre Padrino",  madrina: "Denisse Vargas"  }
   ],
 
   schedule: [
