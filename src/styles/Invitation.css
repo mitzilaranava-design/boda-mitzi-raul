@@ -994,49 +994,112 @@
 }
 
 /* ── 6. Schedule ── */
-.inv-timeline {
-  list-style: none;
-  margin: 24px auto 0;
+
+/* Message above timeline */
+.inv-schedule__msg {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--color-cream);
+  opacity: 0.85;
+  line-height: 1.65;
+  text-align: center;
+  margin-bottom: 28px;
+  padding: 0 8px;
+}
+
+/* Vertical timeline container */
+.inv-vtimeline {
+  position: relative;
   width: 100%;
-  max-width: 340px;
+  max-width: 300px;
+  margin: 8px auto 0;
+}
+
+/* Center vertical line */
+.inv-vtimeline__line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(180, 155, 107, 0.35);
+  pointer-events: none;
+}
+
+/* Each row */
+.inv-vtimeline__row {
+  display: grid;
+  grid-template-columns: 1fr 52px 1fr;
+  align-items: center;
+  padding: 18px 0;
+}
+
+/* Icon cell — sits on the line */
+.inv-vtimeline__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  color: var(--color-gold);
+  background: #1a1410;   /* hides the line behind icon */
+  z-index: 1;
+  position: relative;
+}
+
+.inv-vtimeline__icon svg {
+  width: 38px;
+  height: 38px;
+}
+
+/* Side containers */
+.inv-vtimeline__side {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+}
+
+.inv-vtimeline__side--left  { justify-content: flex-end; padding-right: 12px; }
+.inv-vtimeline__side--right { justify-content: flex-start; padding-left: 12px; }
+
+/* Text block */
+.inv-vtimeline__content {
   display: flex;
   flex-direction: column;
+  gap: 3px;
 }
 
-.inv-timeline__item {
-  display: grid;
-  grid-template-columns: 72px 14px 1fr;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--color-cream-dark);
+.inv-vtimeline__content--left  { align-items: flex-end;   text-align: right; }
+.inv-vtimeline__content--right { align-items: flex-start; text-align: left;  }
+
+.inv-vtimeline__event {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--color-cream);
+  line-height: 1.2;
 }
 
-.inv-timeline__item:last-child {
-  border-bottom: none;
-}
-
-.inv-timeline__time {
-  font-size: 0.75rem;
+.inv-vtimeline__time {
+  font-size: 0.7rem;
   color: var(--color-gold);
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-align: right;
+  letter-spacing: 0.6px;
+  font-weight: 500;
 }
 
-.inv-timeline__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+/* Footer gold bar */
+.inv-schedule__footer {
+  margin-top: 32px;
   background: var(--color-gold);
-  justify-self: center;
-  flex-shrink: 0;
-}
-
-.inv-timeline__event {
-  font-size: 0.88rem;
-  color: var(--color-text);
-  text-align: left;
+  color: #1a1410;
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  letter-spacing: 5px;
+  text-align: center;
+  padding: 13px 0;
+  width: 100%;
+  border-radius: 3px;
 }
 
 /* ── 7. Venues ── */
@@ -1347,15 +1410,6 @@
 .inv-dresscode h2,
 .inv-event-photos h2 {
   color: var(--color-cream);
-}
-
-/* Schedule — timeline on dark */
-.inv-schedule .inv-timeline__event {
-  color: var(--color-cream);
-}
-
-.inv-schedule .inv-timeline__item {
-  border-bottom-color: rgba(255,255,255,0.1);
 }
 
 /* Weather — text on dark */
