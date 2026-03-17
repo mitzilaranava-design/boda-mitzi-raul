@@ -13,7 +13,6 @@ export default function InvFamilies() {
           <div className="inv-family-card">
             <p className="inv-family-card__role">Padres de la Novia</p>
             <p className="inv-family-card__name">{bride.mother}</p>
-            <span className="inv-family-card__amp">&amp;</span>
             <p className="inv-family-card__name">{bride.father}</p>
           </div>
           <div className="inv-family-card">

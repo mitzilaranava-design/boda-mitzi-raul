@@ -19,6 +19,41 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-03-16 23:27 — Menú de secciones: botón ✕ para cerrar el panel
+- **Quién**: Claude
+- **Qué**: El panel lateral de secciones ahora tiene un encabezado con título "Secciones" a la izquierda y botón ✕ circular a la derecha. Se puede cerrar tanto con ese botón como tocando el overlay exterior. Estilos: círculo crema que pasa a dorado en hover.
+- **Archivos**: `src/pages/Invitation.jsx`, `src/styles/Invitation.css`
+
+### 2026-03-16 23:27 — InvWeather: pronóstico real con Open-Meteo
+- **Quién**: Claude
+- **Qué**: Componente refactorizado con fetch a Open-Meteo (sin API key, gratis). Coordenadas de Cuernavaca (18.9261°N, 99.2319°W). Si la boda está a más de 16 días muestra placeholder "-- °C" sin llamada al API; al acercarse la semana carga temperatura máxima diaria y código de clima (emoji ☀️⛅🌦️🌧️⛈️). Días correctos: Mar 17 → Lun 23 nov, Sáb 21 destacado. Estados: loading / ok / soon / error.
+- **Archivos**: `src/components/invitation/InvWeather.jsx`
+
+### 2026-03-16 21:12 — Adaptación completa de secciones restantes de la invitación
+- **Quién**: Claude
+- **Qué**: Todas las secciones pendientes adaptadas con colores intercalados, recuadros interiores y texto en español. InvRegistry: fondo dorado + tarjeta texture.jpg, etiqueta/título traducidos. InvDresscode: etiqueta/título traducidos ("Luce Increíble" / "Código de Vestimenta"). InvNotes: fondo cream + tarjeta texture.jpg, etiqueta/título traducidos ("Toma en Cuenta" / "Recuerda..."). InvEventPhotos: recuadro interior con borde dorado sutil (igual que Schedule/Weather). InvFarewell: fondo dorado + tarjeta texture.jpg, footer traducido. `wedding.js`: traducidos `date`, `dresscode` (title/note/avoid), todos los `notes[]` y `farewell`.
+- **Archivos**: `src/components/invitation/InvRegistry.jsx`, `src/components/invitation/InvDresscode.jsx`, `src/components/invitation/InvNotes.jsx`, `src/components/invitation/InvEventPhotos.jsx`, `src/components/invitation/InvFarewell.jsx`, `src/styles/Invitation.css`, `src/data/wedding.js`
+
+### 2026-03-16 21:02 — Música: botón ♪ movido a esquina inferior derecha en la invitación
+- **Quién**: Claude
+- **Qué**: `MusicEqualizer` sacado del `inv-floating-nav` y renderizado independiente. Override CSS `.inv .music-equalizer-wrap { top: auto; bottom: 24px; }` lo posiciona abajo a la derecha solo en la invitación. En Save the Date sigue en la esquina superior derecha sin cambios.
+- **Archivos**: `src/pages/Invitation.jsx`, `src/styles/Invitation.css`
+
+### 2026-03-16 21:00 — InvSchedule: itinerario compacto sin scroll
+- **Quién**: Claude
+- **Qué**: Reducción de tamaños para que el itinerario quepa en pantalla sin scroll. Row padding 18px→7px, ícono 52px→40px, SVG 38px→28px, evento 1rem→0.88rem, hora 0.7rem→0.62rem, h2 1.8rem→1.4rem, mensaje margin 28px→8px, footer margin 32px→12px. Total estimado de ~670px→~400px. También: `AUDIO_SRC` en `wedding.js` habilitado con `/music/save-the-date.mp3` para mostrar el botón ♪ en la invitación. InvVenues dividido en dos secciones independientes (iglesia/salón) con variantes de color `gold`/`cream`. InvSchedule envuelto en recuadro interior con borde dorado sutil.
+- **Archivos**: `src/styles/Invitation.css`, `src/data/wedding.js`, `src/components/invitation/InvVenues.jsx`, `src/components/invitation/InvSchedule.jsx`, `src/pages/Invitation.jsx`
+
+### 2026-03-16 20:17 — InvVenues: fondo cream, texto en español, imagen del lugar
+- **Quién**: Claude
+- **Qué**: InvVenues ahora sigue el patrón de colores intercalados: fondo `var(--color-cream)` (igual que InvDate e InvSponsors). Texto del encabezado y etiquetas traducidos al español ("Dónde Encontrarnos", "Ceremonia religiosa", "Recepción", "Ver en Maps"). Cada tarjeta de lugar muestra: etiqueta → nombre → dirección → **imagen del lugar** (si se configura `imageUrl` en `wedding.js`) → enlace a Maps. Cards con `border-radius`, `overflow: hidden` y `box-shadow` para contener la imagen limpiamente. Campo `imageUrl: null` agregado a `church` y `venue` en `wedding.js` con comentario de placeholder.
+- **Archivos**: `src/components/invitation/InvVenues.jsx`, `src/styles/Invitation.css`, `src/data/wedding.js`
+
+### 2026-03-16 20:17 — Botón home reemplazado por menú de navegación de secciones
+- **Quién**: Claude
+- **Qué**: El botón home (☰) de la invitación ya no navega a `/`. Ahora abre un panel lateral deslizante (desde la derecha) con la lista de todas las secciones de la invitación (Portada, Confirmación, Fecha, Familias, Padrinos, Programa, Lugar, Clima, Mesa de Regalos, Vestimenta, Notas, Galería, Hasta pronto). Al tocar una sección hace scroll suave hacia ella. El botón cambia a ✕ cuando el panel está abierto. El botón de música (♪) ahora aparece debajo del botón de menú, agrupados en un `.inv-floating-nav` fijo en la esquina superior derecha.
+- **Archivos**: `src/components/invitation/InvCover.jsx`, `src/pages/Invitation.jsx`, `src/styles/Invitation.css`
+
 ### 2026-03-04 17:00 — InvDate + InvFamilies: diseño consistente con InvPasses (fondo dorado + tarjeta textura)
 - **Quién**: Claude
 - **Qué**: Ambas secciones ahora siguen el patrón visual de InvPasses: fondo de sección en dorado sólido, recuadro centrado con `texture.jpg` como fondo (max-width 380px, box-shadow). En InvDate el botón "Agregar a Calendario" adopta el estilo `passes-btn` (borde oscuro, uppercase, sin border-radius, hover oscuro). En InvFamilies el `inv-section__inner` se convierte en la tarjeta con textura; las tarjetas de familia son transparentes sin borde propio, separadas por una línea dorada sutil.

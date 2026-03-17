@@ -110,8 +110,8 @@ export default function InvSponsors() {
             <div className="inv-sponsors__slide">
               <span className="inv-sponsors__icon">{icon}</span>
               <p className="inv-sponsors__category">{current.category}</p>
-              {current.padrino && <p className="inv-sponsors__name">{current.padrino}</p>}
               {current.madrina && <p className="inv-sponsors__name">{current.madrina}</p>}
+              {current.padrino && <p className="inv-sponsors__name">{current.padrino}</p>}
             </div>
 
             <button

@@ -12,14 +12,16 @@ export default function InvEventPhotos() {
   return (
     <motion.section className="inv-section inv-event-photos" {...fadeUp}>
       <div className="inv-section__inner inv-section__inner--center">
-        <p className="inv-section__label">Comparte el momento</p>
-        <h2>Fotos del evento</h2>
-        <p className="inv-event-photos__sub">
-          Sube tus fotos y revive los mejores momentos de nuestra boda junto a nosotros.
-        </p>
-        <a href={galleryHref} className="inv-event-photos__btn">
-          📸 Ver galería del evento
-        </a>
+        <div className="inv-event-photos__card">
+          <p className="inv-section__label">Comparte el momento</p>
+          <h2>Fotos del evento</h2>
+          <p className="inv-event-photos__sub">
+            Sube tus fotos y revive los mejores momentos de nuestra boda junto a nosotros.
+          </p>
+          <a href={galleryHref} className="inv-event-photos__btn">
+            📸 Ver galería del evento
+          </a>
+        </div>
       </div>
     </motion.section>
   );

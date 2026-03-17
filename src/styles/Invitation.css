@@ -393,28 +393,139 @@
   pointer-events: none;
 }
 
-/* Botón home — círculo top-right */
-.inv-cover__home-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 10;
+/* ── Navegación flotante (menú + música) ── */
+.inv-floating-nav {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Música: esquina inferior derecha en la invitación */
+.inv .music-equalizer-wrap {
+  top: auto;
+  bottom: 24px;
+}
+
+/* Botón toggle del menú */
+.inv-nav-toggle {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.80);
+  background: rgba(255, 255, 255, 0.90);
   color: var(--color-text);
+  border: none;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
   transition: background 0.2s, transform 0.2s;
-  text-decoration: none;
+  touch-action: manipulation;
 }
 
-.inv-cover__home-btn:hover {
+.inv-nav-toggle:hover {
   background: rgba(255, 255, 255, 1);
   transform: scale(1.08);
+}
+
+.inv-nav-toggle--open {
+  background: var(--color-gold);
+  color: white;
+}
+
+/* Overlay semitransparente */
+.inv-nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 300;
+}
+
+/* Panel lateral deslizante */
+.inv-nav-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 220px;
+  background: #fff;
+  z-index: 400;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 0 24px;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.14);
+  overflow-y: auto;
+}
+
+.inv-nav-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px 16px;
+  border-bottom: 1px solid #f0e8d6;
+}
+
+.inv-nav-panel__title {
+  font-family: var(--font-serif), serif;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin: 0;
+}
+
+.inv-nav-panel__close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f5ede0;
+  border: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+  touch-action: manipulation;
+  flex-shrink: 0;
+}
+
+.inv-nav-panel__close:hover {
+  background: var(--color-gold);
+  color: white;
+}
+
+.inv-nav-panel__list {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+}
+
+.inv-nav-panel__item {
+  display: block;
+  width: 100%;
+  padding: 13px 24px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.92rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  touch-action: manipulation;
+}
+
+.inv-nav-panel__item:hover,
+.inv-nav-panel__item:active {
+  background: #fdf6ec;
+  color: var(--color-gold);
 }
 
 /* Contenedor de nombres — ocupa el top 50vh y centra verticalmente */
@@ -995,16 +1106,31 @@
 
 /* ── 6. Schedule ── */
 
+/* Recuadro interior contenedor del timeline */
+.inv-schedule__card {
+  width: 100%;
+  max-width: 360px;
+  border: 1px solid rgba(180, 155, 107, 0.22);
+  border-radius: 6px;
+  padding: 16px 16px 4px;
+}
+
+/* h2 compacto dentro del schedule */
+.inv-schedule h2 {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
 /* Message above timeline */
 .inv-schedule__msg {
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   color: var(--color-cream);
   opacity: 0.85;
-  line-height: 1.65;
+  line-height: 1.5;
   text-align: center;
-  margin-bottom: 28px;
-  padding: 0 8px;
+  margin-bottom: 8px;
+  padding: 0;
 }
 
 /* Vertical timeline container */
@@ -1012,7 +1138,7 @@
   position: relative;
   width: 100%;
   max-width: 300px;
-  margin: 8px auto 0;
+  margin: 4px auto 0;
 }
 
 /* Center vertical line */
@@ -1027,47 +1153,47 @@
   pointer-events: none;
 }
 
-/* Each row */
+/* Each row — padding reducido */
 .inv-vtimeline__row {
   display: grid;
-  grid-template-columns: 1fr 52px 1fr;
+  grid-template-columns: 1fr 40px 1fr;
   align-items: center;
-  padding: 18px 0;
+  padding: 7px 0;
 }
 
-/* Icon cell — sits on the line */
+/* Icon cell */
 .inv-vtimeline__icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
+  width: 40px;
+  height: 40px;
   color: var(--color-gold);
-  background: #1a1410;   /* hides the line behind icon */
+  background: #1a1410;
   z-index: 1;
   position: relative;
 }
 
 .inv-vtimeline__icon svg {
-  width: 38px;
-  height: 38px;
+  width: 28px;
+  height: 28px;
 }
 
 /* Side containers */
 .inv-vtimeline__side {
-  min-height: 52px;
+  min-height: 40px;
   display: flex;
   align-items: center;
 }
 
-.inv-vtimeline__side--left  { justify-content: flex-end; padding-right: 12px; }
-.inv-vtimeline__side--right { justify-content: flex-start; padding-left: 12px; }
+.inv-vtimeline__side--left  { justify-content: flex-end; padding-right: 10px; }
+.inv-vtimeline__side--right { justify-content: flex-start; padding-left: 10px; }
 
 /* Text block */
 .inv-vtimeline__content {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
 
 .inv-vtimeline__content--left  { align-items: flex-end;   text-align: right; }
@@ -1076,13 +1202,13 @@
 .inv-vtimeline__event {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1rem;
+  font-size: 0.88rem;
   color: var(--color-cream);
   line-height: 1.2;
 }
 
 .inv-vtimeline__time {
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   color: var(--color-gold);
   letter-spacing: 0.6px;
   font-weight: 500;
@@ -1090,32 +1216,63 @@
 
 /* Footer gold bar */
 .inv-schedule__footer {
-  margin-top: 32px;
+  margin-top: 12px;
   background: var(--color-gold);
   color: #1a1410;
   font-family: var(--font-serif);
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   letter-spacing: 5px;
   text-align: center;
-  padding: 13px 0;
+  padding: 8px 0;
   width: 100%;
   border-radius: 3px;
 }
 
 /* ── 7. Venues ── */
-.inv-venues__grid {
-  display: flex;
+.inv-venues {
+  padding: 0 28px;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
-  gap: 16px;
-  margin-top: 24px;
 }
 
+/* Variant: fondo dorado (iglesia) */
+.inv-venues--gold {
+  background: var(--color-gold) !important;
+}
+
+.inv-venues--gold h2,
+.inv-venues--gold .inv-section__label {
+  color: white;
+}
+
+/* Variant: fondo cream (salón) */
+.inv-venues--cream {
+  background: var(--color-cream) !important;
+}
+
+.inv-venues--cream h2 {
+  color: var(--color-text);
+}
+
+.inv-venues--cream .inv-section__label {
+  color: var(--color-gold);
+}
+
+/* Recuadro interior — mismo estilo que InvSponsors */
 .inv-venue-card {
-  background: white;
+  background-image: url("/assets/texture.jpg");
+  background-size: cover;
+  background-position: center;
+  background-color: white;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18), 0 1px 4px rgba(0, 0, 0, 0.10);
+  overflow: hidden;
   border: 1px solid var(--color-cream-dark);
-  border-radius: 14px;
-  padding: 22px 20px;
   text-align: center;
+}
+
+.inv-venue-card__body {
+  padding: 22px 20px 16px;
 }
 
 .inv-venue-card__type {
@@ -1128,20 +1285,33 @@
 
 .inv-venue-card__name {
   font-family: var(--font-serif), serif;
+  font-style: italic;
   font-size: 1.1rem;
   color: var(--color-text);
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .inv-venue-card__address {
-  font-size: 0.83rem;
+  font-size: 0.82rem;
   color: var(--color-text-muted);
-  line-height: 1.5;
-  margin-bottom: 12px;
+  line-height: 1.55;
+  margin-bottom: 0;
+}
+
+.inv-venue-card__img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.inv-venue-card__footer {
+  padding: 14px 20px 22px;
 }
 
 .inv-venue-card__link {
+  display: inline-block;
   font-size: 0.78rem;
   color: var(--color-gold);
   text-decoration: none;
@@ -1155,6 +1325,17 @@
 }
 
 /* ── 8. Weather ── */
+
+/* Recuadro interior — mismo patrón que InvSchedule */
+.inv-weather__card {
+  width: 100%;
+  max-width: 380px;
+  border: 1px solid rgba(180, 155, 107, 0.22);
+  border-radius: 6px;
+  padding: 24px 20px 20px;
+  text-align: center;
+}
+
 .inv-weather__note {
   font-size: 0.83rem;
   color: var(--color-text-muted);
@@ -1214,6 +1395,26 @@
 }
 
 /* ── 9. Gift Registry ── */
+.inv-registry {
+  background: var(--color-gold) !important;
+  padding: 0 28px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.inv-registry .inv-section__inner {
+  width: 100%;
+  max-width: 380px;
+  background-image: url("/assets/texture.jpg");
+  background-size: cover;
+  background-position: center;
+  background-color: white;
+  padding: 28px 24px 32px;
+  text-align: center;
+  box-shadow: 0 -6px 32px rgba(0, 0, 0, 0.2);
+}
+
 .inv-registry__list {
   display: flex;
   flex-direction: column;
@@ -1274,6 +1475,27 @@
 }
 
 /* ── 11. Good to Know ── */
+.inv-notes {
+  background: var(--color-cream) !important;
+  padding: 0 28px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.inv-notes .inv-section__inner {
+  width: 100%;
+  max-width: 380px;
+  background-image: url("/assets/texture.jpg");
+  background-size: cover;
+  background-position: center;
+  background-color: white;
+  padding: 28px 24px 32px;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--color-cream-dark);
+}
+
 .inv-notes__list {
   list-style: none;
   margin-top: 20px;
@@ -1306,15 +1528,23 @@
 
 /* ── 12. Farewell ── */
 .inv-farewell {
-  background: linear-gradient(
-    to bottom,
-    var(--color-cream-dark),
-    var(--color-cream)
-  ) !important;
+  background: var(--color-gold) !important;
+  padding: 0 28px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   text-align: center;
 }
 
 .inv-farewell .inv-section__inner {
+  width: 100%;
+  max-width: 380px;
+  background-image: url("/assets/texture.jpg");
+  background-size: cover;
+  background-position: center;
+  background-color: white;
+  padding: 36px 28px 32px;
+  box-shadow: 0 -6px 32px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1366,6 +1596,17 @@
 }
 
 /* ── Event Photos section ── */
+
+/* Recuadro interior — mismo patrón que Schedule y Weather */
+.inv-event-photos__card {
+  width: 100%;
+  max-width: 380px;
+  border: 1px solid rgba(180, 155, 107, 0.22);
+  border-radius: 6px;
+  padding: 28px 20px 32px;
+  text-align: center;
+}
+
 .inv-event-photos__sub {
   font-family: var(--font-sans);
   font-size: 0.95rem;

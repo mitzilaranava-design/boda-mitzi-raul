@@ -5,11 +5,11 @@ export default function InvRegistry() {
   return (
     <motion.section className="inv-section inv-registry" {...fadeUp}>
       <div className="inv-section__inner inv-section__inner--center">
-        <p className="inv-section__label">Your Generosity Means the World</p>
-        <h2>Gift Registry</h2>
+        <p className="inv-section__label">Tu Generosidad lo Es Todo</p>
+        <h2>Mesa de Regalos</h2>
         <p className="inv-section__sub">
-          Your presence is our greatest gift. However, if you wish to honor us
-          with a present, we have set up the following registries:
+          Tu presencia es nuestro mejor regalo. Si deseas obsequiarnos algo,
+          aquí encontrarás nuestras opciones:
         </p>
         <div className="inv-registry__list">
           {WEDDING.registry.map((r) => (

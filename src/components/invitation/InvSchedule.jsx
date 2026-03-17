@@ -103,53 +103,56 @@ export default function InvSchedule() {
   return (
     <motion.section className="inv-section inv-schedule" {...fadeUp}>
       <div className="inv-section__inner inv-section__inner--center">
+        <div className="inv-schedule__card">
 
-        {/* Message */}
-        <p className="inv-schedule__msg">
-          ¡Nos gustaría mucho que nos acompañaras!
-        </p>
+          {/* Message */}
+          <p className="inv-schedule__msg">
+            ¡Nos gustaría mucho que nos acompañaras!
+          </p>
 
-        <h2>Itinerario</h2>
+          <h2>Itinerario</h2>
 
-        {/* Vertical timeline */}
-        <div className="inv-vtimeline">
-          <div className="inv-vtimeline__line" />
+          {/* Vertical timeline */}
+          <div className="inv-vtimeline">
+            <div className="inv-vtimeline__line" />
 
-          {WEDDING.schedule.map((item, i) => {
-            const isReverse = i % 2 !== 0;
-            return (
-              <div
-                key={item.time}
-                className={`inv-vtimeline__row${isReverse ? " inv-vtimeline__row--reverse" : ""}`}
-              >
-                <div className="inv-vtimeline__side inv-vtimeline__side--left">
-                  {isReverse && (
-                    <div className="inv-vtimeline__content inv-vtimeline__content--left">
-                      <span className="inv-vtimeline__event">{item.event}</span>
-                      <span className="inv-vtimeline__time">{item.time}</span>
-                    </div>
-                  )}
+            {WEDDING.schedule.map((item, i) => {
+              const isReverse = i % 2 !== 0;
+              return (
+                <div
+                  key={item.time}
+                  className={`inv-vtimeline__row${isReverse ? " inv-vtimeline__row--reverse" : ""}`}
+                >
+                  <div className="inv-vtimeline__side inv-vtimeline__side--left">
+                    {isReverse && (
+                      <div className="inv-vtimeline__content inv-vtimeline__content--left">
+                        <span className="inv-vtimeline__event">{item.event}</span>
+                        <span className="inv-vtimeline__time">{item.time}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="inv-vtimeline__icon" aria-hidden="true">
+                    {ICONS[item.icon]}
+                  </div>
+
+                  <div className="inv-vtimeline__side inv-vtimeline__side--right">
+                    {!isReverse && (
+                      <div className="inv-vtimeline__content inv-vtimeline__content--right">
+                        <span className="inv-vtimeline__event">{item.event}</span>
+                        <span className="inv-vtimeline__time">{item.time}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
+              );
+            })}
+          </div>
 
-                <div className="inv-vtimeline__icon" aria-hidden="true">
-                  {ICONS[item.icon]}
-                </div>
+          {/* Footer bar */}
+          <div className="inv-schedule__footer">M &amp; R</div>
 
-                <div className="inv-vtimeline__side inv-vtimeline__side--right">
-                  {!isReverse && (
-                    <div className="inv-vtimeline__content inv-vtimeline__content--right">
-                      <span className="inv-vtimeline__event">{item.event}</span>
-                      <span className="inv-vtimeline__time">{item.time}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
         </div>
-
-        {/* Footer bar */}
-        <div className="inv-schedule__footer">M &amp; R</div>
       </div>
     </motion.section>
   );

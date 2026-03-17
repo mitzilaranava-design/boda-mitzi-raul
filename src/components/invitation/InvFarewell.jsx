@@ -21,7 +21,7 @@ export default function InvFarewell() {
           📸 Galería del evento
         </a>
         <p className="inv-farewell__footer">
-          Made with love for our special day 💛
+          Hecho con amor para nuestro día especial 💛
         </p>
       </div>
     </motion.section>

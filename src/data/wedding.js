@@ -1,7 +1,7 @@
 // ── Audio ─────────────────────────────────────────────────────
-// Para habilitar música en la invitación, cambia null por la ruta:
+// Cambia la ruta cuando tengas un archivo dedicado para la invitación:
 // export const AUDIO_SRC = "/music/invitation.mp3";
-export const AUDIO_SRC = null;
+export const AUDIO_SRC = "/music/save-the-date.mp3";
 
 // ── Shared animation preset ───────────────────────────────────
 export const fadeUp = {
@@ -16,7 +16,7 @@ export const fadeUp = {
 export const WEDDING = {
   bride: "Mitzi",
   groom: "Raúl",
-  date:  "November 21, 2026",
+  date:  "21 de noviembre de 2026",
   time:  "5:00 PM",
 
   message1: "El día más importante de nuestras vidas ha llegado",
@@ -39,7 +39,7 @@ export const WEDDING = {
     { category: "Lazo",      padrino: "Aldo Vargas",  madrina: "Zaudizaret Lopez"  },
     { category: "Arras",     padrino: "Juan Miguel Sotelo",  madrina: "Elizabeth Lara"  },
     { category: "Ramo",      madrina: "Naydelyn Yaretzy Sotelo"},
-    { category: "Anillos",   padrino: "Nombre Padrino",  madrina: "Denisse Vargas"  }
+    { category: "Anillos",   padrino: "Nombre Padrino",  madrina: "Denisse Adriana Vargas"  }
   ],
 
   schedule: [
@@ -52,14 +52,16 @@ export const WEDDING = {
 
   venues: {
     church: {
-      name:    "Church Name",
-      address: "Church Address, City, State",
-      mapsUrl: "#",
+      name:     "Parroquia María Madre de la Misericordia",
+      address:  "Río Tamazula 25, Vista Hermosa, 62290 Cuernavaca, Mor.",
+      mapsUrl:  "https://maps.app.goo.gl/GX8t6xZxC3b3sqXA9",
+      imageUrl: "/assets/venues/church.jpg",
     },
     venue: {
-      name:    "Venue Name",
-      address: "Venue Address, City, State",
-      mapsUrl: "#",
+      name:     "Jardín El Encanto",
+      address:  "C. Cnel. Ahumada 42, Los Volcanes, 62350 Cuernavaca, Mor.",
+      mapsUrl:  "https://maps.app.goo.gl/yo874sfYp9cGwVdW9",
+      imageUrl: "/assets/venues/venue.jpg",
     },
   },
 
@@ -70,18 +72,18 @@ export const WEDDING = {
   ],
 
   dresscode: {
-    title: "Formal Attire",
-    note:  "Ladies: long or cocktail dress. Gentlemen: suit and tie.",
-    avoid: "Please avoid white, ivory, and light beige tones.",
+    title: "Etiqueta Formal",
+    note:  "Damas: vestido largo o de coctel. Caballeros: traje formal con corbata.",
+    avoid: "Por favor eviten los tonos blanco, marfil y beige claro.",
   },
 
   notes: [
-    "This is an adults-only celebration.",
-    "Kindly RSVP before October 21, 2026.",
-    "Confetti and outside decorations are not allowed at the venue.",
-    "Please be punctual — the ceremony begins exactly at 5:00 PM.",
+    "Esta celebración es exclusiva para adultos.",
+    "Confirma tu asistencia antes del 21 de octubre de 2026.",
+    "No se permite confeti ni decoraciones externas en el recinto.",
+    "Te pedimos puntualidad — la ceremonia inicia a las 5:00 PM en punto.",
   ],
 
   farewell:
-    "We cannot wait to celebrate this beautiful chapter with you. Your presence is the greatest gift.",
+    "No podemos esperar para celebrar este hermoso capítulo junto a ti. Tu presencia es el mayor regalo.",
 };
