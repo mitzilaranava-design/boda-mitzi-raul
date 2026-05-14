@@ -63,6 +63,16 @@ const CATEGORY_ICONS = {
       <circle cx="30" cy="24" r="9" stroke="currentColor" strokeWidth="2.5"/>
     </svg>
   ),
+  "Biblia y Rosario": (
+    // Open book with cross
+    <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M8 38V12a2 2 0 0 1 2-2h12c2 0 4 1 6 3 2-2 4-3 6-3h12a2 2 0 0 1 2 2v26"
+        stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <line x1="28" y1="10" x2="28" y2="41" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="24" y1="17" x2="24" y2="25" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="20" y1="21" x2="28" y2="21" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  ),
 };
 
 const DEFAULT_ICON = (

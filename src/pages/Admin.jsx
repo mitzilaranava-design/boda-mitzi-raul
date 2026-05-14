@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { getAllInvitados, marcarInvitacionEnviada, marcarRecordatorio, autoConfirmar, marcarSaveTheDate } from "../api/invitations";
-import { getGalleryConfig, toggleGallery } from "../api/gallery";
+import { getAllInvitados, marcarInvitacionEnviada, marcarRecordatorio, autoConfirmar, marcarSaveTheDate, marcarActualizacion } from "../api/invitations";
+import { getGalleryConfig, toggleGallery, getItinerarioConfig, toggleItinerario } from "../api/gallery";
 
 const ADMIN_KEY = "boda_admin";
 const VALID_ADMIN_TOKEN = import.meta.env.VITE_ADMIN_TOKEN;
@@ -33,6 +33,13 @@ function buildSaveTheDateLink(inv) {
   const celular = (inv.celular ?? "").replace(/[\s+\-()]/g, "");
   const link = `${SITE_URL}/?t=${ACCESS_TOKEN}&id=${inv.id}`;
   const msg = `Hola ${inv.nombre} 💍 Mitzi y Raúl tienen el honor de anunciarte que se casan el 21 de noviembre de 2026. ¡Reserva la fecha! Más información aquí: ${link}`;
+  return `https://wa.me/${celular}?text=${encodeURIComponent(msg)}`;
+}
+
+function buildActualizacionLink(inv, descripcion) {
+  const celular = (inv.celular ?? "").replace(/[\s+\-()]/g, "");
+  const link = `${SITE_URL}/inv/${inv.id}`;
+  const msg = `Hola ${inv.nombre} 👋 Hay novedades en tu invitación de boda de Mitzi & Raúl.\n\n✨ ${descripcion}\n\nRevisa tu invitación aquí: ${link}`;
   return `https://wa.me/${celular}?text=${encodeURIComponent(msg)}`;
 }
 
@@ -69,7 +76,7 @@ function pill(bg) {
   };
 }
 
-function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate }) {
+function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate, onActualizacion, descripcionActualizacion }) {
   const [loading, setLoading] = useState(false);
 
   const handleSaveTheDate = async () => {
@@ -109,11 +116,24 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate }) {
     }
   };
 
+  const handleActualizacion = async () => {
+    if (!descripcionActualizacion.trim()) return;
+    setLoading(true);
+    window.open(buildActualizacionLink(inv, descripcionActualizacion), "_blank", "noopener");
+    try {
+      await marcarActualizacion(inv.id);
+      onActualizacion(inv.id);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const puede = puedeEnviar(inv);
   const recordatorios = inv.recordatorios_enviados ?? 0;
   const necesitaAutoConfirmar = !inv.confirmado && recordatorios >= 3;
   const stdEnviado = inv.save_the_date_enviado ?? false;
   const habilitado = inv.enviar_save_the_date ?? false;
+  const actualizacionEnviada = inv.actualizacion_enviada ?? false;
 
   return (
     <motion.div
@@ -170,6 +190,22 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate }) {
           {loading ? "..." : stdEnviado ? "Ya enviado" : "Enviar Save the Date"}
         </button>
       </div>
+
+      {/* Enviar actualización */}
+      {descripcionActualizacion.trim() && habilitado && (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8, borderTop: "1px solid #f2e8d5", paddingTop: 8 }}>
+          <p style={{ margin: 0, fontFamily: "Poppins, sans-serif", fontSize: 12, color: actualizacionEnviada ? "#16a34a" : "#999" }}>
+            Actualización: {actualizacionEnviada ? "Enviada ✓" : "Pendiente"}
+          </p>
+          <button
+            onClick={handleActualizacion}
+            disabled={loading}
+            style={btnStyle(loading, actualizacionEnviada ? "#6b7280" : "#9d8558")}
+          >
+            {loading ? "..." : actualizacionEnviada ? "Reenviar" : "Enviar actualización"}
+          </button>
+        </div>
+      )}
 
       {/* Recordatorios / invitación */}
       {!inv.confirmado && !inv.no_asiste && (
@@ -233,6 +269,9 @@ export default function Admin() {
   const [busqueda, setBusqueda] = useState("");
   const [galeriaActiva, setGaleriaActiva] = useState(false);
   const [galeriaLoading, setGaleriaLoading] = useState(false);
+  const [itinerarioActivo, setItinerarioActivo] = useState(false);
+  const [itinerarioLoading, setItinerarioLoading] = useState(false);
+  const [descripcionActualizacion, setDescripcionActualizacion] = useState("");
 
   useEffect(() => {
     const tokenUrl = searchParams.get("t");
@@ -266,7 +305,18 @@ export default function Admin() {
   useEffect(() => {
     if (!authorized) return;
     getGalleryConfig().then((cfg) => setGaleriaActiva(cfg.activa));
+    getItinerarioConfig().then((cfg) => setItinerarioActivo(cfg.itinerario_activo ?? false));
   }, [authorized]);
+
+  const handleToggleItinerario = async () => {
+    setItinerarioLoading(true);
+    try {
+      await toggleItinerario(!itinerarioActivo);
+      setItinerarioActivo((prev) => !prev);
+    } finally {
+      setItinerarioLoading(false);
+    }
+  };
 
   const handleToggleGaleria = async () => {
     setGaleriaLoading(true);
@@ -309,6 +359,14 @@ export default function Admin() {
     setInvitados((prev) =>
       prev.map((inv) =>
         inv.id === id ? { ...inv, save_the_date_enviado: true } : inv
+      )
+    );
+  };
+
+  const handleActualizacion = (id) => {
+    setInvitados((prev) =>
+      prev.map((inv) =>
+        inv.id === id ? { ...inv, actualizacion_enviada: true } : inv
       )
     );
   };
@@ -450,6 +508,8 @@ export default function Admin() {
                 onRecordatorio={handleRecordatorio}
                 onAutoConfirmar={handleAutoConfirmar}
                 onSaveTheDate={handleSaveTheDate}
+                onActualizacion={handleActualizacion}
+                descripcionActualizacion={descripcionActualizacion}
               />
             ))}
           </AnimatePresence>
@@ -523,6 +583,73 @@ export default function Admin() {
               {galeriaLoading ? "..." : galeriaActiva ? "Desactivar galería" : "Activar galería"}
             </button>
           </div>
+        </motion.div>
+
+        {/* Itinerario */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.25 }}
+          style={{ background: "#fff", border: "1px solid #e8dcc8", borderRadius: 12, padding: "20px 24px", marginTop: 16 }}
+        >
+          <p style={{ margin: "0 0 4px", fontFamily: "'Playfair Display', serif", fontSize: 17, color: "#222", fontWeight: 600 }}>
+            Itinerario del evento
+          </p>
+          <p style={{ margin: "0 0 16px", fontFamily: "Poppins, sans-serif", fontSize: 13, color: "#888" }}>
+            Activa para mostrar el itinerario en la invitación. Desactivado muestra "próximamente".
+          </p>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+            <span style={{ fontFamily: "Poppins, sans-serif", fontSize: 13, color: itinerarioActivo ? "#16a34a" : "#9ca3af", fontWeight: 500 }}>
+              Estado: {itinerarioActivo ? "Visible ✓" : "En construcción"}
+            </span>
+            <button
+              onClick={handleToggleItinerario}
+              disabled={itinerarioLoading}
+              style={btnStyle(itinerarioLoading, itinerarioActivo ? "#6b7280" : "#b49b6b")}
+            >
+              {itinerarioLoading ? "..." : itinerarioActivo ? "Ocultar itinerario" : "Mostrar itinerario"}
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Enviar actualizaciones */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          style={{ background: "#fff", border: "1px solid #e8dcc8", borderRadius: 12, padding: "20px 24px", marginTop: 16 }}
+        >
+          <p style={{ margin: "0 0 4px", fontFamily: "'Playfair Display', serif", fontSize: 17, color: "#222", fontWeight: 600 }}>
+            Enviar actualizaciones
+          </p>
+          <p style={{ margin: "0 0 12px", fontFamily: "Poppins, sans-serif", fontSize: 13, color: "#888" }}>
+            Escribe qué cambió y aparecerá el botón por invitado para enviar el aviso por WhatsApp.
+          </p>
+          <textarea
+            value={descripcionActualizacion}
+            onChange={(e) => setDescripcionActualizacion(e.target.value)}
+            placeholder="Ej: Se agregó el itinerario del evento"
+            maxLength={200}
+            rows={3}
+            style={{
+              width: "100%",
+              boxSizing: "border-box",
+              padding: "10px 14px",
+              fontFamily: "Poppins, sans-serif",
+              fontSize: 13,
+              color: "#222",
+              background: "#fafafa",
+              border: "1px solid #e8dcc8",
+              borderRadius: 8,
+              outline: "none",
+              resize: "vertical",
+            }}
+          />
+          {descripcionActualizacion.trim() && (
+            <p style={{ margin: "8px 0 0", fontFamily: "Poppins, sans-serif", fontSize: 11, color: "#b49b6b" }}>
+              Los botones "Enviar actualización" aparecen en cada tarjeta de invitado activo.
+            </p>
+          )}
         </motion.div>
 
         <p style={{ textAlign: "center", fontFamily: "Poppins, sans-serif", fontSize: 11, color: "#ccc", marginTop: 32 }}>

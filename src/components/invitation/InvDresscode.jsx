@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { WEDDING, fadeUp } from "../../data/wedding";
 
 export default function InvDresscode() {
-  const { title, note, avoid } = WEDDING.dresscode;
+  const { title, noteDamas, noteCaballeros } = WEDDING.dresscode;
 
   return (
     <motion.section className="inv-section inv-dresscode" {...fadeUp}>
@@ -11,8 +11,8 @@ export default function InvDresscode() {
         <h2>Código de Vestimenta</h2>
         <div className="inv-dresscode__card">
           <p className="inv-dresscode__title">{title}</p>
-          <p className="inv-dresscode__note">{note}</p>
-          <p className="inv-dresscode__avoid">{avoid}</p>
+          <p className="inv-dresscode__note">{noteDamas}</p>
+          <p className="inv-dresscode__note">{noteCaballeros}</p>
         </div>
       </div>
     </motion.section>

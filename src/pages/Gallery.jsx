@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { getGalleryConfig, getFotos, subirFoto, subscribeFotos } from "../api/gallery";
 import "../styles/Gallery.css";
 
@@ -16,6 +16,7 @@ export default function Gallery() {
   const [showUpload, setShowUpload] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
+  const [comentario, setComentario] = useState("");
   const fileRef = useRef();
 
   useEffect(() => {
@@ -77,7 +78,7 @@ export default function Gallery() {
     setUploading(true);
     setUploadError(null);
     try {
-      const result = await subirFoto(file, invitadoId);
+      const result = await subirFoto(file, invitadoId, comentario);
       // En modo mock, la foto se agrega al array MOCK_FOTOS pero no llega por realtime
       // Actualizamos local con el resultado para que aparezca inmediatamente
       if (result.url) {
@@ -104,6 +105,7 @@ export default function Gallery() {
     if (uploading) return;
     setShowUpload(false);
     setUploadError(null);
+    setComentario("");
   };
 
   if (loading) {
@@ -116,8 +118,14 @@ export default function Gallery() {
     <div className="gallery-page">
       {/* Header */}
       <header className="gallery-header">
+        {invitadoId && (
+          <Link to={`/inv/${invitadoId}`} className="gallery-back-btn" aria-label="Regresar a la invitación">
+            ‹ Regresar
+          </Link>
+        )}
         <p className="gallery-subtitle">Mitzi &amp; Raúl · 21.11.2026</p>
-        <h1 className="gallery-title">Nuestra Galería</h1>
+        <h1 className="gallery-title">Nuestra Boda</h1>
+        <span className="gallery-header-ornament">✦ &nbsp; ✦ &nbsp; ✦</span>
       </header>
 
       {/* Contenido principal */}
@@ -145,6 +153,8 @@ export default function Gallery() {
                     src={foto.url}
                     alt={foto.nombre || "Foto de la boda"}
                     loading="lazy"
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
                   />
                 </div>
               ))}
@@ -201,26 +211,19 @@ export default function Gallery() {
           <img
             src={fotoActual.url}
             alt={fotoActual.nombre || "Foto de la boda"}
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
             onClick={(e) => e.stopPropagation()}
           />
 
-          <div
-            className="lightbox-footer"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {fotoActual.nombre && (
-              <span className="lightbox-nombre">{fotoActual.nombre}</span>
-            )}
-            <a
-              href={fotoActual.url}
-              download
-              className="btn-download"
-              target="_blank"
-              rel="noopener noreferrer"
+          {fotoActual.comentario && (
+            <div
+              className="lightbox-footer"
+              onClick={(e) => e.stopPropagation()}
             >
-              Descargar
-            </a>
-          </div>
+              <span className="lightbox-comentario">"{fotoActual.comentario}"</span>
+            </div>
+          )}
         </div>
       )}
 
@@ -238,15 +241,31 @@ export default function Gallery() {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="upload-modal-title">Subir foto</h2>
+            <span className="upload-modal-ornament">✦ &nbsp; ✦ &nbsp; ✦</span>
 
             <input
               ref={fileRef}
               type="file"
               accept="image/*"
-              capture="environment"
               className="upload-input"
               disabled={uploading}
             />
+
+            <div className="upload-comentario-wrap">
+              <label htmlFor="gallery-comentario" className="upload-comentario-label">
+                💬 Agrega un comentario a tu foto (opcional)
+              </label>
+              <textarea
+                id="gallery-comentario"
+                className="upload-comentario"
+                placeholder="Ej: ¡Qué bonita boda! Gracias por incluirnos..."
+                maxLength={200}
+                rows={3}
+                value={comentario}
+                onChange={(e) => setComentario(e.target.value)}
+                disabled={uploading}
+              />
+            </div>
 
             {uploadError && (
               <p style={{

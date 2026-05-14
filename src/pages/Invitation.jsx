@@ -19,7 +19,8 @@ const SECTIONS = [
   { id: "inv-regalos",    label: "Mesa de Regalos" },
   { id: "inv-vestimenta", label: "Vestimenta" },
   { id: "inv-notas",      label: "Notas" },
-  { id: "inv-fotos",      label: "Galería" },
+  { id: "inv-fotos",      label: "Fotos del evento" },
+  { id: "inv-galeria",    label: "Nuestra Galería" },
   { id: "inv-despedida",  label: "Hasta pronto" },
 ];
 
@@ -36,6 +37,7 @@ import InvRegistry  from "../components/invitation/InvRegistry";
 import InvDresscode from "../components/invitation/InvDresscode";
 import InvNotes       from "../components/invitation/InvNotes";
 import InvEventPhotos from "../components/invitation/InvEventPhotos";
+import InvGallery     from "../components/invitation/InvGallery";
 import InvFarewell    from "../components/invitation/InvFarewell";
 
 export default function Invitation() {
@@ -61,13 +63,18 @@ export default function Invitation() {
       setLoading(false);
       return;
     }
-    getInvitado(id)
+
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("timeout")), 10000)
+    );
+
+    Promise.race([getInvitado(id), timeout])
       .then((data) => {
         setInvitado(data);
         if (data) setNumAsistentes(1);
         setError(!data ? "Invitación no válida" : null);
       })
-      .catch(() => setError("Invitación no válida"))
+      .catch(() => setError("No se pudo cargar la invitación. Verifica tu conexión."))
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -288,14 +295,14 @@ export default function Invitation() {
         <InvVenues
           venueData={WEDDING.venues.church}
           typeLabel="⛪ Ceremonia religiosa"
-          variant="gold"
+          variant="cream"
         />
       </div>
       <div id="inv-salon">
         <InvVenues
           venueData={WEDDING.venues.venue}
           typeLabel="🥂 Recepción"
-          variant="cream"
+          variant="gold"
         />
       </div>
       <div id="inv-clima"><InvWeather /></div>
@@ -303,6 +310,7 @@ export default function Invitation() {
       <div id="inv-vestimenta"><InvDresscode /></div>
       <div id="inv-notas"><InvNotes /></div>
       <div id="inv-fotos"><InvEventPhotos /></div>
+      <div id="inv-galeria"><InvGallery /></div>
       <div id="inv-despedida"><InvFarewell /></div>
     </div>
   );

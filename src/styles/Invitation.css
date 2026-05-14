@@ -408,7 +408,7 @@
 /* Música: esquina inferior derecha en la invitación */
 .inv .music-equalizer-wrap {
   top: auto;
-  bottom: 24px;
+  bottom: 56px;
 }
 
 /* Botón toggle del menú */
@@ -1110,14 +1110,18 @@
 .inv-schedule__card {
   width: 100%;
   max-width: 360px;
-  border: 1px solid rgba(180, 155, 107, 0.22);
-  border-radius: 6px;
+  background-image: url("/assets/texture.jpg");
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(120, 90, 40, 0.25);
+  border-radius: 16px;
   padding: 16px 16px 4px;
+  overflow: hidden;
 }
 
-/* h2 compacto dentro del schedule */
+/* h2 compacto dentro del schedule — tamaño reducido */
 .inv-schedule h2 {
-  font-size: 1.4rem;
+  font-size: 1.4rem !important;
   margin-bottom: 8px;
 }
 
@@ -1228,6 +1232,30 @@
   border-radius: 3px;
 }
 
+/* Vista en construcción del itinerario */
+.inv-schedule__construction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 16px;
+  text-align: center;
+}
+
+.inv-schedule__construction-icon {
+  font-size: 2.4rem;
+  display: block;
+}
+
+.inv-schedule__construction-text {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: rgba(249,245,239,0.65);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
 /* ── 7. Venues ── */
 .inv-venues {
   padding: 0 28px;
@@ -1330,8 +1358,11 @@
 .inv-weather__card {
   width: 100%;
   max-width: 380px;
-  border: 1px solid rgba(180, 155, 107, 0.22);
-  border-radius: 6px;
+  background-image: url("/assets/texture.jpg");
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(180,155,107,0.28);
+  border-radius: 16px;
   padding: 24px 20px 20px;
   text-align: center;
 }
@@ -1442,36 +1473,70 @@
 
 /* ── 10. Dress Code ── */
 .inv-dresscode__card {
-  background: white;
-  border: 1px solid var(--color-cream-dark);
+  background-image: url("/assets/texture.jpg");
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(180,155,107,0.28);
   border-radius: 16px;
   padding: 28px 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   text-align: center;
   margin-top: 8px;
+  max-width: 340px;
+  width: 100%;
+}
+
+.inv-dresscode__icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 1.8rem;
+  margin-bottom: 2px;
+}
+
+.inv-dresscode__icons-sep {
+  font-size: 0.8rem;
+  color: var(--color-gold);
+  opacity: 0.7;
 }
 
 .inv-dresscode__title {
   font-family: var(--font-serif), serif;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   color: var(--color-gold);
   font-weight: 600;
 }
 
 .inv-dresscode__note {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--color-text-muted);
-  line-height: 1.6;
+  line-height: 1.65;
+}
+
+.inv-dresscode__avoid-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  border-top: 1px solid rgba(180,155,107,0.22);
+  padding-top: 12px;
+  text-align: left;
+}
+
+.inv-dresscode__avoid-icon {
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 
 .inv-dresscode__avoid {
   font-size: 0.78rem;
-  color: #999;
+  color: #888;
   font-style: italic;
-  border-top: 1px solid var(--color-cream-dark);
-  padding-top: 12px;
+  line-height: 1.5;
+  margin: 0;
 }
 
 /* ── 11. Good to Know ── */
@@ -1496,44 +1561,257 @@
   border: 1px solid var(--color-cream-dark);
 }
 
+.inv-notes__ornament {
+  font-size: 0.6rem;
+  color: var(--color-gold);
+  letter-spacing: 6px;
+  margin: 6px 0 18px;
+  opacity: 0.7;
+}
+
 .inv-notes__list {
   list-style: none;
-  margin-top: 20px;
+  margin-top: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0;
   text-align: left;
+  width: 100%;
 }
 
 .inv-notes__item {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 12px;
   font-size: 0.88rem;
   color: var(--color-text-muted);
-  line-height: 1.55;
-  background: white;
-  border: 1px solid var(--color-cream-dark);
-  border-radius: 10px;
-  padding: 12px 14px;
+  line-height: 1.6;
+  border-bottom: 1px solid rgba(180,155,107,0.25);
+  padding: 13px 6px;
 }
 
-.inv-notes__item::before {
-  content: "✦";
-  color: var(--color-gold);
+.inv-notes__item:first-child {
+  border-top: 1px solid rgba(180,155,107,0.25);
+}
+
+.inv-notes__item:last-child {
+  border-bottom: none;
+}
+
+.inv-notes__icon {
+  font-size: 1.1rem;
   flex-shrink: 0;
-  font-size: 0.65rem;
-  margin-top: 3px;
+  margin-top: 1px;
 }
 
-/* ── 12. Farewell ── */
+/* ── 12. Gallery (fotos de los novios) ── */
+.inv-gallery {
+  background: var(--color-cream-dark) !important;
+  padding: 0 20px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.inv-gallery .inv-section__inner {
+  width: 100%;
+  max-width: 420px;
+  padding: 32px 0 40px;
+}
+
+.inv-gallery .inv-section__label {
+  color: var(--color-gold);
+}
+
+.inv-gallery h2,
+.inv-gallery__title {
+  font-family: var(--font-serif), serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1;
+  margin: 0;
+  text-align: center;
+}
+
+.inv-gallery__sub {
+  font-family: var(--font-serif), serif;
+  font-size: 0.9rem;
+  color: rgba(50,35,15,0.55);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 4px 0 8px;
+}
+
+.inv-gallery__ornament {
+  font-size: 0.55rem;
+  color: rgba(50,35,15,0.4);
+  letter-spacing: 8px;
+  text-align: center;
+  display: block;
+  margin-bottom: 20px;
+}
+
+/* ── Mosaico ── */
+.inv-gallery__mosaic {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 110px;
+  gap: 6px;
+  width: 100%;
+}
+
+/* Tamaños asignados via inline style desde JS (getSpan) */
+
+.inv-gallery__item {
+  overflow: hidden;
+  border-radius: 10px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: var(--color-cream-dark);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.inv-gallery__item:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+}
+
+.inv-gallery__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.28s ease;
+}
+
+.inv-gallery__item:hover img {
+  transform: scale(1.06);
+}
+
+/* ── Lightbox ── */
+.inv-gallery__lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(20,14,8,0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.inv-gallery__lightbox-img {
+  max-width: 92vw;
+  max-height: 78dvh;
+  border-radius: 8px;
+  object-fit: contain;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+}
+
+.inv-gallery__lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 1rem;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.inv-gallery__lightbox-close:hover {
+  background: rgba(255,255,255,0.22);
+}
+
+.inv-gallery__lightbox-counter {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 1px;
+  pointer-events: none;
+}
+
+.inv-gallery__lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.inv-gallery__lightbox-nav:hover {
+  background: rgba(255,255,255,0.22);
+}
+
+.inv-gallery__lightbox-nav--prev { left: 14px; }
+.inv-gallery__lightbox-nav--next { right: 14px; }
+
+/* ── Gallery empty state ── */
+.inv-gallery__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 40px 20px;
+  border: 1px dashed rgba(180,155,107,0.35);
+  border-radius: 16px;
+  width: 100%;
+  text-align: center;
+}
+
+.inv-gallery__empty-icon {
+  font-size: 2.8rem;
+}
+
+.inv-gallery__empty-title {
+  font-family: var(--font-serif), serif;
+  font-size: 1.1rem;
+  color: var(--color-text);
+  font-weight: 600;
+  margin: 0;
+}
+
+.inv-gallery__empty-note {
+  font-size: 0.82rem;
+  color: rgba(50,35,15,0.55);
+  margin: 0;
+}
+
+/* ── 13. Farewell ── */
 .inv-farewell {
   background: var(--color-gold) !important;
-  padding: 0 28px;
+  padding: 0 28px 48px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   text-align: center;
+  position: relative;
 }
 
 .inv-farewell .inv-section__inner {
@@ -1548,7 +1826,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
+}
+
+.inv-farewell__icon {
+  font-size: 2rem;
+  line-height: 1;
 }
 
 .inv-farewell__message {
@@ -1556,8 +1839,15 @@
   font-size: 1.05rem;
   color: var(--color-text-muted);
   font-style: italic;
-  line-height: 1.8;
-  max-width: 320px;
+  line-height: 1.85;
+  max-width: 300px;
+}
+
+.inv-farewell__divider {
+  font-size: 0.55rem;
+  color: var(--color-gold);
+  letter-spacing: 6px;
+  opacity: 0.6;
 }
 
 .inv-farewell__names {
@@ -1579,9 +1869,15 @@
 }
 
 .inv-farewell__footer {
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
   font-size: 0.72rem;
-  color: #bbb;
-  margin-top: 4px;
+  color: var(--color-gold);
+  text-align: center;
+  letter-spacing: 0.8px;
+  font-family: var(--font-sans);
 }
 
 /* ── Weather: pantallas pequeñas ── */
@@ -1596,24 +1892,64 @@
 }
 
 /* ── Event Photos section ── */
+.inv-event-photos {
+  background: #1a1410 !important;
+  padding: 0 28px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 
-/* Recuadro interior — mismo patrón que Schedule y Weather */
-.inv-event-photos__card {
+.inv-event-photos .inv-section__inner {
   width: 100%;
   max-width: 380px;
-  border: 1px solid rgba(180, 155, 107, 0.22);
-  border-radius: 6px;
-  padding: 28px 20px 32px;
+}
+
+.inv-event-photos__card {
+  background-image: url("/assets/texture.jpg");
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(180,155,107,0.3);
+  border-radius: 16px;
+  padding: 32px 24px 36px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.inv-event-photos__camera {
+  font-size: 2.6rem;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.inv-event-photos__title {
+  font-family: var(--font-serif), serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  line-height: 1;
+  margin: 0;
+}
+
+.inv-event-photos__heading {
+  font-family: var(--font-serif), serif;
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin: 0 0 6px;
 }
 
 .inv-event-photos__sub {
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   color: var(--color-text-muted);
-  margin: 0 0 28px;
-  line-height: 1.6;
-  max-width: 320px;
+  margin: 4px 0 16px;
+  line-height: 1.65;
+  max-width: 280px;
 }
 
 .inv-event-photos__btn {
@@ -1627,25 +1963,162 @@
   background: var(--color-gold);
   text-decoration: none;
   border-radius: 12px;
-  padding: 14px 28px;
+  padding: 13px 32px;
   min-height: 48px;
   transition: background 0.2s, transform 0.15s;
 }
 
-.inv-event-photos__btn:hover {
+.inv-event-photos__btn:hover:not(:disabled),
+.inv-event-photos__btn:not(:disabled):hover {
   background: var(--color-gold-hover);
   transform: scale(1.03);
+}
+
+.inv-event-photos__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.inv-event-photos__btn-sec {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--color-gold);
+  background: transparent;
+  border: 1px solid rgba(180,155,107,0.5);
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.inv-event-photos__btn-sec:hover:not(:disabled) {
+  background: rgba(180,155,107,0.1);
+}
+
+.inv-event-photos__btn-sec:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.inv-event-photos__file-input {
+  display: none;
+}
+
+.inv-event-photos__link {
+  font-size: 0.82rem;
+  color: var(--color-gold);
+  text-decoration: none;
+  opacity: 0.8;
+  margin-top: 4px;
+  transition: opacity 0.2s;
+}
+
+.inv-event-photos__link:hover { opacity: 1; }
+
+/* Upload form */
+.inv-event-photos__upload-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.inv-event-photos__preview {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid rgba(180,155,107,0.3);
+}
+
+.inv-event-photos__comentario-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inv-event-photos__comentario-label {
+  font-size: 0.78rem;
+  color: var(--color-gold);
+  font-style: italic;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.inv-event-photos__comentario {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: var(--color-text);
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(180,155,107,0.35);
+  border-radius: 10px;
+  padding: 10px 12px;
+  resize: none;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+.inv-event-photos__comentario:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  background: rgba(255,255,255,0.9);
+}
+
+.inv-event-photos__char-count {
+  font-size: 0.7rem;
+  color: #aaa;
+  text-align: right;
+}
+
+.inv-event-photos__actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.inv-event-photos__error {
+  font-size: 0.82rem;
+  color: #c0392b;
+  text-align: center;
+  margin: 0;
+}
+
+/* Success state */
+.inv-event-photos__success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+}
+
+.inv-event-photos__success-icon { font-size: 2rem; }
+
+.inv-event-photos__success p {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  margin: 0;
 }
 
 /* ── Dark sections (Schedule · Weather · Dresscode · EventPhotos) ── */
 .inv-schedule,
 .inv-weather,
-.inv-dresscode,
-.inv-event-photos {
+.inv-dresscode {
   background: #1a1410 !important;
+  padding: 0 28px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-/* h2 white on dark */
+/* h2 blanco en secciones oscuras */
 .inv-schedule h2,
 .inv-weather h2,
 .inv-dresscode h2,
@@ -1653,7 +2126,7 @@
   color: var(--color-cream);
 }
 
-/* Weather — text on dark */
+/* Weather — texto sobre fondo oscuro */
 .inv-weather .inv-weather__note,
 .inv-weather .inv-weather__day-date,
 .inv-weather .inv-weather__temp,
@@ -1671,15 +2144,17 @@
   background: rgba(180,155,107,0.15);
 }
 
-/* Dresscode — card floats on dark bg */
-.inv-dresscode .inv-dresscode__card {
-  background: rgba(255,255,255,0.95);
+/* Dresscode — inner container */
+.inv-dresscode .inv-section__inner {
+  width: 100%;
+  max-width: 380px;
 }
 
-/* EventPhotos — sub text on dark */
+/* EventPhotos — texto sobre fondo oscuro */
 .inv-event-photos .inv-event-photos__sub {
   color: rgba(249,245,239,0.65);
 }
+
 
 /* Cover: pantallas pequeñas ── */
 @media (max-width: 480px) {

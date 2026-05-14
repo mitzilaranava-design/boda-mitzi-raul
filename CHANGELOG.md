@@ -19,6 +19,21 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-05-13 18:38 — Padrinos, itinerario configurable, actualizaciones WA, galería sin descarga
+- **Quién**: Raúl / Claude
+- **Qué**: (1) Anillos: solo madrina (Denisse Adriana Vargas). (2) Padrinos Biblia y Rosario añadidos: Mayra Lara, Evaristo Antúnez & Levi Lara. (3) Itinerario con toggle ON/OFF desde panel admin; vista "en construcción" cuando está inactivo. (4) Botón "Enviar actualizaciones" en admin: textarea con descripción, genera link WA individual por invitado, marca `actualizacion_enviada`. (5) Galería de /galeria sin botón descargar; imágenes sin clic-derecho ni arrastre; botón "Regresar" al inv si viene de /inv/:id. (6) Archivos sensibles removidos del repo (lista-save-the-date.csv, insert-invitados.sql) y agregados a .gitignore. (7) Rediseño visual: notas, despedida, código de vestimenta, event-photos con nuevos elementos UI.
+- **Archivos**: `.gitignore`, `src/api/gallery.js`, `src/api/invitations.js`, `src/data/wedding.js`, `src/pages/Admin.jsx`, `src/pages/Gallery.jsx`, `src/pages/Invitation.jsx`, `src/components/invitation/InvSchedule.jsx`, `src/components/invitation/InvSponsors.jsx`, `src/components/invitation/InvNotes.jsx`, `src/components/invitation/InvFarewell.jsx`, `src/components/invitation/InvDresscode.jsx`, `src/components/invitation/InvEventPhotos.jsx`, `src/components/invitation/InvRegistry.jsx`, `src/components/invitation/InvGallery.jsx`, `src/styles/Gallery.css`, `src/styles/Invitation.css`, `docs/CAMBIOS-Y-REQUISITOS.txt`, `public/music/save-the-date.mp3`
+
+### 2026-03-18 20:40 — Ajustes visuales: colores de secciones y galería de novios
+- **Quién**: Claude
+- **Qué**: InvGallery cambiada a fondo dorado (textos oscuros). InvFarewell cambiada a fondo crema. Footer "Creado con amor" cambiado a color dorado. InvDresscode dividido en dos párrafos separados (noteDamas / noteCaballeros) en wedding.js y componente. Botón de música subido a `bottom: 56px` para no tapar el footer. Galería de novios (InvGallery) añadida como nueva sección con mosaico dinámico y lightbox. InvEventPhotos simplificado a solo enlace a galería interna. Gallery.jsx y Gallery.css rediseñados al tema boda. Galería soporta comentario por foto. Timeout de 10s en carga de invitado.
+- **Archivos**: `src/styles/Invitation.css`, `src/styles/Gallery.css`, `src/data/wedding.js`, `src/components/invitation/InvDresscode.jsx`, `src/components/invitation/InvFarewell.jsx`, `src/components/invitation/InvGallery.jsx`, `src/components/invitation/InvEventPhotos.jsx`, `src/pages/Invitation.jsx`, `src/pages/Gallery.jsx`, `src/api/gallery.js`
+
+### 2026-03-18 13:37 — Mesa de Regalos: solo Liverpool y mensaje más cálido
+- **Quién**: Claude
+- **Qué**: Registry reducido a Liverpool únicamente. Texto del subtítulo reescrito para transmitir que la presencia es lo más importante y la mesa de regalos es solo una opción si el invitado desea obsequiar algo.
+- **Archivos**: `src/data/wedding.js`, `src/components/invitation/InvRegistry.jsx`
+
 ### 2026-03-16 23:27 — Menú de secciones: botón ✕ para cerrar el panel
 - **Quién**: Claude
 - **Qué**: El panel lateral de secciones ahora tiene un encabezado con título "Secciones" a la izquierda y botón ✕ circular a la derecha. Se puede cerrar tanto con ese botón como tocando el overlay exterior. Estilos: círculo crema que pasa a dorado en hover.

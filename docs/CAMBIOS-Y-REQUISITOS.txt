@@ -126,10 +126,16 @@ IDEAS OTRAS (agregar aquí)
   ESTADO: Hecho (2026-03-02). Requiere: bucket "gallery" en Supabase Storage (público),
   tablas galeria_fotos + galeria_config (ver supabase-schema.sql), VITE_GALLERY_TOKEN en .env.
 
-- PENDIENTE — Galería de fotos: permitir al invitado seleccionar una foto desde su galería
-  del dispositivo además de tomar una nueva con la cámara. Actualmente `capture="environment"`
-  fuerza la cámara en móvil. Cambiar a `capture` opcional o removerlo para que el SO
-  muestre el selector nativo (cámara + galería). Afecta: Gallery.jsx, InvEventPhotos (si aplica).
+- Galería de fotos: permitir al invitado seleccionar una foto desde su galeríainvita
+  del dispositivo además de tomar una nueva con la cámara. `capture="environment"` removido
+  para que el SO muestre el selector nativo (cámara + galería).
+  ESTADO: Hecho (2026-03-18). Afectó: Gallery.jsx.
+
+- Itinerario configurable desde admin + vista "en construcción". Botón "Enviar actualizaciones"
+  en panel admin con mensaje WA personalizable por invitado.
+  ESTADO: Hecho (2026-05-13). Requiere ejecutar en Supabase SQL Editor:
+    ALTER TABLE galeria_config ADD COLUMN IF NOT EXISTS itinerario_activo boolean default false;
+    ALTER TABLE invitados ADD COLUMN IF NOT EXISTS actualizacion_enviada boolean default false;
 
 - PENDIENTE — Almacenamiento de fotos: opciones evaluadas (todas gratuitas y permanentes):
     · Supabase Storage (ACTUAL): 1 GB / 2 GB bandwidth. Con compresión 2048px/88%

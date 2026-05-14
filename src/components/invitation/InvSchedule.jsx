@@ -1,5 +1,7 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { WEDDING, fadeUp } from "../../data/wedding";
+import { getItinerarioConfig } from "../../api/gallery";
 
 /* ── SVG icons (thin white-line style) ── */
 const ChurchIcon = () => (
@@ -100,10 +102,32 @@ const ICONS = {
 };
 
 export default function InvSchedule() {
+  const [activo, setActivo] = useState(null); // null = cargando
+
+  useEffect(() => {
+    getItinerarioConfig().then((cfg) => setActivo(cfg.itinerario_activo ?? false));
+  }, []);
+
+  if (activo === null) return null; // espera silenciosa mientras carga
+
   return (
     <motion.section className="inv-section inv-schedule" {...fadeUp}>
       <div className="inv-section__inner inv-section__inner--center">
         <div className="inv-schedule__card">
+
+          {!activo ? (
+            <>
+              <p className="inv-schedule__msg">¡Nos gustaría mucho que nos acompañaras!</p>
+              <h2>Itinerario</h2>
+              <div className="inv-schedule__construction">
+                <span className="inv-schedule__construction-icon">🗓️</span>
+                <p className="inv-schedule__construction-text">
+                  Próximamente compartiremos los detalles del itinerario del evento
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
 
           {/* Message */}
           <p className="inv-schedule__msg">
@@ -151,6 +175,8 @@ export default function InvSchedule() {
 
           {/* Footer bar */}
           <div className="inv-schedule__footer">M &amp; R</div>
+            </>
+          )}
 
         </div>
       </div>

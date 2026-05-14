@@ -17,7 +17,7 @@ import { supabase } from "../lib/supabase";
 
 // ─── Mock ────────────────────────────────────────────────────────────────────
 
-const MOCK_CONFIG = { activa: false };
+const MOCK_CONFIG = { activa: false, itinerario_activo: false };
 const MOCK_FOTOS = [];
 
 // ─── Config (on/off) ─────────────────────────────────────────────────────────
@@ -50,13 +50,43 @@ export async function toggleGallery(activa) {
   return { ok: true };
 }
 
+// ─── Config itinerario ───────────────────────────────────────────────────────
+
+export async function getItinerarioConfig() {
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("galeria_config")
+      .select("itinerario_activo")
+      .eq("id", 1)
+      .single();
+    if (error) return { itinerario_activo: false };
+    return data;
+  }
+  await new Promise((r) => setTimeout(r, 200));
+  return { itinerario_activo: MOCK_CONFIG.itinerario_activo };
+}
+
+export async function toggleItinerario(activo) {
+  if (supabase) {
+    const { error } = await supabase
+      .from("galeria_config")
+      .update({ itinerario_activo: activo })
+      .eq("id", 1);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  }
+  await new Promise((r) => setTimeout(r, 300));
+  MOCK_CONFIG.itinerario_activo = activo;
+  return { ok: true };
+}
+
 // ─── Fotos ────────────────────────────────────────────────────────────────────
 
 export async function getFotos() {
   if (supabase) {
     const { data, error } = await supabase
       .from("galeria_fotos")
-      .select("id, url, nombre, invitado_id, created_at")
+      .select("id, url, nombre, comentario, invitado_id, created_at")
       .order("created_at", { ascending: false });
     if (error) return [];
     return data ?? [];
@@ -118,8 +148,12 @@ async function comprimirImagen(file, maxPx = 2048, quality = 0.88) {
  * Comprime a max 2048px / 88% calidad antes de subir (~600 KB promedio).
  * @param {File} file
  * @param {string|null} invitadoId - ID del invitado si viene de /inv/:id, null si es QR externo.
+ * @param {string|null} comentario - Comentario opcional del invitado sobre la foto.
+ *
+ * NOTA DB: asegúrate de tener la columna `comentario TEXT` en la tabla galeria_fotos.
+ * SQL: ALTER TABLE galeria_fotos ADD COLUMN IF NOT EXISTS comentario TEXT;
  */
-export async function subirFoto(file, invitadoId = null) {
+export async function subirFoto(file, invitadoId = null, comentario = null) {
   if (supabase) {
     const fileComprimido = await comprimirImagen(file);
     const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`;
@@ -135,7 +169,11 @@ export async function subirFoto(file, invitadoId = null) {
 
     const { error: insertError } = await supabase
       .from("galeria_fotos")
-      .insert({ url: publicUrl, invitado_id: invitadoId });
+      .insert({
+        url: publicUrl,
+        invitado_id: invitadoId,
+        comentario: comentario?.trim() || null,
+      });
     if (insertError) throw new Error(insertError.message);
 
     return { ok: true, url: publicUrl };
@@ -145,6 +183,7 @@ export async function subirFoto(file, invitadoId = null) {
   const mockFoto = {
     id: `mock-${Date.now()}`,
     url: URL.createObjectURL(file),
+    comentario: comentario?.trim() || null,
     invitado_id: invitadoId,
     created_at: new Date().toISOString(),
   };
