@@ -182,7 +182,7 @@
 }
 
 .btn-si {
-  background: var(--color-gold);
+  background: var(--color-burgundy);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -196,7 +196,7 @@
 }
 
 .btn-si:hover {
-  background: var(--color-gold-hover);
+  background: var(--color-burgundy-dark);
 }
 
 .btn-no {
@@ -351,44 +351,32 @@
 
 /* ── 1. Cover ── */
 .inv-cover {
-  background: var(--color-cream-dark) !important; /* fallback si la imagen no carga */
+  background: var(--color-cream-dark) !important;
   padding: 0;
   position: relative;
   overflow: hidden;
   justify-content: center;
 }
 
-/* Imagen de portada — absoluta dentro del cover */
 .inv-cover__bg {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   object-fit: cover;
-  object-position: 50% 20%; /* móvil: enfoca la parte superior (caras) */
+  object-position: 50% 20%;
   filter: brightness(75%);
   z-index: 0;
 }
 
 @media (min-width: 640px) {
-  .inv-cover__bg {
-    object-position: 50% 50%; /* desktop: centrado */
-  }
+  .inv-cover__bg { object-position: 50% 50%; }
 }
 
-/* Gradiente suave — ayuda a leer los nombres sobre la foto */
 .inv-cover__top-fade {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 50dvh;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.15) 0%,
-    transparent 100%
-  );
+  background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 100%);
   z-index: 1;
   pointer-events: none;
 }
@@ -528,12 +516,9 @@
   color: var(--color-gold);
 }
 
-/* Contenedor de nombres — ocupa el top 50vh y centra verticalmente */
 .inv-cover__names-wrap {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 50dvh;
   display: flex;
   flex-direction: column;
@@ -542,7 +527,6 @@
   z-index: 5;
 }
 
-/* Nombres en tipografía script elegante */
 .inv-cover__names-script {
   font-family: 'Great Vibes', cursive;
   font-size: 3.6rem;
@@ -572,30 +556,58 @@
   50%       { transform: translateX(-50%) translateY(6px); }
 }
 
-/* ── 1b. Banner mensaje — pegado al fondo del cover ── */
-.inv-cover__mensaje {
+/* ── 1b. Gradiente inferior + info flotante ── */
+.inv-cover__bottom-fade {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: var(--color-gold);
-  padding: 20px;
-  z-index: 5;
+  bottom: 0; left: 0; right: 0;
+  height: 48dvh;
+  background: linear-gradient(to top, rgba(10,4,2,0.78) 0%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
 }
 
-.inv-cover__mensaje-text {
-  font-family: var(--font-serif), serif;
-  font-size: 1.875rem;
-  font-weight: 400;
-  color: #fff;
-  line-height: 1.5;
+.inv-cover__info {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 0 24px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  z-index: 5;
+  text-align: center;
+}
+
+.inv-cover__info-ornament {
+  font-size: 0.5rem;
+  color: var(--color-gold);
+  letter-spacing: 10px;
+  opacity: 0.8;
+  display: block;
+}
+
+.inv-cover__info-date {
+  font-family: var(--font-sans);
+  font-size: clamp(0.72rem, 2.8vw, 0.88rem);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.92);
   margin: 0;
-  padding: 4px 12px;
+}
+
+.inv-cover__info-city {
+  font-family: var(--font-sans);
+  font-size: clamp(0.62rem, 2.2vw, 0.74rem);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.52);
+  margin: 0;
 }
 
 /* ── 2. Passes ── */
 .inv-passes {
-  background: var(--color-gold) !important;
+  background: var(--color-champagne) !important;
   padding: 0 28px;
   justify-content: center;
   align-items: center;
@@ -799,7 +811,7 @@
 
 /* ── 3. The Date ── */
 .inv-date-section {
-  background: var(--color-cream) !important;
+  background: var(--color-marfil) !important;
   padding: 0 28px;
   justify-content: center;
   align-items: center;
@@ -823,21 +835,7 @@
 }
 
 .inv-date__script {
-  font-family: 'Great Vibes', cursive;
-  font-size: clamp(3.4rem, 12vw, 5rem);
-  font-weight: 400;
-  color: var(--color-gold);
-  line-height: 1.1;
   margin: 0;
-  letter-spacing: 0.04em;
-}
-
-.inv-date__divider {
-  width: 48px;
-  height: 1px;
-  background: var(--color-gold);
-  margin: 0 auto;
-  opacity: 0.7;
 }
 
 .inv-date__str {
@@ -847,7 +845,7 @@
   font-style: normal;
   letter-spacing: 5px;
   text-transform: uppercase;
-  color: var(--color-text);
+  color: var(--color-text-muted);
   margin: 0;
 }
 
@@ -884,7 +882,7 @@
 .inv-date__cal-btn {
   width: 100%;
   padding: 14px 20px;
-  border: 1px solid var(--color-text);
+  border: 1px solid rgba(125,26,44,0.35);
   border-radius: 0;
   background: none;
   font-family: var(--font-sans), sans-serif;
@@ -892,20 +890,20 @@
   font-weight: 500;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--color-text);
+  color: var(--color-burgundy);
   cursor: pointer;
   min-height: 48px;
   transition: background 0.2s, color 0.2s;
 }
 
 .inv-date__cal-btn:hover {
-  background: var(--color-text);
-  color: #fff;
+  background: var(--color-burgundy);
+  color: var(--color-marfil);
 }
 
 /* ── 4. Families ── */
 .inv-families {
-  background: var(--color-gold) !important;
+  background: var(--color-champagne) !important;
   padding: 0 28px;
   justify-content: center;
   align-items: center;
@@ -975,7 +973,7 @@
 
 /* ── 5. Sponsors ── */
 .inv-sponsors {
-  background: var(--color-cream) !important;
+  background: var(--color-marfil) !important;
   padding: 0 28px;
   justify-content: center;
   align-items: center;
@@ -1101,7 +1099,7 @@
 }
 
 .inv-sponsors__dot--active {
-  background: var(--color-gold);
+  background: var(--color-burgundy);
 }
 
 /* ── 6. Schedule ── */
@@ -1129,8 +1127,7 @@
 .inv-schedule__msg {
   font-family: var(--font-sans);
   font-size: 0.8rem;
-  color: var(--color-cream);
-  opacity: 0.85;
+  color: var(--color-text-muted);
   line-height: 1.5;
   text-align: center;
   margin-bottom: 8px;
@@ -1153,7 +1150,7 @@
   top: 0;
   bottom: 0;
   width: 1px;
-  background: rgba(180, 155, 107, 0.35);
+  background: rgba(196, 160, 72, 0.45);
   pointer-events: none;
 }
 
@@ -1173,7 +1170,9 @@
   width: 40px;
   height: 40px;
   color: var(--color-gold);
-  background: #1a1410;
+  background: var(--color-marfil);
+  border-radius: 50%;
+  border: 1px solid rgba(196,160,72,0.4);
   z-index: 1;
   position: relative;
 }
@@ -1207,7 +1206,7 @@
   font-family: var(--font-serif);
   font-style: italic;
   font-size: 0.88rem;
-  color: var(--color-cream);
+  color: var(--color-text);
   line-height: 1.2;
 }
 
@@ -1218,11 +1217,30 @@
   font-weight: 500;
 }
 
+/* Pending state */
+.inv-vtimeline__row--pending .inv-vtimeline__icon {
+  opacity: 0.3;
+}
+
+.inv-vtimeline__pending-badge {
+  font-family: var(--font-sans);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  opacity: 0.55;
+  padding: 3px 8px;
+  border: 1px dashed rgba(90,74,80,0.3);
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
 /* Footer gold bar */
 .inv-schedule__footer {
   margin-top: 12px;
   background: var(--color-gold);
-  color: #1a1410;
+  color: var(--color-burgundy);
   font-family: var(--font-serif);
   font-size: 0.95rem;
   letter-spacing: 5px;
@@ -1232,46 +1250,18 @@
   border-radius: 3px;
 }
 
-/* Vista en construcción del itinerario */
-.inv-schedule__construction {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  padding: 32px 16px;
-  text-align: center;
-}
-
-.inv-schedule__construction-icon {
-  font-size: 2.4rem;
-  display: block;
-}
-
-.inv-schedule__construction-text {
-  font-family: var(--font-sans);
-  font-size: 0.9rem;
-  color: rgba(249,245,239,0.65);
-  margin: 0;
-  line-height: 1.6;
-  max-width: 280px;
-}
-
 /* ── 7. Venues ── */
 .inv-venues {
+  background: var(--color-marfil) !important;
   padding: 0 28px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-/* Variant: fondo dorado (iglesia) */
+/* Variant: fondo champagne (salón) */
 .inv-venues--gold {
-  background: var(--color-gold) !important;
-}
-
-.inv-venues--gold h2,
-.inv-venues--gold .inv-section__label {
-  color: white;
+  background: var(--color-champagne) !important;
 }
 
 /* Variant: fondo cream (salón) */
@@ -1315,7 +1305,7 @@
   font-family: var(--font-serif), serif;
   font-style: italic;
   font-size: 1.1rem;
-  color: var(--color-text);
+  color: var(--color-burgundy);
   font-weight: 600;
   margin-bottom: 6px;
 }
@@ -1415,8 +1405,23 @@
 }
 
 .inv-weather__temp {
-  font-size: 0.6rem;
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-burgundy);
+  line-height: 1;
+}
+
+.inv-weather__temp-min {
+  font-size: 0.62rem;
   color: var(--color-text-muted);
+  line-height: 1;
+}
+
+.inv-weather__rain {
+  font-size: 0.55rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
 }
 
 .inv-weather__disclaimer {
@@ -1427,7 +1432,7 @@
 
 /* ── 9. Gift Registry ── */
 .inv-registry {
-  background: var(--color-gold) !important;
+  background: var(--color-champagne) !important;
   padding: 0 28px;
   justify-content: center;
   align-items: center;
@@ -1483,9 +1488,13 @@
   flex-direction: column;
   gap: 14px;
   text-align: center;
-  margin-top: 8px;
   max-width: 340px;
   width: 100%;
+}
+
+.inv-dresscode__card h2,
+.inv-dresscode__card .inv-section__label {
+  margin-bottom: 0;
 }
 
 .inv-dresscode__icons {
@@ -1541,7 +1550,7 @@
 
 /* ── 11. Good to Know ── */
 .inv-notes {
-  background: var(--color-cream) !important;
+  background: var(--color-champagne) !important;
   padding: 0 28px;
   justify-content: center;
   align-items: center;
@@ -1606,7 +1615,7 @@
 
 /* ── 12. Gallery (fotos de los novios) ── */
 .inv-gallery {
-  background: var(--color-cream-dark) !important;
+  background: var(--color-champagne) !important;
   padding: 0 20px;
   justify-content: center;
   align-items: center;
@@ -1617,7 +1626,13 @@
 .inv-gallery .inv-section__inner {
   width: 100%;
   max-width: 420px;
-  padding: 32px 0 40px;
+  padding: 28px 20px 32px;
+  background-image: url("/assets/texture.jpg");
+  background-size: cover;
+  background-position: center;
+  background-color: var(--color-marfil);
+  border: 1px solid rgba(180,155,107,0.28);
+  border-radius: 16px;
 }
 
 .inv-gallery .inv-section__label {
@@ -1805,7 +1820,7 @@
 
 /* ── 13. Farewell ── */
 .inv-farewell {
-  background: var(--color-gold) !important;
+  background: var(--color-marfil) !important;
   padding: 0 28px 48px;
   justify-content: center;
   align-items: center;
@@ -1853,7 +1868,7 @@
 .inv-farewell__names {
   font-family: var(--font-serif), serif;
   font-size: 2rem;
-  color: var(--color-text);
+  color: var(--color-burgundy);
   font-weight: 600;
 }
 
@@ -1893,7 +1908,7 @@
 
 /* ── Event Photos section ── */
 .inv-event-photos {
-  background: #1a1410 !important;
+  background: var(--color-marfil) !important;
   padding: 0 28px;
   justify-content: center;
   align-items: center;
@@ -1960,7 +1975,7 @@
   font-size: 0.95rem;
   font-weight: 600;
   color: #fff;
-  background: var(--color-gold);
+  background: var(--color-burgundy);
   text-decoration: none;
   border-radius: 12px;
   padding: 13px 32px;
@@ -1970,7 +1985,7 @@
 
 .inv-event-photos__btn:hover:not(:disabled),
 .inv-event-photos__btn:not(:disabled):hover {
-  background: var(--color-gold-hover);
+  background: var(--color-burgundy-dark);
   transform: scale(1.03);
 }
 
@@ -2107,66 +2122,91 @@
   margin: 0;
 }
 
-/* ── Dark sections (Schedule · Weather · Dresscode · EventPhotos) ── */
-.inv-schedule,
-.inv-weather,
-.inv-dresscode {
-  background: #1a1410 !important;
+/* ── Schedule — champagne ── */
+.inv-schedule {
+  background: var(--color-champagne) !important;
   padding: 0 28px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-/* h2 blanco en secciones oscuras */
-.inv-schedule h2,
-.inv-weather h2,
-.inv-dresscode h2,
-.inv-event-photos h2 {
-  color: var(--color-cream);
+/* ── Weather — marfil ── */
+.inv-weather {
+  background: var(--color-marfil) !important;
+  padding: 0 28px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-/* Weather — texto sobre fondo oscuro */
-.inv-weather .inv-weather__note,
-.inv-weather .inv-weather__day-date,
-.inv-weather .inv-weather__temp,
-.inv-weather .inv-weather__disclaimer {
-  color: rgba(249,245,239,0.55);
-}
-
-.inv-weather .inv-weather__day {
-  border-color: rgba(255,255,255,0.12);
-  background: transparent;
-}
-
+/* Weather — borde del día resaltado en dorado */
 .inv-weather .inv-weather__day--wedding {
   border-color: var(--color-gold);
-  background: rgba(180,155,107,0.15);
+  background: rgba(196,160,72,0.12);
 }
 
-/* Dresscode — inner container */
+/* ── Dresscode — marfil ── */
+.inv-dresscode {
+  background: var(--color-marfil) !important;
+  padding: 0 28px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .inv-dresscode .inv-section__inner {
   width: 100%;
   max-width: 380px;
 }
 
-/* EventPhotos — texto sobre fondo oscuro */
-.inv-event-photos .inv-event-photos__sub {
-  color: rgba(249,245,239,0.65);
+/* ════════════════════════════════════════════════════════
+   SISTEMA DE ROLES — color por elemento, no por sección
+   ════════════════════════════════════════════════════════ */
+
+/* Borgoña: todos los h2 en secciones claras */
+.inv-section h2 {
+  color: var(--color-burgundy);
+}
+
+/* ── Orla decorativa bajo cada h2 ── */
+.inv-section h2::after {
+  content: '';
+  display: block;
+  width: 52px;
+  height: 1.5px;
+  background: linear-gradient(to right, transparent, var(--color-gold), transparent);
+  margin: 10px auto 0;
 }
 
 
-/* Cover: pantallas pequeñas ── */
+/* ── Divisor decorativo entre secciones ── */
+.inv-section:not(.inv-cover)::before {
+  content: '◇';
+  display: block;
+  font-size: 0.55rem;
+  color: rgba(196, 160, 72, 0.55);
+  text-align: center;
+  letter-spacing: 10px;
+  padding: 10px 0 0;
+  pointer-events: none;
+}
+
+/* Notas: iconos en olivo */
+.inv-notes__icon {
+  color: var(--color-olive);
+}
+
+/* ── Botón calendario — sobre fondo marfil ── */
+/* Ya definido arriba; el hover invierte a borgoña */
+
+
 @media (max-width: 480px) {
-  .inv-cover__names-script {
-    font-size: 3rem;
-  }
+  .inv-cover__names-script { font-size: 3rem; }
 }
 
 @media (max-width: 360px) {
-  .inv-cover__names-script {
-    font-size: 2.4rem;
-  }
+  .inv-cover__names-script { font-size: 2.4rem; }
 
   .inv-section h2 {
     font-size: 1.5rem;

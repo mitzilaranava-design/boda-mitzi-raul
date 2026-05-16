@@ -9,7 +9,6 @@ export default function InvCover() {
       animate={{ opacity: 1 }}
       transition={{ duration: 1.4, ease: "easeOut" }}
     >
-      {/* Imagen de fondo */}
       <img
         src="/assets/cover.jpg"
         className="inv-cover__bg"
@@ -18,24 +17,24 @@ export default function InvCover() {
         loading="eager"
       />
 
-      {/* Gradiente suave en la parte superior */}
       <div className="inv-cover__top-fade" />
+      <div className="inv-cover__bottom-fade" />
 
-      {/* Nombres — centrados en el top 50% */}
       <div className="inv-cover__names-wrap">
         <h1 className="inv-cover__names-script">
           {WEDDING.bride} &amp; {WEDDING.groom}
         </h1>
       </div>
 
-      {/* Banner mensaje — se revela de izquierda a derecha como una cortina */}
       <motion.div
-        className="inv-cover__mensaje"
-        initial={{ clipPath: "inset(0 100% 0 0)" }}
-        animate={{ clipPath: "inset(0 0% 0 0)" }}
-        transition={{ duration: 1.1, delay: 1.8, ease: [0.76, 0, 0.24, 1] }}
+        className="inv-cover__info"
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 1.6, ease: "easeOut" }}
       >
-        <h4 className="inv-cover__mensaje-text">{WEDDING.message1}</h4>
+        <span className="inv-cover__info-ornament">✦ &nbsp;·&nbsp; ✦</span>
+        <p className="inv-cover__info-date">21 · Noviembre · 2026</p>
+        <p className="inv-cover__info-city">Cuernavaca, Morelos</p>
       </motion.div>
     </motion.section>
   );

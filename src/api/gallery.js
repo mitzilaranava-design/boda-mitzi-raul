@@ -13,7 +13,8 @@
  * ─────────────────────────────────────────────────
  */
 
-import { supabase } from "../lib/supabase";
+import { supabase }       from "../lib/supabase";
+import { supabaseBackup } from "../lib/supabaseBackup";
 
 // ─── Mock ────────────────────────────────────────────────────────────────────
 
@@ -87,7 +88,7 @@ export async function getFotos() {
     const { data, error } = await supabase
       .from("galeria_fotos")
       .select("id, url, nombre, comentario, invitado_id, created_at")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: true });
     if (error) return [];
     return data ?? [];
   }
@@ -155,8 +156,22 @@ async function comprimirImagen(file, maxPx = 2048, quality = 0.88) {
  */
 export async function subirFoto(file, invitadoId = null, comentario = null) {
   if (supabase) {
+    // Nombre base compartido → permite correlacionar original con comprimido
+    const baseName = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const ext      = file.name.match(/\.\w+$/)?.[0]?.toLowerCase() ?? ".jpg";
+
+    // ── 1. Guardar original (paralelo, no bloqueante) ──────────────────────
+    // Usa proyecto Supabase separado si VITE_SUPABASE_BACKUP_* están en .env,
+    // si no, cae en el mismo proyecto con bucket privado "gallery-originals".
+    const clienteOriginal = supabaseBackup ?? supabase;
+    clienteOriginal.storage
+      .from("gallery-originals")
+      .upload(`${baseName}${ext}`, file, { cacheControl: "3600", upsert: false })
+      .catch(() => {});
+
+    // ── 2. Comprimir y subir versión pública (flujo principal) ─────────────
     const fileComprimido = await comprimirImagen(file);
-    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`;
+    const fileName = `${baseName}.jpg`;
 
     const { error: uploadError } = await supabase.storage
       .from("gallery")
@@ -178,6 +193,7 @@ export async function subirFoto(file, invitadoId = null, comentario = null) {
 
     return { ok: true, url: publicUrl };
   }
+
   // Mock: simula subida y agrega foto local
   await new Promise((r) => setTimeout(r, 800));
   const mockFoto = {

@@ -19,7 +19,54 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
-### 2026-05-13 18:38 — Padrinos, itinerario configurable, actualizaciones WA, galería sin descarga
+### 2026-05-14 — Galería fotos más pequeñas (3 cols móvil), itinerario con items pendientes visibles
+- **Quién**: Raúl / Claude
+- **Qué**: (1) Galería: grid pasa de 2 a 3 columnas en móvil y de 3 a 4 en 600px+, gap reducido a 4px. (2) InvSchedule: siempre muestra el timeline completo; cuando `itinerario_activo = false`, solo la Ceremonia Religiosa es visible y los 4 items restantes muestran badge "En planeación" con ícono atenuado. Eliminada la vista "en construcción" sin timeline. CSS: nuevas clases `.inv-vtimeline__row--pending` y `.inv-vtimeline__pending-badge`.
+- **Archivos**: `src/styles/Gallery.css`, `src/components/invitation/InvSchedule.jsx`, `src/styles/Invitation.css`
+
+### 2026-05-14 — Fix: comentario no visible en foto propia + duplicado en galería
+- **Quién**: Raúl / Claude
+- **Qué**: (1) `mockFoto` ahora incluye `comentario` → el uploader ve su propio comentario en el lightbox inmediatamente tras subir. (2) Dedup en `subscribeFotos` cambiado de `f.id` a `f.url` → evita que la foto aparezca duplicada (mock local + realtime con IDs distintos). (3) `setComentario("")` agregado al flujo de éxito de `handleUpload`. Aplica tanto a acceso por invitación como por token QR.
+- **Archivos**: `src/pages/Gallery.jsx`
+
+### 2026-05-14 — Intro: logo monograma M&R reemplaza sello SVG, fondo marfil
+- **Quién**: Raúl / Claude
+- **Qué**: `Intro.jsx`: reemplazado `<Monogram />` por `<img logo-sencillo.png>` manteniendo la animación de pulso y hover existente. `App.css`: fondo del intro cambiado de gradiente cream a marfil #f5f2e5, agregado `.intro__logo` (260px max). `InvCover.jsx` y su CSS revertidos a estado correcto (foto + gradientes + nombres Great Vibes + fecha flotante). Logo copiado a `public/assets/logo-sencillo.png`.
+- **Archivos**: `src/pages/Intro.jsx`, `src/App.css`, `src/components/invitation/InvCover.jsx`, `src/styles/Invitation.css`
+
+### 2026-05-14 — Portada: logo monograma M&R sobre fondo marfil
+- **Quién**: Raúl / Claude
+- **Qué**: InvCover reemplazado por completo. Eliminados: foto de fondo, gradientes, nombres en Great Vibes. Nuevo diseño: fondo marfil (#f5f2e5) con logo monograma `public/assets/logo-sencillo.png` centrado + fecha y ciudad en borgoña/muted debajo. Logo copiado de `docs/` a `public/assets/`. CSS limpiado: removidos `.inv-cover__bg`, `.inv-cover__top-fade`, `.inv-cover__bottom-fade`, `.inv-cover__names-wrap`, `.inv-cover__names-script` y sus media queries. Colores de fecha/ciudad actualizados de blanco (sobre foto oscura) a borgoña/muted (sobre marfil).
+- **Archivos**: `src/components/invitation/InvCover.jsx`, `src/styles/Invitation.css`, `public/assets/logo-sencillo.png`
+
+### 2026-05-14 — Portada rediseñada: banner dorado eliminado, fecha y ciudad flotantes
+- **Quién**: Raúl / Claude
+- **Qué**: InvCover: eliminado banner `background: gold` con message1. Reemplazado por gradiente oscuro suave en la mitad inferior de la foto + bloque flotante con ornamento ✦·✦, fecha "21 · Noviembre · 2026" y ciudad "Cuernavaca, Morelos". El dorado queda solo como acento del ornamento, sin bloques de color pesado.
+- **Archivos**: `src/components/invitation/InvCover.jsx`, `src/styles/Invitation.css`
+
+### 2026-05-14 — InvDate e InvVenues: homologación de tipografía y color
+- **Quién**: Raúl / Claude
+- **Qué**: (1) "¡Nos Casamos!" cambiado de Great Vibes cursiva+dorado a Playfair Display borgoña, igual que todos los demás h2 de sección. Eliminado `inv-date__divider` (reemplazado por la orla h2::after estándar). (2) Nombre de lugar en tarjetas de Venues cambiado de `color-text` (#222) a `color-burgundy`, igualando color con el resto de títulos.
+- **Archivos**: `src/styles/Invitation.css`, `src/components/invitation/InvDate.jsx`
+
+### 2026-05-15 23:44 — Fix: originales no se guardaban en proyecto backup
+- **Quién**: Raúl / Claude
+- **Qué**: `supabaseBackup.js`: la URL en `.env` tenía sufijo `/rest/v1` que causaba path duplicado (`/rest/v1/storage/v1/...`). Agregada normalización que elimina ese sufijo y trailing slash antes de crear el cliente. `gallery.js`: removidos console.log de debug; `.catch` simplificado a no-op silencioso.
+- **Archivos**: `src/lib/supabaseBackup.js`, `src/api/gallery.js`
+
+### 2026-05-15 — Clima: pronóstico con máx/mín y probabilidad de lluvia por día
+- **Quién**: Raúl / Claude
+- **Qué**: `InvWeather`: API amplía campos a `temperature_2m_max`, `temperature_2m_min`, `precipitation_probability_max`. Cada día muestra tres filas: temp máx (borgoña), temp mín (muted) y prob. lluvia con 💧. Disclaimer actualizado a "Máx · Mín · Prob. lluvia · Fuente: Open-Meteo". Semana sigue siendo 17–23 noviembre 2026.
+- **Archivos**: `src/components/invitation/InvWeather.jsx`, `src/styles/Invitation.css`
+
+*Agregar nuevas entradas arriba de esta línea.*
+
+### 2026-05-14 — Hora en fotos, tarjeta QR galería, backup original de fotos, pendiente Supabase Pro
+- **Quién**: Raúl / Claude
+- **Qué**: (1) Timestamp frosted-glass en esquina superior de cada foto de galería. (2) `docs/tarjeta-galeria-qr.html`: tarjeta imprimible con QR dinámico para compartir fotos en el evento. (3) `src/lib/supabaseBackup.js`: cliente Supabase opcional para proyecto secundario. (4) `src/api/gallery.js`: sube original sin comprimir a `gallery-originals` en paralelo (fire-and-forget); comprimido sigue igual. (5) Memoria: activar Supabase Pro en noviembre 2026 para proyecto originals. (6) Correcciones visuales: separador duplicado en InvDate, botón regresar galería, dresscode fuera del card, InvGallery sin inner card, alternancia marfil/champagne de 15 secciones.
+- **Archivos**: `src/api/gallery.js`, `src/lib/supabaseBackup.js`, `src/pages/Gallery.jsx`, `src/styles/Gallery.css`, `src/styles/Invitation.css`, `src/components/invitation/InvDresscode.jsx`, `docs/tarjeta-galeria-qr.html`
+
+### 2026-05-14 — Galería fotos más pequeñas (3 cols móvil), itinerario con items pendientes visibles
 - **Quién**: Raúl / Claude
 - **Qué**: (1) Anillos: solo madrina (Denisse Adriana Vargas). (2) Padrinos Biblia y Rosario añadidos: Mayra Lara, Evaristo Antúnez & Levi Lara. (3) Itinerario con toggle ON/OFF desde panel admin; vista "en construcción" cuando está inactivo. (4) Botón "Enviar actualizaciones" en admin: textarea con descripción, genera link WA individual por invitado, marca `actualizacion_enviada`. (5) Galería de /galeria sin botón descargar; imágenes sin clic-derecho ni arrastre; botón "Regresar" al inv si viene de /inv/:id. (6) Archivos sensibles removidos del repo (lista-save-the-date.csv, insert-invitados.sql) y agregados a .gitignore. (7) Rediseño visual: notas, despedida, código de vestimenta, event-photos con nuevos elementos UI.
 - **Archivos**: `.gitignore`, `src/api/gallery.js`, `src/api/invitations.js`, `src/data/wedding.js`, `src/pages/Admin.jsx`, `src/pages/Gallery.jsx`, `src/pages/Invitation.jsx`, `src/components/invitation/InvSchedule.jsx`, `src/components/invitation/InvSponsors.jsx`, `src/components/invitation/InvNotes.jsx`, `src/components/invitation/InvFarewell.jsx`, `src/components/invitation/InvDresscode.jsx`, `src/components/invitation/InvEventPhotos.jsx`, `src/components/invitation/InvRegistry.jsx`, `src/components/invitation/InvGallery.jsx`, `src/styles/Gallery.css`, `src/styles/Invitation.css`, `docs/CAMBIOS-Y-REQUISITOS.txt`, `public/music/save-the-date.mp3`

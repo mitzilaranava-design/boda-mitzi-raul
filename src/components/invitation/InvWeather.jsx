@@ -8,10 +8,10 @@ const LON = -99.2319;
 
 // Semana de la boda: lun 17 nov → dom 23 nov 2026
 const WEEK = [
-  { day: "Mar", date: "17", iso: "2026-11-17" },
-  { day: "Mié", date: "18", iso: "2026-11-18" },
-  { day: "Jue", date: "19", iso: "2026-11-19" },
-  { day: "Vie", date: "20", iso: "2026-11-20" },
+  { day: "Lun", date: "17", iso: "2026-11-17" },
+  { day: "Mar", date: "18", iso: "2026-11-18" },
+  { day: "Mié", date: "19", iso: "2026-11-19" },
+  { day: "Jue", date: "20", iso: "2026-11-20" },
   { day: "Sáb", date: "21", iso: "2026-11-21", wedding: true },
   { day: "Dom", date: "22", iso: "2026-11-22" },
   { day: "Lun", date: "23", iso: "2026-11-23" },
@@ -50,7 +50,7 @@ export default function InvWeather() {
     fetch(
       `https://api.open-meteo.com/v1/forecast` +
       `?latitude=${LAT}&longitude=${LON}` +
-      `&daily=temperature_2m_max,weathercode` +
+      `&daily=temperature_2m_max,temperature_2m_min,weathercode,precipitation_probability_max` +
       `&timezone=America%2FMexico_City` +
       `&start_date=${start}&end_date=${end}`
     )
@@ -63,8 +63,10 @@ export default function InvWeather() {
         setForecast(
           WEEK.map((w, i) => ({
             ...w,
-            icon: codeToIcon(data.daily.weathercode[i]),
-            temp: Math.round(data.daily.temperature_2m_max[i]),
+            icon:  codeToIcon(data.daily.weathercode[i]),
+            tMax:  Math.round(data.daily.temperature_2m_max[i]),
+            tMin:  Math.round(data.daily.temperature_2m_min[i]),
+            rain:  data.daily.precipitation_probability_max[i] ?? 0,
           }))
         );
         setStatus("ok");
@@ -88,7 +90,7 @@ export default function InvWeather() {
 
           {(status === "ok" && forecast) && (
             <div className="inv-weather__grid">
-              {forecast.map(({ day, date, icon, temp, wedding }) => (
+              {forecast.map(({ day, date, icon, tMax, tMin, rain, wedding }) => (
                 <div
                   key={date}
                   className={`inv-weather__day${wedding ? " inv-weather__day--wedding" : ""}`}
@@ -96,7 +98,9 @@ export default function InvWeather() {
                   <span className="inv-weather__day-name">{day}</span>
                   <span className="inv-weather__day-date">{date}</span>
                   <span className="inv-weather__icon">{icon}</span>
-                  <span className="inv-weather__temp">{temp} °C</span>
+                  <span className="inv-weather__temp">{tMax}°</span>
+                  <span className="inv-weather__temp-min">{tMin}°</span>
+                  <span className="inv-weather__rain">💧 {rain}%</span>
                 </div>
               ))}
             </div>
@@ -136,7 +140,7 @@ export default function InvWeather() {
 
           <p className="inv-weather__disclaimer">
             {status === "ok"
-              ? "* Temperatura máxima · Fuente: Open-Meteo"
+              ? "* Máx · Mín · Prob. lluvia · Fuente: Open-Meteo"
               : "* Pronóstico disponible próximamente"}
           </p>
         </div>

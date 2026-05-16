@@ -115,43 +115,31 @@ export default function InvSchedule() {
       <div className="inv-section__inner inv-section__inner--center">
         <div className="inv-schedule__card">
 
-          {!activo ? (
-            <>
-              <p className="inv-schedule__msg">¡Nos gustaría mucho que nos acompañaras!</p>
-              <h2>Itinerario</h2>
-              <div className="inv-schedule__construction">
-                <span className="inv-schedule__construction-icon">🗓️</span>
-                <p className="inv-schedule__construction-text">
-                  Próximamente compartiremos los detalles del itinerario del evento
-                </p>
-              </div>
-            </>
-          ) : (
-            <>
-
-          {/* Message */}
-          <p className="inv-schedule__msg">
-            ¡Nos gustaría mucho que nos acompañaras!
-          </p>
-
+          <p className="inv-schedule__msg">¡Nos gustaría mucho que nos acompañaras!</p>
           <h2>Itinerario</h2>
 
-          {/* Vertical timeline */}
           <div className="inv-vtimeline">
             <div className="inv-vtimeline__line" />
 
             {WEDDING.schedule.map((item, i) => {
               const isReverse = i % 2 !== 0;
+              const isPending = !activo && i > 0;
               return (
                 <div
                   key={item.time}
-                  className={`inv-vtimeline__row${isReverse ? " inv-vtimeline__row--reverse" : ""}`}
+                  className={`inv-vtimeline__row${isReverse ? " inv-vtimeline__row--reverse" : ""}${isPending ? " inv-vtimeline__row--pending" : ""}`}
                 >
                   <div className="inv-vtimeline__side inv-vtimeline__side--left">
                     {isReverse && (
                       <div className="inv-vtimeline__content inv-vtimeline__content--left">
-                        <span className="inv-vtimeline__event">{item.event}</span>
-                        <span className="inv-vtimeline__time">{item.time}</span>
+                        {isPending ? (
+                          <span className="inv-vtimeline__pending-badge">En planeación</span>
+                        ) : (
+                          <>
+                            <span className="inv-vtimeline__event">{item.event}</span>
+                            <span className="inv-vtimeline__time">{item.time}</span>
+                          </>
+                        )}
                       </div>
                     )}
                   </div>
@@ -163,8 +151,14 @@ export default function InvSchedule() {
                   <div className="inv-vtimeline__side inv-vtimeline__side--right">
                     {!isReverse && (
                       <div className="inv-vtimeline__content inv-vtimeline__content--right">
-                        <span className="inv-vtimeline__event">{item.event}</span>
-                        <span className="inv-vtimeline__time">{item.time}</span>
+                        {isPending ? (
+                          <span className="inv-vtimeline__pending-badge">En planeación</span>
+                        ) : (
+                          <>
+                            <span className="inv-vtimeline__event">{item.event}</span>
+                            <span className="inv-vtimeline__time">{item.time}</span>
+                          </>
+                        )}
                       </div>
                     )}
                   </div>
@@ -173,10 +167,7 @@ export default function InvSchedule() {
             })}
           </div>
 
-          {/* Footer bar */}
           <div className="inv-schedule__footer">M &amp; R</div>
-            </>
-          )}
 
         </div>
       </div>

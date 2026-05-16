@@ -32,8 +32,16 @@ html {
 /* ===== INTRO ===== */
 /* Solo fondo y textura — el layout lo maneja .intro-clean */
 .intro {
-  background: linear-gradient(to bottom right, var(--color-cream), var(--color-cream-dark));
+  background: #f5f2e5;
   position: relative;
+}
+
+.intro__logo {
+  width: min(72vw, 260px);
+  height: auto;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .intro::before {

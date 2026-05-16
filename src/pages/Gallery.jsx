@@ -35,9 +35,9 @@ export default function Gallery() {
 
     const unsub = subscribeFotos((nuevaFoto) => {
       setFotos((prev) => {
-        // Evitar duplicados si ya llegó por el upload local
-        if (prev.some((f) => f.id === nuevaFoto.id)) return prev;
-        return [nuevaFoto, ...prev];
+        // Dedup por URL: el mock local y el registro de realtime comparten la misma URL
+        if (prev.some((f) => f.url === nuevaFoto.url)) return prev;
+        return [...prev, nuevaFoto];
       });
     });
 
@@ -87,12 +87,14 @@ export default function Gallery() {
             id: `local-${Date.now()}`,
             url: result.url,
             nombre: null,
+            comentario: comentario?.trim() || null,
             created_at: new Date().toISOString(),
           };
-          return [mockFoto, ...prev];
+          return [...prev, mockFoto];
         });
       }
       setShowUpload(false);
+      setComentario("");
       if (fileRef.current) fileRef.current.value = "";
     } catch (err) {
       setUploadError(err.message ?? "Error al subir la foto");
@@ -156,6 +158,14 @@ export default function Gallery() {
                     draggable={false}
                     onContextMenu={(e) => e.preventDefault()}
                   />
+                  {foto.created_at && (
+                    <span className="gallery-item__time">
+                      {new Date(foto.created_at).toLocaleTimeString("es-MX", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>

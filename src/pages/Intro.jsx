@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
-import Monogram from "../components/Monogram";
 
 export default function Intro() {
   const { id } = useParams();
@@ -32,7 +31,12 @@ export default function Intro() {
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.95 }}
         >
-          <Monogram />
+          <img
+            src="/assets/logo-sencillo.png"
+            className="intro__logo"
+            alt="Monograma M y R"
+            draggable={false}
+          />
         </motion.div>
 
         {/* Texto indicativo sutil */}

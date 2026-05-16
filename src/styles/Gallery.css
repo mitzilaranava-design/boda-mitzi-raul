@@ -18,14 +18,15 @@
 .gallery-header {
   text-align: center;
   padding: 52px 24px 32px;
-  background: var(--color-gold);
+  background: var(--color-burgundy);
   position: relative;
 }
 
 .gallery-back-btn {
   position: absolute;
-  top: 16px;
-  left: 16px;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: var(--font-sans);
   font-size: 0.8rem;
   letter-spacing: 0.06em;
@@ -133,16 +134,16 @@
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 6px;
-  padding: 16px 8px 110px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 12px 6px 110px;
 }
 
 @media (min-width: 600px) {
   .gallery-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    padding: 20px 12px 110px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    padding: 16px 10px 110px;
   }
 }
 
@@ -164,6 +165,27 @@
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   transition: box-shadow 0.2s, transform 0.2s;
+  position: relative;
+}
+
+.gallery-item__time {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: rgba(20,10,8,0.85);
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
 }
 
 .gallery-item:hover {
@@ -194,7 +216,7 @@
   width: 58px;
   height: 58px;
   border-radius: 50%;
-  background: var(--color-gold);
+  background: var(--color-burgundy);
   color: #fff;
   border: none;
   cursor: pointer;
@@ -202,15 +224,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(180,155,107,0.45);
+  box-shadow: 0 4px 20px rgba(125,26,44,0.35);
   transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
   z-index: 100;
 }
 
 .gallery-upload-btn:hover {
-  background: var(--color-gold-hover);
+  background: var(--color-burgundy-dark);
   transform: scale(1.08);
-  box-shadow: 0 6px 24px rgba(180,155,107,0.55);
+  box-shadow: 0 6px 24px rgba(125,26,44,0.45);
 }
 
 .gallery-upload-btn:active {
@@ -437,7 +459,7 @@
 
 .upload-btn-primary {
   flex: 1;
-  background: var(--color-gold);
+  background: var(--color-burgundy);
   color: #fff;
   border: none;
   border-radius: 12px;
@@ -451,7 +473,7 @@
 }
 
 .upload-btn-primary:hover:not(:disabled) {
-  background: var(--color-gold-hover);
+  background: var(--color-burgundy-dark);
   transform: scale(1.02);
 }
 
@@ -506,9 +528,9 @@
   font-family: var(--font-sans);
   font-size: 0.9rem;
   font-weight: 500;
-  color: var(--color-gold);
+  color: var(--color-burgundy);
   text-decoration: none;
-  border: 1px solid var(--color-gold);
+  border: 1px solid rgba(125,26,44,0.35);
   border-radius: 10px;
   padding: 12px 22px;
   margin-top: 16px;
@@ -516,6 +538,6 @@
 }
 
 .btn-galeria:hover {
-  background: var(--color-gold);
-  color: #fff;
+  background: var(--color-burgundy);
+  color: var(--color-marfil);
 }

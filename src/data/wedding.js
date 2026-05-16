@@ -80,7 +80,7 @@ export const WEDDING = {
   ],
 
   registry: [
-    { store: "Liverpool", url: "#" },
+    { store: "Liverpool", url: "http://mesaderegalos.liverpool.com.mx/milistaderegalos/52006380" },
   ],
 
   dresscode: {

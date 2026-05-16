@@ -10,8 +10,6 @@ export default function InvDate() {
 
         <h2 className="inv-date__script">¡Nos Casamos!</h2>
 
-        <div className="inv-date__divider" />
-
         <p className="inv-date__str">
           21 &nbsp;·&nbsp; Noviembre &nbsp;·&nbsp; 2026
         </p>

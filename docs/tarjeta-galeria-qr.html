@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tarjeta QR — Galería Boda Mitzi & Raúl</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --burgundy:  #7d1a2c;
+      --gold:      #c4a048;
+      --marfil:    #f5f2e5;
+      --champagne: #f0e4c0;
+      --text:      #1e0a10;
+      --muted:     #5a4a50;
+      --font-serif:'Playfair Display', serif;
+      --font-sans: 'Poppins', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #cfc8bb;
+      font-family: var(--font-sans);
+      padding: 32px 20px 48px;
+    }
+
+    /* ── Panel de configuración (no se imprime) ── */
+    .setup {
+      max-width: 560px;
+      margin: 0 auto 32px;
+      background: white;
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+    .setup h3 {
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--burgundy);
+      margin-bottom: 14px;
+    }
+    .setup label {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    .setup input {
+      width: 100%;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      color: var(--text);
+      border: 1px solid rgba(125,26,44,0.25);
+      border-radius: 8px;
+      padding: 9px 12px;
+      background: var(--marfil);
+      margin-bottom: 12px;
+      outline: none;
+    }
+    .setup input:focus { border-color: var(--gold); }
+    .setup .url-preview {
+      font-size: 0.68rem;
+      color: var(--muted);
+      background: #f0f0ed;
+      border-radius: 6px;
+      padding: 8px 10px;
+      word-break: break-all;
+      line-height: 1.5;
+    }
+    .setup .url-preview span { color: var(--burgundy); font-weight: 500; }
+    .setup .btn-print {
+      margin-top: 14px;
+      background: var(--burgundy);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 22px;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .setup .btn-print:hover { background: #5a1020; }
+
+    /* ── Grid de tarjetas ── */
+    .cards-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: center;
+    }
+
+    /* ── Tarjeta ── */
+    .card {
+      width: 90mm;
+      min-height: 134mm;
+      background: var(--marfil);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      display: flex;
+      flex-direction: column;
+      page-break-inside: avoid;
+    }
+
+    .card__header {
+      background: var(--burgundy);
+      padding: 13px 16px 11px;
+      text-align: center;
+    }
+    .card__names {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      color: #fff;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+    }
+    .card__amp { font-size: 0.9rem; color: var(--gold); margin: 0 5px; }
+    .card__date {
+      font-size: 0.52rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-top: 5px;
+    }
+
+    .card__ornament {
+      text-align: center;
+      font-size: 0.42rem;
+      color: var(--gold);
+      letter-spacing: 8px;
+      padding: 8px 0 3px;
+      opacity: 0.7;
+    }
+
+    .card__body {
+      flex: 1;
+      padding: 8px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+    }
+
+    /* ── QR ── */
+    .card__qr-wrap {
+      width: 56mm;
+      height: 56mm;
+      border: 1.5px solid var(--gold);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .card__qr-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .card__qr-pending {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      opacity: 0.45;
+    }
+    .card__qr-pending span { font-size: 1.8rem; }
+    .card__qr-pending p { font-size: 0.5rem; text-align: center; color: #888; line-height: 1.4; }
+
+    /* ── CTA ── */
+    .card__cta {
+      font-family: var(--font-serif);
+      font-size: 0.78rem;
+      color: var(--burgundy);
+      text-align: center;
+      line-height: 1.42;
+    }
+    .card__cta strong { display: block; font-size: 0.92rem; margin-bottom: 1px; }
+
+    /* ── Divisor ── */
+    .card__divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      opacity: 0.55;
+      flex-shrink: 0;
+    }
+
+    /* ── Retos ── */
+    .card__retos {
+      width: 100%;
+      background: rgba(196,160,72,0.09);
+      border: 1px solid rgba(196,160,72,0.28);
+      border-radius: 7px;
+      padding: 8px 11px;
+    }
+    .card__retos-title {
+      font-size: 0.56rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 3px;
+    }
+    .card__retos-text {
+      font-size: 0.59rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── Acceso alternativo ── */
+    .card__alt {
+      font-size: 0.56rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+      padding: 0 4px;
+    }
+    .card__alt span { color: var(--burgundy); font-weight: 500; }
+
+    /* ── Footer ── */
+    .card__footer {
+      background: var(--champagne);
+      border-top: 1px solid rgba(196,160,72,0.28);
+      padding: 6px 12px;
+      text-align: center;
+    }
+    .card__url {
+      font-size: 0.48rem;
+      color: var(--muted);
+      word-break: break-all;
+      line-height: 1.45;
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { background: white; padding: 10mm; }
+      .setup { display: none; }
+      .cards-wrap { gap: 10mm; }
+      .card { box-shadow: none; border: 1px solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Panel de configuración ── -->
+  <div class="setup">
+    <h3>⚙️ Configurar antes de imprimir</h3>
+
+    <label>Token de galería (valor de VITE_GALLERY_TOKEN en tu .env)</label>
+    <input
+      id="token-input"
+      type="text"
+      placeholder="Ej: mi-token-secreto-2026"
+      oninput="actualizarQR()"
+    />
+
+    <p class="url-preview" id="url-preview">
+      URL del QR: <span id="preview-url">https://overtruthfully-ageless-jayce.ngrok-free.dev/galeria?t=<em>[escribe el token arriba]</em></span>
+    </p>
+
+    <button class="btn-print" onclick="window.print()">🖨️ Imprimir tarjetas</button>
+  </div>
+
+  <!-- ── Tarjetas ── -->
+  <div class="cards-wrap" id="cards-wrap">
+    <!-- Se generan por JS -->
+  </div>
+
+  <script>
+    const BASE_URL = "https://overtruthfully-ageless-jayce.ngrok-free.dev/galeria";
+    const QR_API   = "https://api.qrserver.com/v1/create-qr-code/";
+
+    function qrSrc(token) {
+      const target = token ? `${BASE_URL}?t=${encodeURIComponent(token)}` : "";
+      if (!target) return null;
+      const params = new URLSearchParams({
+        size: "220x220",
+        data: target,
+        color: "7d1a2c",
+        bgcolor: "ffffff",
+        margin: "8",
+        ecc: "M",
+      });
+      return `${QR_API}?${params}`;
+    }
+
+    function cardHTML(token) {
+      const src = qrSrc(token);
+      const fullUrl = token
+        ? `${BASE_URL}?t=${token}`
+        : `${BASE_URL}?t=[token]`;
+
+      const qrInner = src
+        ? `<img class="card__qr-img" src="${src}" alt="QR galería" />`
+        : `<div class="card__qr-pending">
+             <span>📷</span>
+             <p>Escribe el token arriba para generar el QR</p>
+           </div>`;
+
+      return `
+        <div class="card">
+          <div class="card__header">
+            <div class="card__names">Mitzi<span class="card__amp">&amp;</span>Raúl</div>
+            <p class="card__date">21 · Noviembre · 2026 · Cuernavaca</p>
+          </div>
+          <div class="card__ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+          <div class="card__body">
+            <div class="card__qr-wrap">${qrInner}</div>
+            <p class="card__cta">
+              <strong>¡Comparte tus fotos!</strong>
+              Escanea el código y sube las fotos que quieras compartir de nuestra boda
+            </p>
+            <div class="card__divider"></div>
+            <div class="card__retos">
+              <p class="card__retos-title">🎯 Dinámica de retos</p>
+              <p class="card__retos-text">
+                Busca en tu mesa la tarjeta de retos fotográficos. ¡Completa los desafíos
+                y súbelos al álbum! La creatividad es bienvenida.
+              </p>
+            </div>
+            <p class="card__alt">
+              ¿Sin cámara para el QR? <span>También puedes acceder desde el enlace de tu invitación personal.</span>
+            </p>
+          </div>
+          <div class="card__footer">
+            <p class="card__url">${fullUrl}</p>
+          </div>
+        </div>`;
+    }
+
+    function actualizarQR() {
+      const token = document.getElementById("token-input").value.trim();
+      const wrap  = document.getElementById("cards-wrap");
+      const prev  = document.getElementById("preview-url");
+
+      const fullUrl = token
+        ? `${BASE_URL}?t=${token}`
+        : `${BASE_URL}?t=<em>[escribe el token arriba]</em>`;
+      prev.innerHTML = fullUrl;
+
+      // Dos tarjetas idénticas para imprimir más fácil
+      wrap.innerHTML = cardHTML(token) + cardHTML(token);
+    }
+
+    // Render inicial sin token
+    actualizarQR();
+  </script>
+
+</body>
+</html>

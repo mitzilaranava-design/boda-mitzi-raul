@@ -1,12 +1,31 @@
-/* Paleta boda Mitzi & Raúl */
+/* Paleta boda Mitzi & Raúl — nov 2026 */
 :root {
-  --color-cream: #f9f5ef;
-  --color-cream-dark: #f2e8d5;
-  --color-gold: #b49b6b;
-  --color-gold-hover: #9d8558;
-  --color-text: #222;
-  --color-text-muted: #555;
-  --color-bg-info: #fff8f0;
+  /* ── Bases cálidas ── */
+  --color-marfil:        #f5f2e5;   /* base / fondo claro */
+  --color-champagne:     #f0e4c0;   /* fondos cálidos secundarios */
+
+  /* aliases backward-compat */
+  --color-cream:         #f5f2e5;
+  --color-cream-dark:    #f0e4c0;
+  --color-bg-info:       #fdf8f0;
+
+  /* ── Dorado — acentos y detalles ── */
+  --color-gold:          #c4a048;
+  --color-gold-hover:    #ae8f40;
+
+  /* ── Borgoña — color protagonista ── */
+  --color-burgundy:      #7d1a2c;
+  --color-burgundy-dark: #5a1020;
+
+  /* ── Verde Oliva — acento fresco ── */
+  --color-olive:         #6b7a45;
+  --color-olive-light:   #e8edd8;
+
+  /* ── Texto ── */
+  --color-text:          #1e0a10;
+  --color-text-muted:    #5a4a50;
+
+  /* ── Tipografía ── */
   --font-serif: 'Playfair Display', serif;
-  --font-sans: 'Poppins', sans-serif;
+  --font-sans:  'Poppins', sans-serif;
 }
