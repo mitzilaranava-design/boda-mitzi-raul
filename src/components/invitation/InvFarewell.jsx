@@ -1,21 +1,37 @@
-import { motion } from "framer-motion";
-import { WEDDING, fadeUp } from "../../data/wedding";
+import { WEDDING } from "../../data/wedding";
+import InvReveal from "../InvReveal";
 
 export default function InvFarewell() {
   return (
-    <motion.section className="inv-section inv-farewell" {...fadeUp}>
+    <section className="inv-section inv-farewell">
       <div className="inv-section__inner inv-section__inner--center">
-        <div className="inv-farewell__icon">💍</div>
-        <p className="inv-farewell__message">{WEDDING.farewell}</p>
-        <div className="inv-farewell__divider">✦ &nbsp; ✦ &nbsp; ✦</div>
-        <div className="inv-farewell__names">
-          {WEDDING.bride} <span>&amp;</span> {WEDDING.groom}
-        </div>
-        <p className="inv-farewell__date">{WEDDING.date}</p>
+
+        <InvReveal delay={0}>
+          <div className="inv-farewell__icon">💍</div>
+        </InvReveal>
+
+        <InvReveal delay={0.12}>
+          <p className="inv-farewell__message">{WEDDING.farewell}</p>
+        </InvReveal>
+
+        <InvReveal delay={0.24}>
+          <div className="inv-farewell__divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+        </InvReveal>
+
+        <InvReveal delay={0.34}>
+          <div className="inv-farewell__names">
+            {WEDDING.bride} <span>&amp;</span> {WEDDING.groom}
+          </div>
+        </InvReveal>
+
+        <InvReveal delay={0.42}>
+          <p className="inv-farewell__date">{WEDDING.date}</p>
+        </InvReveal>
+
       </div>
       <footer className="inv-farewell__footer">
         Creado con amor por {WEDDING.bride} &amp; {WEDDING.groom} 💛
       </footer>
-    </motion.section>
+    </section>
   );
 }

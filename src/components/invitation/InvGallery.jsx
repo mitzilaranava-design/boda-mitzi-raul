@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { WEDDING, fadeUp } from "../../data/wedding";
+import { WEDDING } from "../../data/wedding";
+import InvReveal from "../InvReveal";
 
 // Patrón de tamaños para el mosaico (se repite si hay más fotos)
 const PATTERN = [
@@ -50,37 +51,54 @@ export default function InvGallery() {
 
   return (
     <>
-      <motion.section className="inv-section inv-gallery" {...fadeUp}>
+      <section className="inv-section inv-gallery">
         <div className="inv-section__inner inv-section__inner--center">
-          <p className="inv-section__label">Nuestros momentos</p>
-          <h2 className="inv-gallery__title">Nuestra Galería</h2>
-          <p className="inv-gallery__sub">de fotos</p>
-          <span className="inv-gallery__ornament">✦ &nbsp; ✦ &nbsp; ✦</span>
+
+          <InvReveal delay={0}>
+            <p className="inv-section__label">Nuestros momentos</p>
+          </InvReveal>
+
+          <InvReveal delay={0.1}>
+            <h2 className="inv-gallery__title">Nuestra Galería</h2>
+          </InvReveal>
+
+          <InvReveal delay={0.18}>
+            <p className="inv-gallery__sub">de fotos</p>
+          </InvReveal>
+
+          <InvReveal delay={0.24}>
+            <span className="inv-gallery__ornament">✦ &nbsp; ✦ &nbsp; ✦</span>
+          </InvReveal>
 
           {photos.length === 0 ? (
-            <div className="inv-gallery__empty">
-              <span className="inv-gallery__empty-icon">🏗️</span>
-              <p className="inv-gallery__empty-title">Galería en construcción</p>
-              <p className="inv-gallery__empty-note">Próximamente nuestros momentos</p>
-            </div>
+            <InvReveal delay={0.32}>
+              <div className="inv-gallery__empty">
+                <span className="inv-gallery__empty-icon">🏗️</span>
+                <p className="inv-gallery__empty-title">Galería en construcción</p>
+                <p className="inv-gallery__empty-note">Próximamente nuestros momentos</p>
+              </div>
+            </InvReveal>
           ) : (
-            <div className="inv-gallery__mosaic">
-              {photos.map((src, i) => (
-                <button
-                  key={src}
-                  type="button"
-                  className="inv-gallery__item"
-                  style={getSpan(i, photos.length)}
-                  onClick={() => setActiveIndex(i)}
-                  aria-label={`Ver foto ${i + 1}`}
-                >
-                  <img src={src} alt={`Foto ${i + 1}`} loading="lazy" />
-                </button>
-              ))}
-            </div>
+            <InvReveal delay={0.32}>
+              <div className="inv-gallery__mosaic">
+                {photos.map((src, i) => (
+                  <button
+                    key={src}
+                    type="button"
+                    className="inv-gallery__item"
+                    style={getSpan(i, photos.length)}
+                    onClick={() => setActiveIndex(i)}
+                    aria-label={`Ver foto ${i + 1}`}
+                  >
+                    <img src={src} alt={`Foto ${i + 1}`} loading="lazy" />
+                  </button>
+                ))}
+              </div>
+            </InvReveal>
           )}
+
         </div>
-      </motion.section>
+      </section>
 
       <AnimatePresence>
         {activeIndex !== null && (

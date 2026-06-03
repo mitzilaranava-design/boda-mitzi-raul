@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { fadeUp } from "../../data/wedding";
+import InvReveal from "../InvReveal";
 
 // Coordenadas de Cuernavaca, Morelos
 const LAT = 18.9261;
@@ -75,76 +74,94 @@ export default function InvWeather() {
   }, []);
 
   return (
-    <motion.section className="inv-section inv-weather" {...fadeUp}>
+    <section className="inv-section inv-weather">
       <div className="inv-section__inner inv-section__inner--center">
         <div className="inv-weather__card">
-          <p className="inv-section__label">Prepárate</p>
-          <h2>Clima de la Semana</h2>
-          <p className="inv-weather__note">
-            Pronóstico para la semana del 21 de noviembre de 2026 · Cuernavaca
-          </p>
+
+          <InvReveal delay={0}>
+            <p className="inv-section__label">Prepárate</p>
+          </InvReveal>
+
+          <InvReveal delay={0.1}>
+            <h2>Clima de la Semana</h2>
+          </InvReveal>
+
+          <InvReveal delay={0.18}>
+            <p className="inv-weather__note">
+              Pronóstico para la semana del 21 de noviembre de 2026 · Cuernavaca
+            </p>
+          </InvReveal>
 
           {status === "loading" && (
             <p className="inv-weather__disclaimer">Cargando pronóstico...</p>
           )}
 
           {(status === "ok" && forecast) && (
-            <div className="inv-weather__grid">
-              {forecast.map(({ day, date, icon, tMax, tMin, rain, wedding }) => (
-                <div
-                  key={date}
-                  className={`inv-weather__day${wedding ? " inv-weather__day--wedding" : ""}`}
-                >
-                  <span className="inv-weather__day-name">{day}</span>
-                  <span className="inv-weather__day-date">{date}</span>
-                  <span className="inv-weather__icon">{icon}</span>
-                  <span className="inv-weather__temp">{tMax}°</span>
-                  <span className="inv-weather__temp-min">{tMin}°</span>
-                  <span className="inv-weather__rain">💧 {rain}%</span>
-                </div>
-              ))}
-            </div>
+            <InvReveal delay={0.28}>
+              <div className="inv-weather__grid">
+                {forecast.map(({ day, date, icon, tMax, tMin, rain, wedding }) => (
+                  <div
+                    key={date}
+                    className={`inv-weather__day${wedding ? " inv-weather__day--wedding" : ""}`}
+                  >
+                    <span className="inv-weather__day-name">{day}</span>
+                    <span className="inv-weather__day-date">{date}</span>
+                    <span className="inv-weather__icon">{icon}</span>
+                    <span className="inv-weather__temp">{tMax}°</span>
+                    <span className="inv-weather__temp-min">{tMin}°</span>
+                    <span className="inv-weather__rain">💧 {rain}%</span>
+                  </div>
+                ))}
+              </div>
+            </InvReveal>
           )}
 
           {(status === "soon" || status === "idle") && (
-            <div className="inv-weather__grid">
-              {WEEK.map(({ day, date, wedding }) => (
-                <div
-                  key={date}
-                  className={`inv-weather__day${wedding ? " inv-weather__day--wedding" : ""}`}
-                >
-                  <span className="inv-weather__day-name">{day}</span>
-                  <span className="inv-weather__day-date">{date}</span>
-                  <span className="inv-weather__icon">🌤️</span>
-                  <span className="inv-weather__temp">-- °C</span>
-                </div>
-              ))}
-            </div>
+            <InvReveal delay={0.28}>
+              <div className="inv-weather__grid">
+                {WEEK.map(({ day, date, wedding }) => (
+                  <div
+                    key={date}
+                    className={`inv-weather__day${wedding ? " inv-weather__day--wedding" : ""}`}
+                  >
+                    <span className="inv-weather__day-name">{day}</span>
+                    <span className="inv-weather__day-date">{date}</span>
+                    <span className="inv-weather__icon">🌤️</span>
+                    <span className="inv-weather__temp">-- °C</span>
+                  </div>
+                ))}
+              </div>
+            </InvReveal>
           )}
 
           {status === "error" && (
-            <div className="inv-weather__grid">
-              {WEEK.map(({ day, date, wedding }) => (
-                <div
-                  key={date}
-                  className={`inv-weather__day${wedding ? " inv-weather__day--wedding" : ""}`}
-                >
-                  <span className="inv-weather__day-name">{day}</span>
-                  <span className="inv-weather__day-date">{date}</span>
-                  <span className="inv-weather__icon">🌤️</span>
-                  <span className="inv-weather__temp">-- °C</span>
-                </div>
-              ))}
-            </div>
+            <InvReveal delay={0.28}>
+              <div className="inv-weather__grid">
+                {WEEK.map(({ day, date, wedding }) => (
+                  <div
+                    key={date}
+                    className={`inv-weather__day${wedding ? " inv-weather__day--wedding" : ""}`}
+                  >
+                    <span className="inv-weather__day-name">{day}</span>
+                    <span className="inv-weather__day-date">{date}</span>
+                    <span className="inv-weather__icon">🌤️</span>
+                    <span className="inv-weather__temp">-- °C</span>
+                  </div>
+                ))}
+              </div>
+            </InvReveal>
           )}
 
-          <p className="inv-weather__disclaimer">
-            {status === "ok"
-              ? "* Máx · Mín · Prob. lluvia · Fuente: Open-Meteo"
-              : "* Pronóstico disponible próximamente"}
-          </p>
+          <InvReveal delay={0.38}>
+            <p className="inv-weather__disclaimer">
+              {status === "ok"
+                ? "* Máx · Mín · Prob. lluvia · Fuente: Open-Meteo"
+                : "* Pronóstico disponible próximamente"}
+            </p>
+          </InvReveal>
+
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 }

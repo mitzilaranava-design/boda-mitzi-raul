@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { WEDDING, fadeUp } from "../../data/wedding";
+import { WEDDING } from "../../data/wedding";
 import { getItinerarioConfig } from "../../api/gallery";
+import InvReveal from "../InvReveal";
 
 /* ── SVG icons (thin white-line style) ── */
 const ChurchIcon = () => (
@@ -111,12 +111,17 @@ export default function InvSchedule() {
   if (activo === null) return null; // espera silenciosa mientras carga
 
   return (
-    <motion.section className="inv-section inv-schedule" {...fadeUp}>
+    <section className="inv-section inv-schedule">
       <div className="inv-section__inner inv-section__inner--center">
         <div className="inv-schedule__card">
 
-          <p className="inv-schedule__msg">¡Nos gustaría mucho que nos acompañaras!</p>
-          <h2>Itinerario</h2>
+          <InvReveal delay={0}>
+            <p className="inv-schedule__msg">¡Nos gustaría mucho que nos acompañaras!</p>
+          </InvReveal>
+
+          <InvReveal delay={0.1}>
+            <h2>Itinerario</h2>
+          </InvReveal>
 
           <div className="inv-vtimeline">
             <div className="inv-vtimeline__line" />
@@ -125,52 +130,55 @@ export default function InvSchedule() {
               const isReverse = i % 2 !== 0;
               const isPending = !activo && i > 0;
               return (
-                <div
-                  key={item.time}
-                  className={`inv-vtimeline__row${isReverse ? " inv-vtimeline__row--reverse" : ""}${isPending ? " inv-vtimeline__row--pending" : ""}`}
-                >
-                  <div className="inv-vtimeline__side inv-vtimeline__side--left">
-                    {isReverse && (
-                      <div className="inv-vtimeline__content inv-vtimeline__content--left">
-                        {isPending ? (
-                          <span className="inv-vtimeline__pending-badge">En planeación</span>
-                        ) : (
-                          <>
-                            <span className="inv-vtimeline__event">{item.event}</span>
-                            <span className="inv-vtimeline__time">{item.time}</span>
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                <InvReveal key={item.time} delay={0.18 + i * 0.1}>
+                  <div
+                    className={`inv-vtimeline__row${isReverse ? " inv-vtimeline__row--reverse" : ""}${isPending ? " inv-vtimeline__row--pending" : ""}`}
+                  >
+                    <div className="inv-vtimeline__side inv-vtimeline__side--left">
+                      {isReverse && (
+                        <div className="inv-vtimeline__content inv-vtimeline__content--left">
+                          {isPending ? (
+                            <span className="inv-vtimeline__pending-badge">En planeación</span>
+                          ) : (
+                            <>
+                              <span className="inv-vtimeline__event">{item.event}</span>
+                              <span className="inv-vtimeline__time">{item.time}</span>
+                            </>
+                          )}
+                        </div>
+                      )}
+                    </div>
 
-                  <div className="inv-vtimeline__icon" aria-hidden="true">
-                    {ICONS[item.icon]}
-                  </div>
+                    <div className="inv-vtimeline__icon" aria-hidden="true">
+                      {ICONS[item.icon]}
+                    </div>
 
-                  <div className="inv-vtimeline__side inv-vtimeline__side--right">
-                    {!isReverse && (
-                      <div className="inv-vtimeline__content inv-vtimeline__content--right">
-                        {isPending ? (
-                          <span className="inv-vtimeline__pending-badge">En planeación</span>
-                        ) : (
-                          <>
-                            <span className="inv-vtimeline__event">{item.event}</span>
-                            <span className="inv-vtimeline__time">{item.time}</span>
-                          </>
-                        )}
-                      </div>
-                    )}
+                    <div className="inv-vtimeline__side inv-vtimeline__side--right">
+                      {!isReverse && (
+                        <div className="inv-vtimeline__content inv-vtimeline__content--right">
+                          {isPending ? (
+                            <span className="inv-vtimeline__pending-badge">En planeación</span>
+                          ) : (
+                            <>
+                              <span className="inv-vtimeline__event">{item.event}</span>
+                              <span className="inv-vtimeline__time">{item.time}</span>
+                            </>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
+                </InvReveal>
               );
             })}
           </div>
 
-          <div className="inv-schedule__footer">M &amp; R</div>
+          <InvReveal delay={0.7}>
+            <div className="inv-schedule__footer">M &amp; R</div>
+          </InvReveal>
 
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 }

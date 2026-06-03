@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { WEDDING, fadeUp } from "../../data/wedding";
+import { WEDDING } from "../../data/wedding";
+import InvReveal from "../InvReveal";
 
 // SVG icon per sponsor category
 const CATEGORY_ICONS = {
@@ -96,56 +96,64 @@ export default function InvSponsors() {
   const icon = CATEGORY_ICONS[current.category] ?? DEFAULT_ICON;
 
   return (
-    <motion.section className="inv-section inv-sponsors" {...fadeUp}>
+    <section className="inv-section inv-sponsors">
       <div className="inv-section__inner inv-sponsors__inner">
 
-        <img
-          className="inv-sponsors__photo"
-          src="/assets/cover.jpg"
-          alt="Padrinos"
-        />
+        <InvReveal delay={0}>
+          <img
+            className="inv-sponsors__photo"
+            src="/assets/cover.jpg"
+            alt="Padrinos"
+          />
+        </InvReveal>
 
         <div className="inv-sponsors__body">
-          <h2 className="inv-sponsors__heading">Padrinos</h2>
+          <InvReveal delay={0.14}>
+            <h2 className="inv-sponsors__heading">Padrinos</h2>
+          </InvReveal>
 
-          <div className="inv-sponsors__carousel" role="region" aria-label="Padrinos">
-            <button
-              className="inv-sponsors__arrow"
-              onClick={prev}
-              aria-label="Padrino anterior"
-            >
-              &#8249;
-            </button>
-
-            <div className="inv-sponsors__slide">
-              <span className="inv-sponsors__icon">{icon}</span>
-              <p className="inv-sponsors__category">{current.category}</p>
-              {current.madrina && <p className="inv-sponsors__name">{current.madrina}</p>}
-              {current.padrino && <p className="inv-sponsors__name">{current.padrino}</p>}
-            </div>
-
-            <button
-              className="inv-sponsors__arrow"
-              onClick={next}
-              aria-label="Siguiente padrino"
-            >
-              &#8250;
-            </button>
-          </div>
-
-          <div className="inv-sponsors__dots">
-            {sponsors.map((_, i) => (
+          <InvReveal delay={0.26}>
+            <div className="inv-sponsors__carousel" role="region" aria-label="Padrinos">
               <button
-                key={i}
-                className={`inv-sponsors__dot${i === active ? " inv-sponsors__dot--active" : ""}`}
-                onClick={() => setActive(i)}
-                aria-label={sponsors[i].category}
-              />
-            ))}
-          </div>
+                className="inv-sponsors__arrow"
+                onClick={prev}
+                aria-label="Padrino anterior"
+              >
+                &#8249;
+              </button>
+
+              <div className="inv-sponsors__slide">
+                <span className="inv-sponsors__icon">{icon}</span>
+                <p className="inv-sponsors__category">{current.category}</p>
+                {current.madrina && <p className="inv-sponsors__name">{current.madrina}</p>}
+                {current.padrino && <p className="inv-sponsors__name">{current.padrino}</p>}
+              </div>
+
+              <button
+                className="inv-sponsors__arrow"
+                onClick={next}
+                aria-label="Siguiente padrino"
+              >
+                &#8250;
+              </button>
+            </div>
+          </InvReveal>
+
+          <InvReveal delay={0.36}>
+            <div className="inv-sponsors__dots">
+              {sponsors.map((_, i) => (
+                <button
+                  key={i}
+                  className={`inv-sponsors__dot${i === active ? " inv-sponsors__dot--active" : ""}`}
+                  onClick={() => setActive(i)}
+                  aria-label={sponsors[i].category}
+                />
+              ))}
+            </div>
+          </InvReveal>
         </div>
 
       </div>
-    </motion.section>
+    </section>
   );
 }

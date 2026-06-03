@@ -1,26 +1,33 @@
-import { motion } from "framer-motion";
-import { fadeUp } from "../../data/wedding";
 import { openGoogleCalendar } from "../../utils/calendar";
 import Countdown from "../Countdown";
+import InvReveal from "../InvReveal";
 
 export default function InvDate() {
   return (
-    <motion.section className="inv-section inv-date-section" {...fadeUp}>
+    <section className="inv-section inv-date-section">
       <div className="inv-date__content">
 
-        <h2 className="inv-date__script">¡Nos Casamos!</h2>
+        <InvReveal delay={0}>
+          <h2 className="inv-date__script">¡Nos Casamos!</h2>
+        </InvReveal>
 
-        <p className="inv-date__str">
-          21 &nbsp;·&nbsp; Noviembre &nbsp;·&nbsp; 2026
-        </p>
+        <InvReveal delay={0.12}>
+          <p className="inv-date__str">
+            21 &nbsp;·&nbsp; Noviembre &nbsp;·&nbsp; 2026
+          </p>
+        </InvReveal>
 
-        <Countdown />
+        <InvReveal delay={0.24}>
+          <Countdown />
+        </InvReveal>
 
-        <button className="inv-date__cal-btn" onClick={openGoogleCalendar}>
-          Agregar a Calendario
-        </button>
+        <InvReveal delay={0.36}>
+          <button className="inv-date__cal-btn" onClick={openGoogleCalendar}>
+            Agregar a Calendario
+          </button>
+        </InvReveal>
 
       </div>
-    </motion.section>
+    </section>
   );
 }

@@ -19,6 +19,11 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-05-28 18:30 — Animaciones de scroll por elemento en secciones de la invitación
+- **Quién**: Raúl / Claude
+- **Qué**: Nuevo componente `InvReveal` (fade + slide-up al entrar al viewport, `once: true`). Reemplaza el `fadeUp` de sección-entera por animaciones escalonadas en los elementos internos de todas las secciones: InvPasses, InvDate, InvFamilies, InvSponsors, InvSchedule (cada fila del timeline), InvVenues, InvWeather, InvRegistry, InvDresscode, InvNotes, InvEventPhotos, InvGallery, InvFarewell. Los elementos aparecen uno por uno con delay progresivo en lugar de la sección entera de golpe.
+- **Archivos**: `src/components/InvReveal.jsx` (nuevo), `src/components/invitation/InvPasses.jsx`, `InvDate.jsx`, `InvFamilies.jsx`, `InvSponsors.jsx`, `InvSchedule.jsx`, `InvVenues.jsx`, `InvWeather.jsx`, `InvRegistry.jsx`, `InvDresscode.jsx`, `InvNotes.jsx`, `InvEventPhotos.jsx`, `InvGallery.jsx`, `InvFarewell.jsx`
+
 ### 2026-05-14 — Galería fotos más pequeñas (3 cols móvil), itinerario con items pendientes visibles
 - **Quién**: Raúl / Claude
 - **Qué**: (1) Galería: grid pasa de 2 a 3 columnas en móvil y de 3 a 4 en 600px+, gap reducido a 4px. (2) InvSchedule: siempre muestra el timeline completo; cuando `itinerario_activo = false`, solo la Ceremonia Religiosa es visible y los 4 items restantes muestran badge "En planeación" con ícono atenuado. Eliminada la vista "en construcción" sin timeline. CSS: nuevas clases `.inv-vtimeline__row--pending` y `.inv-vtimeline__pending-badge`.
