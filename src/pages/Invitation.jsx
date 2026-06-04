@@ -1,17 +1,59 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { getInvitado, confirmarAsistencia, marcarNoAsiste } from "../api/invitations";
+import MusicEqualizer from "../components/MusicEqualizer";
+import { AUDIO_SRC, WEDDING } from "../data/wedding";
+import "../styles/Invitation.css";
+
+const SECTIONS = [
+  { id: "inv-portada",    label: "Portada" },
+  { id: "inv-pases",      label: "Confirmación" },
+  { id: "inv-fecha",      label: "Fecha" },
+  { id: "inv-familias",   label: "Familias" },
+  { id: "inv-padrinos",   label: "Padrinos" },
+  { id: "inv-programa",   label: "Programa" },
+  { id: "inv-iglesia",    label: "Ceremonia religiosa" },
+  { id: "inv-salon",      label: "Recepción" },
+  { id: "inv-clima",      label: "Clima" },
+  { id: "inv-regalos",    label: "Mesa de Regalos" },
+  { id: "inv-vestimenta", label: "Vestimenta" },
+  { id: "inv-notas",      label: "Notas" },
+  { id: "inv-fotos",      label: "Fotos del evento" },
+  { id: "inv-galeria",    label: "Nuestra Galería" },
+  { id: "inv-despedida",  label: "Hasta pronto" },
+];
+
+// ── Invitation sections ───────────────────────────────────────
+import InvCover     from "../components/invitation/InvCover";
+import InvPasses    from "../components/invitation/InvPasses";
+import InvDate      from "../components/invitation/InvDate";
+import InvFamilies  from "../components/invitation/InvFamilies";
+import InvSponsors  from "../components/invitation/InvSponsors";
+import InvSchedule  from "../components/invitation/InvSchedule";
+import InvVenues    from "../components/invitation/InvVenues";
+import InvWeather   from "../components/invitation/InvWeather";
+import InvRegistry  from "../components/invitation/InvRegistry";
+import InvDresscode from "../components/invitation/InvDresscode";
+import InvNotes       from "../components/invitation/InvNotes";
+import InvEventPhotos from "../components/invitation/InvEventPhotos";
+import InvGallery     from "../components/invitation/InvGallery";
+import InvFarewell    from "../components/invitation/InvFarewell";
 
 export default function Invitation() {
   const { id } = useParams();
-  const [invitado, setInvitado] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [respuesta, setRespuesta] = useState(null); // null | 'si' | 'no'
+  const [invitado,      setInvitado]      = useState(null);
+  const [loading,       setLoading]       = useState(true);
+  const [respuesta,     setRespuesta]     = useState(null); // null | 'si' | 'no'
   const [numAsistentes, setNumAsistentes] = useState(1);
-  const [confirmando, setConfirmando] = useState(false);
-  const [confirmado, setConfirmado] = useState(false);
-  const [error, setError] = useState(null);
+  const [confirmando,   setConfirmando]   = useState(false);
+  const [confirmado,    setConfirmado]    = useState(false);
+  const [error,         setError]         = useState(null);
+  const [menuOpen,      setMenuOpen]      = useState(false);
+  const scrollToSection = (sectionId) => {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+    setMenuOpen(false);
+  };
 
   useEffect(() => {
     const ID_REGEX = /^[a-zA-Z0-9_-]{1,80}$/;
@@ -20,13 +62,18 @@ export default function Invitation() {
       setLoading(false);
       return;
     }
-    getInvitado(id)
+
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("timeout")), 10000)
+    );
+
+    Promise.race([getInvitado(id), timeout])
       .then((data) => {
         setInvitado(data);
         if (data) setNumAsistentes(1);
         setError(!data ? "Invitación no válida" : null);
       })
-      .catch(() => setError("Invitación no válida"))
+      .catch(() => setError("No se pudo cargar la invitación. Verifica tu conexión."))
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -56,10 +103,11 @@ export default function Invitation() {
     }
   };
 
+  // ── Guard states ─────────────────────────────────────────────
   if (loading) {
     return (
       <div className="app invitation-page">
-        <div className="loading">Cargando invitación...</div>
+        <div className="loading">Cargando tu invitación...</div>
       </div>
     );
   }
@@ -74,187 +122,122 @@ export default function Invitation() {
     );
   }
 
-  if (invitado?.no_asiste) {
-    return (
-      <div className="app invitation-page">
-        <header className="invitation-header">
-          <Link to="/">Mitzi & Raúl</Link>
-        </header>
-        <motion.section
-          className="invitation-card"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="no-asiste-msg">
-            <span className="no-asiste-msg__icon">💛</span>
-            <h2>Gracias por avisarnos, {invitado.nombre}</h2>
-            <p>
-              Lamentamos que no puedas acompañarnos, pero agradecemos que nos lo hayas
-              hecho saber. ¡Te deseamos lo mejor!
-            </p>
-          </div>
-        </motion.section>
-      </div>
-    );
-  }
-
-  if (invitado?.confirmado && !invitado?.auto_confirmado) {
-    return (
-      <div className="app invitation-page">
-        <header className="invitation-header">
-          <Link to="/">Mitzi & Raúl</Link>
-        </header>
-        <motion.section
-          className="invitation-card"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="ya-confirmado-msg">
-            <span className="ya-confirmado-msg__icon">💍</span>
-            <h2>¡Gracias, {invitado.nombre}!</h2>
-            <p>
-              Tu asistencia a nuestra boda ha sido confirmada.
-              Es un honor contar con tu presencia en este día tan especial.
-            </p>
-            <p className="ya-confirmado-msg__detalle">
-              Asistirán <strong>{invitado.num_confirmados} persona{invitado.num_confirmados !== 1 ? "s" : ""}</strong>.
-              ¡Con mucho gusto los esperamos el <strong>21 de noviembre de 2026</strong>!
-            </p>
-          </div>
-        </motion.section>
-      </div>
-    );
-  }
-
-  if (invitado?.auto_confirmado) {
-    return (
-      <div className="app invitation-page">
-        <header className="invitation-header">
-          <Link to="/">Mitzi & Raúl</Link>
-        </header>
-        <motion.section
-          className="invitation-card"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="auto-confirmado-msg">
-            <span className="auto-confirmado-msg__icon">🕊️</span>
-            <h2>Hola, {invitado.nombre}</h2>
-            <p>
-              Lo sentimos mucho. El plazo para confirmar tu asistencia ha concluido
-              y tu lugar se encuentra pendiente de revisión por parte de los novios.
-            </p>
-            <p className="auto-confirmado-msg__contacto">
-              Si crees que hubo un error o deseas aclarar tu situación, por favor
-              comunícate directamente con Mitzi y Raúl. Será un gusto atenderte. 💛
-            </p>
-          </div>
-        </motion.section>
-      </div>
-    );
-  }
-
+  // ── Main Invitation ───────────────────────────────────────────
   return (
-    <div className="app invitation-page">
-      <header className="invitation-header">
-        <Link to="/">Mitzi & Raúl</Link>
-      </header>
+    <div className="app inv">
 
-      <motion.section
-        className="invitation-card"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <h2>¡Hola, {invitado?.nombre}!</h2>
-        <p>
-          Estás invitado(a) a la boda de Mitzi y Raúl.
-          <br />
-          Cupo asignado: <strong>{invitado?.num_invitados} personas</strong>
-        </p>
+      {/* ── Música — esquina inferior derecha ── */}
+      {AUDIO_SRC && <MusicEqualizer src={AUDIO_SRC} />}
 
-        {confirmado ? (
-          <motion.div
-            className={respuesta === 'no' ? "no-asiste-msg" : "confirmado-msg"}
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-          >
-            {respuesta === 'no' ? (
-              <>
-                <span className="no-asiste-msg__icon">💛</span>
-                <p>Gracias por avisarnos. Hemos registrado que no podrás acompañarnos.</p>
-              </>
-            ) : (
-              <>
-                <span className="check">✓</span>
-                <p>¡Gracias! Tu asistencia ha sido confirmada.</p>
-                <small>Asistirán {numAsistentes} persona(s)</small>
-              </>
-            )}
-          </motion.div>
-        ) : respuesta === null ? (
-          <div className="asistencia-pregunta">
-            <p className="asistencia-pregunta__texto">¿Podrás acompañarnos?</p>
-            <div className="asistencia-btns">
-              <motion.button
-                className="btn btn-si"
-                onClick={() => setRespuesta('si')}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Sí, estaré
-              </motion.button>
-              <motion.button
-                className="btn btn-no"
-                onClick={() => setRespuesta('no')}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                No podré asistir
-              </motion.button>
-            </div>
-          </div>
-        ) : respuesta === 'si' ? (
-          <div className="confirm-form">
-            <label>¿Cuántas personas asistirán?</label>
-            <select
-              value={numAsistentes}
-              onChange={(e) => setNumAsistentes(Number(e.target.value))}
+      {/* ── Menú flotante de navegación ── */}
+      <div className="inv-floating-nav">
+        <button
+          type="button"
+          className={`inv-nav-toggle${menuOpen ? " inv-nav-toggle--open" : ""}`}
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label={menuOpen ? "Cerrar menú" : "Abrir menú de secciones"}
+        >
+          {menuOpen ? (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+            </svg>
+          )}
+        </button>
+      </div>
+
+      {/* ── Panel lateral de secciones ── */}
+      <AnimatePresence>
+        {menuOpen && (
+          <>
+            <motion.div
+              className="inv-nav-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMenuOpen(false)}
+            />
+            <motion.nav
+              className="inv-nav-panel"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.28, ease: "easeInOut" }}
             >
-              {Array.from({ length: invitado?.num_invitados || 1 }, (_, i) => (
-                <option key={i} value={i + 1}>
-                  {i + 1} {i === 0 ? "persona" : "personas"}
-                </option>
-              ))}
-            </select>
-            <motion.button
-              className="btn btn-confirmar"
-              onClick={handleConfirmar}
-              disabled={confirmando}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              {confirmando ? "Confirmando..." : "Confirmar asistencia"}
-            </motion.button>
-          </div>
-        ) : (
-          <div className="confirm-form">
-            <p className="no-asiste-aviso">Lamentamos que no puedas acompañarnos.</p>
-            <motion.button
-              className="btn btn-no-asiste"
-              onClick={handleRechazar}
-              disabled={confirmando}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              {confirmando ? "Registrando..." : "Confirmar que no podré asistir"}
-            </motion.button>
-          </div>
+              <div className="inv-nav-panel__header">
+                <p className="inv-nav-panel__title">Secciones</p>
+                <button
+                  type="button"
+                  className="inv-nav-panel__close"
+                  onClick={() => setMenuOpen(false)}
+                  aria-label="Cerrar menú"
+                >
+                  ✕
+                </button>
+              </div>
+              <ul className="inv-nav-panel__list">
+                {SECTIONS.map((s) => (
+                  <li key={s.id}>
+                    <button
+                      type="button"
+                      className="inv-nav-panel__item"
+                      onClick={() => scrollToSection(s.id)}
+                    >
+                      {s.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </motion.nav>
+          </>
         )}
-      </motion.section>
+      </AnimatePresence>
+
+      <div id="inv-portada"><InvCover /></div>
+
+      <div id="inv-pases">
+        <InvPasses
+          invitado={invitado}
+          respuesta={respuesta}
+          setRespuesta={setRespuesta}
+          numAsistentes={numAsistentes}
+          setNumAsistentes={setNumAsistentes}
+          confirmado={confirmado}
+          confirmando={confirmando}
+          onConfirmar={handleConfirmar}
+          onRechazar={handleRechazar}
+        />
+      </div>
+
+      <div id="inv-fecha"><InvDate /></div>
+      <div id="inv-familias"><InvFamilies /></div>
+      <div id="inv-padrinos"><InvSponsors /></div>
+      <div id="inv-programa"><InvSchedule /></div>
+      <div id="inv-iglesia">
+        <InvVenues
+          venueData={WEDDING.venues.church}
+          typeLabel="⛪ Ceremonia religiosa"
+          variant="cream"
+        />
+      </div>
+      <div id="inv-salon">
+        <InvVenues
+          venueData={WEDDING.venues.venue}
+          typeLabel="🥂 Recepción"
+          variant="gold"
+        />
+      </div>
+      <div id="inv-clima"><InvWeather /></div>
+      <div id="inv-regalos"><InvRegistry /></div>
+      <div id="inv-vestimenta"><InvDresscode /></div>
+      <div id="inv-notas"><InvNotes /></div>
+      {!invitado?.no_asiste && <div id="inv-fotos"><InvEventPhotos /></div>}
+      {!invitado?.no_asiste && <div id="inv-galeria"><InvGallery /></div>}
+      <div id="inv-despedida"><InvFarewell /></div>
     </div>
   );
 }

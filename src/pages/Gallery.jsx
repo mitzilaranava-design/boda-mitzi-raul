@@ -1,0 +1,313 @@
+import { useState, useEffect, useRef } from "react";
+import { useSearchParams, Link } from "react-router-dom";
+import { getGalleryConfig, getFotos, subirFoto, subscribeFotos } from "../api/gallery";
+import "../styles/Gallery.css";
+
+export default function Gallery() {
+  const [searchParams] = useSearchParams();
+  // inv = ID del invitado cuando viene de /inv/:id → foto queda ligada al invitado
+  // null cuando viene de QR externo (solo token) → foto anónima
+  const invitadoId = searchParams.get("inv") || null;
+
+  const [config, setConfig] = useState({ activa: false });
+  const [fotos, setFotos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [lightboxIdx, setLightboxIdx] = useState(null);
+  const [showUpload, setShowUpload] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
+  const [comentario, setComentario] = useState("");
+  const fileRef = useRef();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      const [cfg, imgs] = await Promise.all([getGalleryConfig(), getFotos()]);
+      if (!cancelled) {
+        setConfig(cfg);
+        setFotos(imgs);
+        setLoading(false);
+      }
+    }
+
+    load();
+
+    const unsub = subscribeFotos((nuevaFoto) => {
+      setFotos((prev) => {
+        // Dedup por URL: el mock local y el registro de realtime comparten la misma URL
+        if (prev.some((f) => f.url === nuevaFoto.url)) return prev;
+        return [...prev, nuevaFoto];
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      unsub();
+    };
+  }, []);
+
+  // Navegación del lightbox
+  const lightboxPrev = (e) => {
+    e.stopPropagation();
+    setLightboxIdx((i) => (i > 0 ? i - 1 : fotos.length - 1));
+  };
+
+  const lightboxNext = (e) => {
+    e.stopPropagation();
+    setLightboxIdx((i) => (i < fotos.length - 1 ? i + 1 : 0));
+  };
+
+  // Teclado: flechas + Escape
+  useEffect(() => {
+    if (lightboxIdx === null) return;
+
+    const onKey = (e) => {
+      if (e.key === "ArrowLeft") setLightboxIdx((i) => (i > 0 ? i - 1 : fotos.length - 1));
+      if (e.key === "ArrowRight") setLightboxIdx((i) => (i < fotos.length - 1 ? i + 1 : 0));
+      if (e.key === "Escape") setLightboxIdx(null);
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightboxIdx, fotos.length]);
+
+  const handleUpload = async () => {
+    const file = fileRef.current?.files[0];
+    if (!file) return;
+    setUploading(true);
+    setUploadError(null);
+    try {
+      const result = await subirFoto(file, invitadoId, comentario);
+      // En modo mock, la foto se agrega al array MOCK_FOTOS pero no llega por realtime
+      // Actualizamos local con el resultado para que aparezca inmediatamente
+      if (result.url) {
+        setFotos((prev) => {
+          const mockFoto = {
+            id: `local-${Date.now()}`,
+            url: result.url,
+            nombre: null,
+            comentario: comentario?.trim() || null,
+            created_at: new Date().toISOString(),
+          };
+          return [...prev, mockFoto];
+        });
+      }
+      setShowUpload(false);
+      setComentario("");
+      if (fileRef.current) fileRef.current.value = "";
+    } catch (err) {
+      setUploadError(err.message ?? "Error al subir la foto");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const cerrarUpload = () => {
+    if (uploading) return;
+    setShowUpload(false);
+    setUploadError(null);
+    setComentario("");
+  };
+
+  if (loading) {
+    return <div className="gallery-loading">Cargando...</div>;
+  }
+
+  const fotoActual = lightboxIdx !== null ? fotos[lightboxIdx] : null;
+
+  return (
+    <div className="gallery-page">
+      {/* Header */}
+      <header className="gallery-header">
+        {invitadoId && (
+          <Link to={`/inv/${invitadoId}`} className="gallery-back-btn" aria-label="Regresar a la invitación">
+            ‹ Regresar
+          </Link>
+        )}
+        <p className="gallery-subtitle">Mitzi &amp; Raúl · 21.11.2026</p>
+        <h1 className="gallery-title">Nuestra Boda</h1>
+        <span className="gallery-header-ornament">✦ &nbsp; ✦ &nbsp; ✦</span>
+      </header>
+
+      {/* Contenido principal */}
+      {!config.activa ? (
+        <div className="gallery-disabled-msg">
+          <span className="gallery-disabled-icon">📸</span>
+          <p>La galería estará disponible durante el evento</p>
+        </div>
+      ) : (
+        <>
+          {fotos.length === 0 ? (
+            <div className="gallery-empty">
+              <span>📷</span>
+              <p>Sin fotos aún. ¡Sé el primero en subir una!</p>
+            </div>
+          ) : (
+            <div className="gallery-grid">
+              {fotos.map((foto, idx) => (
+                <div
+                  key={foto.id}
+                  className="gallery-item"
+                  onClick={() => setLightboxIdx(idx)}
+                >
+                  <img
+                    src={foto.url}
+                    alt={foto.nombre || "Foto de la boda"}
+                    loading="lazy"
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
+                  />
+                  {foto.created_at && (
+                    <span className="gallery-item__time">
+                      {new Date(foto.created_at).toLocaleTimeString("es-MX", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Botón flotante de subida */}
+          <button
+            className="gallery-upload-btn"
+            onClick={() => setShowUpload(true)}
+            aria-label="Subir foto"
+          >
+            📷
+          </button>
+        </>
+      )}
+
+      {/* ── Lightbox ──────────────────────────────────────────────────────── */}
+      {fotoActual && (
+        <div
+          className="gallery-lightbox"
+          onClick={() => setLightboxIdx(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Foto ampliada"
+        >
+          <button
+            className="lightbox-close"
+            onClick={() => setLightboxIdx(null)}
+            aria-label="Cerrar"
+          >
+            ✕
+          </button>
+
+          {fotos.length > 1 && (
+            <>
+              <button
+                className="lightbox-nav lightbox-prev"
+                onClick={lightboxPrev}
+                aria-label="Foto anterior"
+              >
+                ‹
+              </button>
+              <button
+                className="lightbox-nav lightbox-next"
+                onClick={lightboxNext}
+                aria-label="Foto siguiente"
+              >
+                ›
+              </button>
+            </>
+          )}
+
+          <img
+            src={fotoActual.url}
+            alt={fotoActual.nombre || "Foto de la boda"}
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          {fotoActual.comentario && (
+            <div
+              className="lightbox-footer"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span className="lightbox-comentario">"{fotoActual.comentario}"</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── Upload Modal ──────────────────────────────────────────────────── */}
+      {showUpload && (
+        <div
+          className="gallery-upload-overlay"
+          onClick={cerrarUpload}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Subir foto"
+        >
+          <div
+            className="gallery-upload-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="upload-modal-title">Subir foto</h2>
+            <span className="upload-modal-ornament">✦ &nbsp; ✦ &nbsp; ✦</span>
+
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              className="upload-input"
+              disabled={uploading}
+            />
+
+            <div className="upload-comentario-wrap">
+              <label htmlFor="gallery-comentario" className="upload-comentario-label">
+                💬 Agrega un comentario a tu foto (opcional)
+              </label>
+              <textarea
+                id="gallery-comentario"
+                className="upload-comentario"
+                placeholder="Ej: ¡Qué bonita boda! Gracias por incluirnos..."
+                maxLength={200}
+                rows={3}
+                value={comentario}
+                onChange={(e) => setComentario(e.target.value)}
+                disabled={uploading}
+              />
+            </div>
+
+            {uploadError && (
+              <p style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "0.85rem",
+                color: "#e53e3e",
+                margin: 0,
+                textAlign: "center",
+              }}>
+                {uploadError}
+              </p>
+            )}
+
+            <div className="upload-actions">
+              <button
+                className="upload-btn-primary"
+                onClick={handleUpload}
+                disabled={uploading}
+              >
+                {uploading ? "Subiendo..." : "Subir foto"}
+              </button>
+              <button
+                className="upload-btn-cancel"
+                onClick={cerrarUpload}
+                disabled={uploading}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

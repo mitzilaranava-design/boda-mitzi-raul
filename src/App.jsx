@@ -2,7 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SaveTheDate from "./pages/SaveTheDate";
 import Invitation from "./pages/Invitation";
 import Admin from "./pages/Admin";
+import Gallery from "./pages/Gallery";
 import TokenGate from "./components/TokenGate";
+import GalleryTokenGate from "./components/GalleryTokenGate";
 import Intro from "./pages/Intro";
 import "./styles/variables.css";
 import "./App.css";
@@ -23,6 +25,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/" element={<TokenGate><SaveTheDate /></TokenGate>} />
         <Route path="/intro/:id" element={<TokenGate><Intro /></TokenGate>} />
+        <Route path="/galeria" element={<GalleryTokenGate><Gallery /></GalleryTokenGate>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
