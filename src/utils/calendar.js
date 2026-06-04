@@ -1,11 +1,11 @@
 /**
  * Abre Google Calendar con el evento de la boda precargado.
- * 21 de noviembre de 2026 · 2pm – 12am (CST, UTC-6)
+ * 21 de noviembre de 2026 · 4pm – 12am (CST, UTC-6)
  */
 
 const EVENT = {
   text: "Boda Mitzi & Raúl",
-  dates: "20261121T200000Z/20261122T060000Z",
+  dates: "20261121T220000Z/20261122T060000Z",
   details: "Save the Date — ¡Te esperamos!",
   location: "Por confirmar",
 };

@@ -1,12 +1,27 @@
+import { motion } from "framer-motion";
 import { WEDDING } from "../../data/wedding";
+import { useParallaxY } from "../../hooks/useParallaxY";
 import InvReveal from "../InvReveal";
 
 export default function InvFamilies() {
   const { bride, groom } = WEDDING.parents;
+  const photoSrc = WEDDING.sectionPhotos.families;
+  const { ref, y } = useParallaxY(40);
 
   return (
-    <section className="inv-section inv-families">
-      <div className="inv-section__inner inv-section__inner--center">
+    <section ref={ref} className="inv-section inv-section--layer inv-families">
+
+      {/* Capa media: foto enmarcada con parallax */}
+      <div className={`inv-layer__photo${!photoSrc ? " inv-layer__photo--empty" : ""}`}>
+        {photoSrc && (
+          <motion.div className="inv-layer__photo-inner" style={{ y }}>
+            <img src={photoSrc} alt="" aria-hidden="true" />
+          </motion.div>
+        )}
+      </div>
+
+      {/* Capa frontal: tarjeta de contenido */}
+      <div className="inv-layer__card">
 
         <InvReveal delay={0}>
           <p className="inv-section__label">Con la Bendición de</p>

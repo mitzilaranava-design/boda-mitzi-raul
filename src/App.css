@@ -29,6 +29,12 @@ html {
   -webkit-overflow-scrolling: touch;
 }
 
+/* La invitación tiene muchas secciones — scroll libre para que
+   el parallax de las fotos de fondo funcione correctamente */
+.app.inv {
+  scroll-snap-type: none;
+}
+
 /* ===== INTRO ===== */
 /* Solo fondo y textura — el layout lo maneja .intro-clean */
 .intro {

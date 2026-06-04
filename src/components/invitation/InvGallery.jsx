@@ -27,7 +27,8 @@ function getSpan(i, total) {
 
 export default function InvGallery() {
   const [activeIndex, setActiveIndex] = useState(null); // null | number
-  const photos = WEDDING.gallery ?? [];
+  const photos        = WEDDING.gallery ?? [];
+  const previewPhotos = photos.slice(0, 3); // solo 3 en el mosaico
 
   const prev = useCallback(() =>
     setActiveIndex(i => (i - 1 + photos.length) % photos.length), [photos.length]);
@@ -70,7 +71,7 @@ export default function InvGallery() {
             <span className="inv-gallery__ornament">✦ &nbsp; ✦ &nbsp; ✦</span>
           </InvReveal>
 
-          {photos.length === 0 ? (
+          {previewPhotos.length === 0 ? (
             <InvReveal delay={0.32}>
               <div className="inv-gallery__empty">
                 <span className="inv-gallery__empty-icon">🏗️</span>
@@ -81,16 +82,23 @@ export default function InvGallery() {
           ) : (
             <InvReveal delay={0.32}>
               <div className="inv-gallery__mosaic">
-                {photos.map((src, i) => (
+                {previewPhotos.map((src, i) => (
                   <button
                     key={src}
                     type="button"
                     className="inv-gallery__item"
-                    style={getSpan(i, photos.length)}
+                    style={getSpan(i, 3)}
                     onClick={() => setActiveIndex(i)}
-                    aria-label={`Ver foto ${i + 1}`}
+                    aria-label={`Ver foto ${i + 1} de ${photos.length}`}
                   >
-                    <img src={src} alt={`Foto ${i + 1}`} loading="lazy" />
+                    <img
+                      src={src}
+                      alt={`Foto ${i + 1}`}
+                      loading="lazy"
+                      draggable="false"
+                      onContextMenu={(e) => e.preventDefault()}
+                    />
+                    <div className="inv-gallery__no-download" aria-hidden="true" />
                   </button>
                 ))}
               </div>
@@ -109,19 +117,21 @@ export default function InvGallery() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22 }}
             onClick={close}
+            onContextMenu={(e) => e.preventDefault()}
           >
-            {/* Imagen con key para re-animar al cambiar */}
+            {/* Imagen como div con background-image: iOS no ofrece "Guardar" en CSS backgrounds */}
             <AnimatePresence mode="wait">
-              <motion.img
+              <motion.div
                 key={activeIndex}
-                src={photos[activeIndex]}
-                alt={`Foto ${activeIndex + 1}`}
                 className="inv-gallery__lightbox-img"
+                style={{ backgroundImage: `url(${photos[activeIndex]})` }}
                 initial={{ opacity: 0, scale: 0.93 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.93 }}
                 transition={{ duration: 0.18 }}
                 onClick={(e) => e.stopPropagation()}
+                role="img"
+                aria-label={`Foto ${activeIndex + 1} de ${photos.length}`}
               />
             </AnimatePresence>
 

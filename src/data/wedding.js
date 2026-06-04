@@ -71,12 +71,32 @@ export const WEDDING = {
     "/assets/gallery/foto-1.jpg",
     "/assets/gallery/foto-2.jpg",
     "/assets/gallery/foto-3.jpg",
-    /*"/assets/gallery/foto-4.jpg",
+    "/assets/gallery/foto-4.jpg",
     "/assets/gallery/foto-5.jpg",
     "/assets/gallery/foto-6.jpg",
     "/assets/gallery/foto-7.jpg",
     "/assets/gallery/foto-8.jpg",
-    "/assets/gallery/foto-9.jpg",*/
+    "/assets/gallery/foto-9.jpg",
+    "/assets/gallery/foto-10.jpg",
+    "/assets/gallery/foto-11.jpg",
+    "/assets/gallery/foto-12.jpg",
+    "/assets/gallery/foto-13.jpg",
+    "/assets/gallery/foto-14.jpg",
+    "/assets/gallery/foto-15.jpg",
+    "/assets/gallery/foto-16.jpg",
+    "/assets/gallery/foto-18.jpg",
+    "/assets/gallery/foto-19.jpg",
+    "/assets/gallery/foto-20.jpg",
+    "/assets/gallery/foto-21.jpg",
+    "/assets/gallery/foto-22.jpg",
+    "/assets/gallery/foto-23.jpg",
+    "/assets/gallery/foto-26.jpg",
+    "/assets/gallery/foto-27.jpg",
+    "/assets/gallery/foto-28.jpg",
+    "/assets/gallery/foto-30.jpg",
+    "/assets/gallery/foto-31.jpg",
+    "/assets/gallery/foto-33.jpg",
+    "/assets/gallery/foto-34.jpg",
   ],
 
   registry: [
@@ -99,4 +119,19 @@ export const WEDDING = {
 
   farewell:
     "No podemos esperar para celebrar este hermoso capítulo junto a ti. Tu presencia es el mayor regalo en este día tan especial.",
+
+  // ── Fotos para secciones específicas ─────────────────────────
+  // null = placeholder dorado · Reemplaza con la ruta de tu foto
+  sectionPhotos: {
+    // Secciones 3 capas (fondo de color → foto enmarcada → tarjeta)
+    families:  "/assets/foto-familias.jpg",    // InvFamilies
+    weather:   "/assets/foto-clima.jpg",       // InvWeather
+    farewell:  "/assets/foto-despedida.jpg",   // InvFarewell
+
+    // Secciones divididas (50% foto | 50% contenido)
+    date:      "/assets/foto-fecha.jpg",       // InvDate      — foto izquierda
+    sponsors:  "/assets/covs.jpg",             // InvSponsors  — foto derecha
+    schedule:  "/assets/foto-programa.jpg",    // InvSchedule  — foto derecha
+    registry:  "/assets/foto-regalos.jpg",     // InvRegistry  — foto izquierda
+  },
 };

@@ -1,5 +1,12 @@
 import InvReveal from "../InvReveal";
 
+/**
+ * Muestra un lugar (iglesia o salón) como sección independiente.
+ * Props:
+ *   venueData  — { name, address, mapsUrl, imageUrl }
+ *   typeLabel  — etiqueta visible, ej. "⛪ Ceremonia religiosa"
+ *   variant    — 'gold' | 'cream'  (alterna entre secciones)
+ */
 export default function InvVenues({ venueData, typeLabel, variant = "gold" }) {
   return (
     <section className={`inv-section inv-venues inv-venues--${variant}`}>

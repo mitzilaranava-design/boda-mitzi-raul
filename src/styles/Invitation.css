@@ -1669,6 +1669,34 @@
   margin-bottom: 20px;
 }
 
+.inv-gallery__more {
+  margin-top: 14px;
+  font-size: 0.75rem;
+  color: var(--color-gold);
+  letter-spacing: 1.5px;
+  text-align: center;
+  opacity: 0.8;
+}
+
+/* Overlay transparente sobre cada foto — bloquea clic derecho y long-press */
+.inv-gallery__no-download {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none; /* iOS: evita menú "Guardar imagen" */
+}
+
+/* Fotos del mosaico: sin descarga en iOS/Android */
+.inv-gallery__item img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  pointer-events: none; /* el overlay transparent div intercepta el toque */
+}
+
 /* ── Mosaico ── */
 .inv-gallery__mosaic {
   display: grid;
@@ -1718,58 +1746,35 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
+/* div con background-image: iOS no ofrece "Guardar foto" en CSS backgrounds */
 .inv-gallery__lightbox-img {
+  width: 90vw;
+  height: 78dvh;
   max-width: 92vw;
   max-height: 78dvh;
   border-radius: 8px;
-  object-fit: contain;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .inv-gallery__lightbox-close {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.2);
+  top: max(24px, calc(env(safe-area-inset-top) + 16px));
+  right: max(24px, calc(env(safe-area-inset-right) + 16px));
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.28);
   color: #fff;
-  font-size: 1rem;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
-}
-
-.inv-gallery__lightbox-close:hover {
-  background: rgba(255,255,255,0.22);
-}
-
-.inv-gallery__lightbox-counter {
-  position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.78rem;
-  color: rgba(255,255,255,0.5);
-  letter-spacing: 1px;
-  pointer-events: none;
-}
-
-.inv-gallery__lightbox-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.18);
-  color: #fff;
-  font-size: 2rem;
-  line-height: 1;
+  font-size: 1.1rem;
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -1778,14 +1783,51 @@
   align-items: center;
   justify-content: center;
   transition: background 0.2s;
+  z-index: 10;
 }
 
-.inv-gallery__lightbox-nav:hover {
+.inv-gallery__lightbox-close:hover {
   background: rgba(255,255,255,0.22);
 }
 
-.inv-gallery__lightbox-nav--prev { left: 14px; }
-.inv-gallery__lightbox-nav--next { right: 14px; }
+.inv-gallery__lightbox-counter {
+  position: absolute;
+  bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 1px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.inv-gallery__lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.24);
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  z-index: 10;
+}
+
+.inv-gallery__lightbox-nav:hover {
+  background: rgba(255,255,255,0.28);
+}
+
+.inv-gallery__lightbox-nav--prev { left: max(24px, calc(env(safe-area-inset-left) + 16px)); }
+.inv-gallery__lightbox-nav--next { right: max(24px, calc(env(safe-area-inset-right) + 16px)); }
 
 /* ── Gallery empty state ── */
 .inv-gallery__empty {
@@ -1885,14 +1927,19 @@
 
 .inv-farewell__footer {
   position: absolute;
-  bottom: 14px;
-  left: 0;
-  right: 0;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
   font-size: 0.72rem;
   color: var(--color-gold);
-  text-align: center;
   letter-spacing: 0.8px;
   font-family: var(--font-sans);
+  background: rgba(249, 245, 239, 0.88);
+  border-radius: 20px;
+  padding: 7px 20px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 /* ── Weather: pantallas pequeñas ── */
@@ -2215,4 +2262,204 @@
   .inv-sponsors__photo {
     height: 180px;
   }
+}
+
+
+/* ================================================================ */
+/* ── 3-LAYER SECTIONS (Familias · Clima · Despedida)             ── */
+/* Fondo de color → foto enmarcada → tarjeta de contenido          */
+/* ================================================================ */
+
+.inv-section.inv-section--layer {
+  padding: 0 !important; /* gana sobre padding de sección específica */
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.inv-section.inv-section--layer::before {
+  display: none;
+}
+
+/* Capa media: la foto, enmarcada con margen */
+.inv-layer__photo {
+  position: absolute;
+  inset: 16px;
+  border-radius: 22px;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* Inner motion.div — sobredimensionado para absorber el parallax ±40px */
+.inv-layer__photo-inner {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 80px);
+  will-change: transform;
+}
+
+.inv-layer__photo-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Overlay sutil para dar contraste al texto */
+.inv-layer__photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.08) 0%,
+    rgba(0,0,0,0.22) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Placeholder cuando no hay foto */
+.inv-layer__photo--empty {
+  background: linear-gradient(135deg, #e8dcc8 0%, #c5a96a 100%);
+}
+
+/* Capa frontal: tarjeta de contenido */
+.inv-layer__card {
+  position: relative;
+  z-index: 2; /* encima del overlay ::after de la foto (z-index: 1) */
+  background: rgba(255, 252, 247, 0.9);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  border-radius: 18px;
+  padding: 36px 28px;
+  width: calc(100% - 80px);
+  max-width: 420px;
+  text-align: center;
+  margin: 56px auto;
+}
+
+@media (min-width: 640px) {
+  .inv-layer__photo {
+    inset: 28px;
+    border-radius: 28px;
+  }
+
+  .inv-layer__card {
+    width: calc(100% - 140px);
+    padding: 44px 40px;
+  }
+}
+
+
+/* ================================================================ */
+/* ── SPLIT SECTIONS (Fecha · Programa · Recepción)               ── */
+/* Mitad foto | Mitad contenido, alternando posición              ── */
+/* ================================================================ */
+
+.inv-section.inv-section--split {
+  display: grid !important; /* gana sobre display:flex de sección específica */
+  grid-template-columns: 1fr 1fr;
+  padding: 0 !important;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.inv-section.inv-section--split::before {
+  display: none;
+}
+
+/* Mitad foto */
+.inv-split__photo {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #e8dcc8 0%, #c5a96a 100%);
+  min-height: 300px;
+}
+
+.inv-split__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+/* Mitad contenido */
+.inv-split__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 28px;
+  background: var(--color-cream);
+  overflow-y: auto;
+}
+
+/* Variante: foto a la derecha */
+.inv-section--split.inv-split--photo-right .inv-split__photo { order: 2; }
+.inv-section--split.inv-split--photo-right .inv-split__content { order: 1; }
+
+/* Móvil (< 600px): apilar verticalmente con alternado */
+@media (max-width: 600px) {
+  .inv-section.inv-section--split {
+    grid-template-columns: 1fr !important;
+  }
+
+  .inv-split__photo {
+    min-height: 45vw;
+  }
+
+  /* Foto izquierda en desktop → foto ARRIBA en móvil */
+  .inv-split__photo               { order: 0; }
+  .inv-split__content             { order: 1; padding: 40px 20px; }
+
+  /* Foto derecha en desktop → contenido ARRIBA en móvil (alterna) */
+  .inv-section--split.inv-split--photo-right .inv-split__photo   { order: 2; }
+  .inv-section--split.inv-split--photo-right .inv-split__content { order: 1; }
+}
+
+/* ================================================================ */
+/* ── FONDOS ALTERNADOS Y CENTRADO EN SECCIONES SPLIT / LAYER    ── */
+/* ================================================================ */
+
+/* Secuencia: champagne → marfil → champagne → marfil...          */
+
+/* Date split: content = marfil (alterna desde Passes=champagne)  */
+.inv-date-section.inv-section--split .inv-split__content {
+  background: var(--color-marfil);
+}
+
+/* Sponsors split: content = marfil + texto centrado */
+.inv-sponsors.inv-section--split .inv-split__content {
+  background: var(--color-marfil);
+  text-align: center;
+}
+
+/* Schedule split: content = champagne */
+.inv-schedule.inv-section--split .inv-split__content {
+  background: var(--color-champagne);
+}
+
+/* Schedule split: centrar h2 y card dentro del split */
+.inv-schedule.inv-section--split .inv-schedule__card {
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Registry split: content = champagne */
+.inv-registry.inv-section--split .inv-split__content {
+  background: var(--color-champagne);
+}
+
+/* Weather (3-layer): frame = marfil (alterna desde salon=champagne) */
+.inv-weather {
+  background: var(--color-marfil) !important;
+}
+
+/* Sponsors: heading más compacto en split para no desbordarse */
+.inv-sponsors.inv-section--split .inv-sponsors__heading {
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
 }

@@ -43,8 +43,44 @@ export default function InvPasses({
         </InvReveal>
 
         <InvReveal delay={0.32}>
-          {/* ── RSVP flow ── */}
-          {confirmado ? (
+          {/* ── Estado persistido en BD ── */}
+          {invitado?.no_asiste ? (
+            <motion.div
+              className="passes-no-msg"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <p>Ya nos avisaste que no podrás acompañarnos. ¡Te deseamos lo mejor! 💛</p>
+            </motion.div>
+
+          ) : invitado?.confirmado && !invitado?.auto_confirmado ? (
+            <motion.div
+              className="passes-si-msg"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <span className="passes-si-msg__check">✓</span>
+              <p>¡Tu asistencia ya está confirmada!</p>
+              <small>
+                {invitado.num_confirmados}{" "}
+                {invitado.num_confirmados !== 1 ? "personas" : "persona"} · 21 de noviembre de 2026
+              </small>
+            </motion.div>
+
+          ) : invitado?.auto_confirmado ? (
+            <motion.div
+              className="passes-no-msg"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <p>El plazo para confirmar ha concluido. Si deseas aclarar tu asistencia, contáctanos directamente. 💛</p>
+            </motion.div>
+
+          ) : /* ── RSVP flow en vivo ── */
+          confirmado ? (
             <motion.div
               className={respuesta === "no" ? "passes-no-msg" : "passes-si-msg"}
               initial={{ opacity: 0, y: 8 }}

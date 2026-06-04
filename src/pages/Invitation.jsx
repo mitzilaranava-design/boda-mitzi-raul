@@ -50,7 +50,6 @@ export default function Invitation() {
   const [confirmado,    setConfirmado]    = useState(false);
   const [error,         setError]         = useState(null);
   const [menuOpen,      setMenuOpen]      = useState(false);
-
   const scrollToSection = (sectionId) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
@@ -119,79 +118,6 @@ export default function Invitation() {
         <div className="invitation-error">
           <p>Este enlace no es válido.</p>
         </div>
-      </div>
-    );
-  }
-
-  if (invitado?.no_asiste) {
-    return (
-      <div className="app invitation-page">
-        <header className="invitation-header">
-          <Link to="/">Mitzi &amp; Raúl</Link>
-        </header>
-        <motion.section className="invitation-card" {...fadeUp}>
-          <div className="no-asiste-msg">
-            <span className="no-asiste-msg__icon">💛</span>
-            <h2>Gracias por avisarnos, {invitado.nombre}</h2>
-            <p>
-              Lamentamos que no puedas acompañarnos, pero agradecemos mucho
-              que nos lo hayas hecho saber. ¡Te deseamos lo mejor!
-            </p>
-          </div>
-        </motion.section>
-      </div>
-    );
-  }
-
-  if (invitado?.confirmado && !invitado?.auto_confirmado) {
-    return (
-      <div className="app invitation-page">
-        <header className="invitation-header">
-          <Link to="/">Mitzi &amp; Raúl</Link>
-        </header>
-        <motion.section className="invitation-card" {...fadeUp}>
-          <div className="ya-confirmado-msg">
-            <span className="ya-confirmado-msg__icon">💍</span>
-            <h2>¡Gracias, {invitado.nombre}!</h2>
-            <p>
-              Tu asistencia a nuestra boda ha sido confirmada. Es un honor
-              tenerte con nosotros en este día tan especial.
-            </p>
-            <p className="ya-confirmado-msg__detalle">
-              Asistirán:{" "}
-              <strong>
-                {invitado.num_confirmados}{" "}
-                {invitado.num_confirmados !== 1 ? "personas" : "persona"}
-              </strong>
-              . ¡Con ansias de verte el{" "}
-              <strong>21 de noviembre de 2026</strong>!
-            </p>
-          </div>
-        </motion.section>
-      </div>
-    );
-  }
-
-  if (invitado?.auto_confirmado) {
-    return (
-      <div className="app invitation-page">
-        <header className="invitation-header">
-          <Link to="/">Mitzi &amp; Raúl</Link>
-        </header>
-        <motion.section className="invitation-card" {...fadeUp}>
-          <div className="auto-confirmado-msg">
-            <span className="auto-confirmado-msg__icon">🕊️</span>
-            <h2>Hola, {invitado.nombre}</h2>
-            <p>
-              El plazo para confirmar asistencia ha concluido y tu lugar
-              está pendiente de revisión por los novios.
-            </p>
-            <p className="auto-confirmado-msg__contacto">
-              Si crees que hay un error o deseas aclarar tu asistencia,
-              por favor contáctanos directamente. ¡Nos encantaría saber de ti! 💛
-            </p>
-          </div>
-        </motion.section>
       </div>
     );
   }
@@ -309,8 +235,8 @@ export default function Invitation() {
       <div id="inv-regalos"><InvRegistry /></div>
       <div id="inv-vestimenta"><InvDresscode /></div>
       <div id="inv-notas"><InvNotes /></div>
-      <div id="inv-fotos"><InvEventPhotos /></div>
-      <div id="inv-galeria"><InvGallery /></div>
+      {!invitado?.no_asiste && <div id="inv-fotos"><InvEventPhotos /></div>}
+      {!invitado?.no_asiste && <div id="inv-galeria"><InvGallery /></div>}
       <div id="inv-despedida"><InvFarewell /></div>
     </div>
   );

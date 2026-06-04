@@ -46,7 +46,7 @@ function buildActualizacionLink(inv, descripcion) {
 function buildWhatsAppLink(inv) {
   const celular = (inv.celular ?? "").replace(/[\s+\-()]/g, "");
   const link = `${SITE_URL}/intro/${inv.id}?t=${ACCESS_TOKEN}`;
-  const esInvitacion = (inv.recordatorios_enviados ?? 0) === 0;
+  const esInvitacion = (inv.recordatorios_enviados ?? 0) === 0 && !inv.ultimo_recordatorio;
   const msg = esInvitacion
     ? `Hola ${inv.nombre} 💍 Mitzi y Raúl tienen el placer de invitarte a celebrar su boda. Esperamos contar con tu valiosa compañía en este día tan especial. Confirma tu asistencia aquí: ${link}`
     : `Hola ${inv.nombre}, Mitzi y Raúl te recuerdan que aún no has confirmado tu asistencia a su boda 💍 ¡Nos encantaría contarte! Confirma aquí: ${link}`;
@@ -93,7 +93,7 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate, onA
   const handleRecordatorio = async () => {
     setLoading(true);
     window.open(buildWhatsAppLink(inv), "_blank", "noopener");
-    const esInvitacion = (inv.recordatorios_enviados ?? 0) === 0;
+    const esInvitacion = (inv.recordatorios_enviados ?? 0) === 0 && !inv.ultimo_recordatorio;
     try {
       if (esInvitacion) {
         await marcarInvitacionEnviada(inv.id);

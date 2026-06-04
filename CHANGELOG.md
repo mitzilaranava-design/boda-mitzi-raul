@@ -19,6 +19,41 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-06-04 13:30 — Admin: fix contador de recordatorios no incrementaba tras enviar invitación
+- **Quién**: Raúl / Claude
+- **Qué**: `esInvitacion` se evaluaba solo con `recordatorios_enviados === 0`, pero ese campo no incrementa al enviar la invitación (solo cambia `ultimo_recordatorio`). El segundo envío se trataba como invitación de nuevo. Fix: `esInvitacion = recordatorios_enviados === 0 && !ultimo_recordatorio`. Ahora después de enviar la invitación, los siguientes envíos incrementan correctamente el contador de recordatorios.
+- **Archivos**: `src/pages/Admin.jsx`
+
+### 2026-06-04 13:00 — Invitación completa siempre visible; estados RSVP manejados en InvPasses
+- **Quién**: Raúl / Claude
+- **Qué**: Eliminados los early returns en Invitation.jsx que cortaban toda la invitación cuando el invitado ya había confirmado, rechazado o fue auto-confirmado. Ahora la invitación completa se muestra siempre; InvPasses detecta el estado de la BD (confirmado, no_asiste, auto_confirmado) y muestra el mensaje correspondiente dentro de la sección de pases. Removido import de `fadeUp` que quedó sin usar.
+- **Archivos**: `src/pages/Invitation.jsx`, `src/components/invitation/InvPasses.jsx`
+
+### 2026-06-04 12:30 — Galería: protección anti-descarga en lightbox vía div+background-image
+- **Quién**: Raúl / Claude
+- **Qué**: Lightbox de galería cambiado de `<motion.img>` a `<motion.div style={{ backgroundImage }}>`. iOS no ofrece menú "Guardar foto" en imágenes CSS background, a diferencia de elementos `<img>`. Agregado `onContextMenu` al contenedor del lightbox. CSS actualizado: `.inv-gallery__lightbox-img` ahora usa `background-size: contain` en lugar de `object-fit`.
+- **Archivos**: `src/components/invitation/InvGallery.jsx`, `src/styles/Invitation.css`
+
+### 2026-06-03 23:30 — Galería: mosaico 3 fotos + lightbox de todas; parallax; móvil alternado; footer farewell
+- **Quién**: Raúl / Claude
+- **Qué**: (1) InvGallery: mosaico muestra solo las primeras 3 fotos con tamaños distintos; al tocar cualquiera se abre el lightbox que navega por todas las fotos. Contador "+N fotos · toca para ver todas" si hay más de 3. (2) Parallax fotos de fondo: `scroll-snap-type: none` en `.app.inv` para scroll libre → parallax funciona. (3) Móvil < 600px: split apila con alternado (foto-izquierda arriba, foto-derecha abajo). (4) Footer InvFarewell: pastilla centrada con fondo cream translúcido + blur.
+- **Archivos**: `src/App.css`, `src/styles/Invitation.css`, `src/components/invitation/InvGallery.jsx`, `InvSponsors.jsx`, `InvFamilies.jsx`, `InvWeather.jsx`, `InvFarewell.jsx`, `InvDate.jsx`, `InvSchedule.jsx`, `InvRegistry.jsx`, `InvVenues.jsx`, `src/data/wedding.js`, `src/context/InvScrollContext.js`, `src/hooks/useParallaxY.js`, `src/pages/Invitation.jsx`
+
+### 2026-06-03 23:00 — Parallax habilitado, móvil alternado, footer farewell con recuadro
+- **Quién**: Raúl / Claude
+- **Qué**: (1) `.app.inv` ahora tiene `scroll-snap-type: none` → scroll libre en la invitación, el parallax de fotos de fondo funciona correctamente. (2) Móvil (< 600px): secciones split apilan verticalmente con alternado — foto-izquierda queda ARRIBA, foto-derecha queda ABAJO (contenido primero). (3) Footer de InvFarewell convertido en pastilla centrada con fondo cream/marfil translúcido + blur, resalta sobre la foto de fondo.
+- **Archivos**: `src/App.css`, `src/styles/Invitation.css`
+
+### 2026-06-03 22:00 — InvSponsors como split, fix móvil y ajustes de layout
+- **Quién**: Raúl / Claude
+- **Qué**: (1) InvSponsors rediseñado como split 50/50: carousel padrinos (izq) + foto (der), fondo marfil. (2) Mobile fix: split apila verticalmente en < 600px (foto 45vw arriba, contenido abajo). (3) `sectionPhotos.sponsors` agregado a wedding.js. (4) CSS `display:grid !important` y `padding:0 !important` para ganar sobre estilos específicos de sección.
+- **Archivos**: `src/components/invitation/InvSponsors.jsx`, `src/styles/Invitation.css`, `src/data/wedding.js`
+
+### 2026-06-03 19:30 — Parallax en 3-capas y slide-in lateral en secciones split
+- **Quién**: Raúl / Claude
+- **Qué**: (1) Secciones 3 capas (Familias, Clima, Despedida): foto enmarcada con efecto parallax — se mueve 40px más lento que el scroll usando `useScroll`+`useTransform` de Framer Motion. (2) Secciones split (Fecha, Programa, Mesa de Regalos): cada mitad entra deslizándose desde su lado (foto desde izquierda/derecha, contenido desde el lado opuesto) con `whileInView`. (3) `InvScrollContext` para pasar el ref del scroll container a los componentes sin prop drilling. (4) Hook `useParallaxY`. Fix móvil: foto split a 70vw de alto.
+- **Archivos**: `src/context/InvScrollContext.js` (nuevo), `src/hooks/useParallaxY.js` (nuevo), `src/pages/Invitation.jsx`, `src/styles/Invitation.css`, `src/data/wedding.js`, `src/components/invitation/InvFamilies.jsx`, `InvWeather.jsx`, `InvFarewell.jsx`, `InvDate.jsx`, `InvSchedule.jsx`, `InvRegistry.jsx`, `InvVenues.jsx`
+
 ### 2026-05-28 18:30 — Animaciones de scroll por elemento en secciones de la invitación
 - **Quién**: Raúl / Claude
 - **Qué**: Nuevo componente `InvReveal` (fade + slide-up al entrar al viewport, `once: true`). Reemplaza el `fadeUp` de sección-entera por animaciones escalonadas en los elementos internos de todas las secciones: InvPasses, InvDate, InvFamilies, InvSponsors, InvSchedule (cada fila del timeline), InvVenues, InvWeather, InvRegistry, InvDresscode, InvNotes, InvEventPhotos, InvGallery, InvFarewell. Los elementos aparecen uno por uno con delay progresivo en lugar de la sección entera de golpe.
