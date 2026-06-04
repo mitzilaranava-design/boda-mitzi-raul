@@ -41,3 +41,47 @@ on conflict (id) do nothing;
 
 -- Para agregar invitados reales, omitir el campo id y se generará automáticamente:
 -- insert into invitados (nombre, celular, num_invitados) values ('Nombre', '+52...', 2);
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- Galería de Fotos — Boda Mitzi & Raúl
+-- ─────────────────────────────────────────────────────────────────────────────
+
+-- Tabla: fotos subidas por los invitados
+create table if not exists galeria_fotos (
+  id uuid primary key default gen_random_uuid(),
+  url text not null,
+  nombre text,           -- nombre del invitado (opcional, puede ser null)
+  invitado_id text,      -- FK lógica a invitados.id; null si viene de QR externo
+  created_at timestamptz default now()
+);
+
+-- Si la tabla ya existía, agregar la columna:
+alter table galeria_fotos add column if not exists invitado_id text;
+
+-- RLS: lectura pública, insert anónimo, sin delete/update
+alter table galeria_fotos enable row level security;
+create policy "Lectura pública galería" on galeria_fotos for select using (true);
+create policy "Subir fotos" on galeria_fotos for insert with check (true);
+
+-- Tabla: configuración (1 fila, el admin activa/desactiva la galería)
+create table if not exists galeria_config (
+  id int primary key default 1,
+  activa boolean default false,
+  constraint single_row check (id = 1)
+);
+
+insert into galeria_config (id, activa) values (1, false) on conflict do nothing;
+
+-- RLS: lectura pública, update solo via service role (o anónimo si se prefiere)
+alter table galeria_config enable row level security;
+create policy "Lectura config galería" on galeria_config for select using (true);
+create policy "Actualizar config galería" on galeria_config for update using (true);
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- Supabase Storage — Bucket "galeria"
+-- Crear manualmente desde el Dashboard de Supabase:
+--   Storage → New bucket → Name: "galeria" → Public: true
+-- Policies (desde Dashboard → Storage → galeria → Policies):
+--   SELECT: "Lectura pública" → allow for all users (anon)
+--   INSERT: "Subir fotos" → allow for all users (anon)
+-- ─────────────────────────────────────────────────────────────────────────────

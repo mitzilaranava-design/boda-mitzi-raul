@@ -29,3 +29,13 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Carpeta privada local (imágenes de referencia, respaldos, datos sensibles)
+private/
+
+# Datos sensibles — no subir al repositorio
+docs/lista-save-the-date.csv
+docs/insert-invitados.sql
+docs/prompts_padrinos_boda.md
+docs/PROMPTS-TARJETAS-PADRINOS.md
+docs/tarjetas-padrinos/
