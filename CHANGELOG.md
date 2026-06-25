@@ -19,6 +19,16 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-06-25 12:30 — Admin: totales de personas (invitadas, asisten, no asisten)
+- **Quién**: Raúl / Claude
+- **Qué**: Segunda fila de estadísticas con totales de personas (suma de num_invitados/num_confirmados), no solo conteo de invitaciones. Muestra: Personas invitadas · Personas asisten · Personas no asisten.
+- **Archivos**: `src/pages/Admin.jsx`
+
+### 2026-06-25 12:00 — Admin: CRUD de invitados (agregar, editar, eliminar) sin ir a la BD
+- **Quién**: Raúl / Claude
+- **Qué**: (1) API: nuevas funciones `crearInvitado`, `editarInvitado`, `eliminarInvitado` con soporte mock y Supabase. SQL de políticas RLS para INSERT/DELETE agregado como comentario. (2) Admin: modal para crear/editar invitado (nombre, celular, pases, activar envío). Botones Editar/Eliminar en cada card con confirmación inline antes de eliminar. Botón "+ Nuevo invitado" sobre la lista.
+- **Archivos**: `src/api/invitations.js`, `src/pages/Admin.jsx`
+
 ### 2026-06-04 13:30 — Admin: fix contador de recordatorios no incrementaba tras enviar invitación
 - **Quién**: Raúl / Claude
 - **Qué**: `esInvitacion` se evaluaba solo con `recordatorios_enviados === 0`, pero ese campo no incrementa al enviar la invitación (solo cambia `ultimo_recordatorio`). El segundo envío se trataba como invitación de nuevo. Fix: `esInvitacion = recordatorios_enviados === 0 && !ultimo_recordatorio`. Ahora después de enviar la invitación, los siguientes envíos incrementan correctamente el contador de recordatorios.
