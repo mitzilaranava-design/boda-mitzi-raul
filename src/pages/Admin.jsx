@@ -3,6 +3,9 @@ import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { getAllInvitados, marcarInvitacionEnviada, marcarRecordatorio, autoConfirmar, marcarSaveTheDate, marcarActualizacion, crearInvitado, editarInvitado, eliminarInvitado } from "../api/invitations";
 import { getGalleryConfig, toggleGallery, getItinerarioConfig, toggleItinerario } from "../api/gallery";
+import TabMesas from "../components/admin/TabMesas";
+import TabDetalles from "../components/admin/TabDetalles";
+import { getAllPases } from "../api/pases";
 
 const ADMIN_KEY = "boda_admin";
 const VALID_ADMIN_TOKEN = import.meta.env.VITE_ADMIN_TOKEN;
@@ -444,9 +447,11 @@ export default function Admin() {
   const [itinerarioActivo, setItinerarioActivo] = useState(false);
   const [itinerarioLoading, setItinerarioLoading] = useState(false);
   const [descripcionActualizacion, setDescripcionActualizacion] = useState("");
-  const [modalInvitado, setModalInvitado] = useState(null); // null=cerrado | {}=nuevo | inv=editar
+  const [modalInvitado, setModalInvitado] = useState(null);
   const [modalCargando, setModalCargando] = useState(false);
   const [modalError, setModalError] = useState(null);
+  const [pestana, setPestana] = useState("invitados");
+  const [pases, setPases] = useState([]);
 
   useEffect(() => {
     const tokenUrl = searchParams.get("t");
@@ -463,8 +468,9 @@ export default function Admin() {
     setLoading(true);
     setError(null);
     try {
-      const data = await getAllInvitados();
-      setInvitados(data ?? []);
+      const [invData, pasesData] = await Promise.all([getAllInvitados(), getAllPases()]);
+      setInvitados(invData ?? []);
+      setPases(pasesData ?? []);
       setPagina(1);
     } catch (e) {
       setError(e.message);
@@ -509,7 +515,6 @@ export default function Admin() {
         inv.id === id
           ? {
               ...inv,
-              // La invitación no suma al conteo; solo los recordatorios cuentan
               recordatorios_enviados: esInvitacion
                 ? (inv.recordatorios_enviados ?? 0)
                 : (inv.recordatorios_enviados ?? 0) + 1,
@@ -569,6 +574,17 @@ export default function Admin() {
     setInvitados((prev) => prev.filter((inv) => inv.id !== id));
   };
 
+  const handleGuardarGrupo = useCallback((invitado_id, nuevosPases) => {
+    setPases((prev) => [
+      ...prev.filter((p) => p.invitado_id !== invitado_id),
+      ...nuevosPases,
+    ]);
+  }, []);
+
+  const handlePaseMesaChange = useCallback((id, mesa) => {
+    setPases((prev) => prev.map((p) => (p.id === id ? { ...p, mesa } : p)));
+  }, []);
+
   if (!authorized) {
     return (
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>
@@ -597,7 +613,6 @@ export default function Admin() {
   const stdEnviados = invitados.filter((i) => i.save_the_date_enviado).length;
   const stdLeidos = invitados.filter((i) => i.save_the_date_leido).length;
 
-  // Totales de personas — solo invitados activos (enviar_save_the_date = true)
   const activos = invitados.filter((i) => i.enviar_save_the_date);
   const personasInvitadas = activos.reduce((s, i) => s + (i.num_invitados ?? 0), 0);
   const personasAsisten = activos.filter((i) => i.confirmado).reduce((s, i) => s + (i.num_confirmados ?? 0), 0);
@@ -620,7 +635,7 @@ export default function Admin() {
           </h1>
         </motion.div>
 
-        {/* Stats */}
+        {/* Stats invitaciones */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -662,120 +677,171 @@ export default function Admin() {
           ))}
         </motion.div>
 
-        {/* Nuevo invitado */}
-        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 20 }}>
-          <button onClick={() => { setModalInvitado({}); setModalError(null); }} style={btnStyle(false, "#b49b6b")}>
-            + Nuevo invitado
-          </button>
-        </div>
-
-        {/* Filtro de búsqueda */}
-        <div style={{ margin: "12px 0 12px", position: "relative" }}>
-          <input
-            type="text"
-            placeholder="Buscar por nombre o celular..."
-            value={busqueda}
-            onChange={(e) => { setBusqueda(e.target.value); setPagina(1); }}
-            style={{
-              width: "100%",
-              boxSizing: "border-box",
-              padding: "12px 40px 12px 16px",
-              fontFamily: "Poppins, sans-serif",
-              fontSize: 14,
-              color: "#222",
-              background: "#fff",
-              border: "1px solid #e8dcc8",
-              borderRadius: 10,
-              outline: "none",
-              minHeight: 44,
-            }}
-          />
-          {busqueda && (
+        {/* Pestañas */}
+        <div style={{ display: "flex", gap: 8, marginTop: 20, marginBottom: 4 }}>
+          {[
+            { key: "invitados", label: "Invitados" },
+            { key: "detalles", label: "Detalles" },
+            { key: "mesas", label: "Mesas" },
+          ].map(({ key, label }) => (
             <button
-              onClick={() => { setBusqueda(""); setPagina(1); }}
+              key={key}
+              onClick={() => setPestana(key)}
               style={{
-                position: "absolute",
-                right: 12,
-                top: "50%",
-                transform: "translateY(-50%)",
-                background: "none",
-                border: "none",
+                background: pestana === key ? "#b49b6b" : "#fff",
+                color: pestana === key ? "#fff" : "#888",
+                border: "1px solid",
+                borderColor: pestana === key ? "#b49b6b" : "#e8dcc8",
+                borderRadius: 99,
+                padding: "8px 24px",
+                fontFamily: "Poppins, sans-serif",
+                fontSize: 13,
+                fontWeight: 500,
                 cursor: "pointer",
-                color: "#aaa",
-                fontSize: 18,
-                lineHeight: 1,
-                padding: 4,
+                minHeight: 40,
               }}
-              aria-label="Limpiar búsqueda"
             >
-              ✕
+              {label}
             </button>
-          )}
+          ))}
         </div>
-        {busqueda && (
-          <p style={{ fontFamily: "Poppins, sans-serif", fontSize: 12, color: "#999", margin: "0 0 12px" }}>
-            {filtrados.length} resultado{filtrados.length !== 1 ? "s" : ""} para &ldquo;{busqueda}&rdquo;
-          </p>
-        )}
 
-        {/* Lista */}
-        {loading && (
-          <p style={{ textAlign: "center", fontFamily: "Poppins, sans-serif", color: "#aaa", fontSize: 14 }}>
-            Cargando...
-          </p>
-        )}
-        {error && (
-          <p style={{ textAlign: "center", fontFamily: "Poppins, sans-serif", color: "#e53e3e", fontSize: 14 }}>
-            Error: {error}
-          </p>
-        )}
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          <AnimatePresence>
-            {invitadosPagina.map((inv) => (
-              <CardInvitado
-                key={inv.id}
-                inv={inv}
-                onRecordatorio={handleRecordatorio}
-                onAutoConfirmar={handleAutoConfirmar}
-                onSaveTheDate={handleSaveTheDate}
-                onActualizacion={handleActualizacion}
-                descripcionActualizacion={descripcionActualizacion}
-                onEditar={(inv) => { setModalInvitado(inv); setModalError(null); }}
-                onEliminar={handleEliminarInvitado}
+        {/* Pestaña: Invitados */}
+        {pestana === "invitados" && (
+          <>
+            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 16 }}>
+              <button onClick={() => { setModalInvitado({}); setModalError(null); }} style={btnStyle(false, "#b49b6b")}>
+                + Nuevo invitado
+              </button>
+            </div>
+
+            <div style={{ margin: "12px 0 12px", position: "relative" }}>
+              <input
+                type="text"
+                placeholder="Buscar por nombre o celular..."
+                value={busqueda}
+                onChange={(e) => { setBusqueda(e.target.value); setPagina(1); }}
+                style={{
+                  width: "100%",
+                  boxSizing: "border-box",
+                  padding: "12px 40px 12px 16px",
+                  fontFamily: "Poppins, sans-serif",
+                  fontSize: 14,
+                  color: "#222",
+                  background: "#fff",
+                  border: "1px solid #e8dcc8",
+                  borderRadius: 10,
+                  outline: "none",
+                  minHeight: 44,
+                }}
               />
-            ))}
-          </AnimatePresence>
-        </div>
+              {busqueda && (
+                <button
+                  onClick={() => { setBusqueda(""); setPagina(1); }}
+                  style={{
+                    position: "absolute",
+                    right: 12,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "#aaa",
+                    fontSize: 18,
+                    lineHeight: 1,
+                    padding: 4,
+                  }}
+                  aria-label="Limpiar búsqueda"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+            {busqueda && (
+              <p style={{ fontFamily: "Poppins, sans-serif", fontSize: 12, color: "#999", margin: "0 0 12px" }}>
+                {filtrados.length} resultado{filtrados.length !== 1 ? "s" : ""} para &ldquo;{busqueda}&rdquo;
+              </p>
+            )}
 
-        {/* Paginador */}
-        {totalPaginas > 1 && (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginTop: 20 }}>
-            <button
-              onClick={() => setPagina((p) => Math.max(1, p - 1))}
-              disabled={pagina === 1}
-              style={btnStyle(pagina === 1, "#b49b6b")}
-            >
-              ← Anterior
-            </button>
-            <span style={{ fontFamily: "Poppins, sans-serif", fontSize: 13, color: "#555" }}>
-              {pagina} / {totalPaginas}
-            </span>
-            <button
-              onClick={() => setPagina((p) => Math.min(totalPaginas, p + 1))}
-              disabled={pagina === totalPaginas}
-              style={btnStyle(pagina === totalPaginas, "#b49b6b")}
-            >
-              Siguiente →
-            </button>
+            {loading && (
+              <p style={{ textAlign: "center", fontFamily: "Poppins, sans-serif", color: "#aaa", fontSize: 14 }}>
+                Cargando...
+              </p>
+            )}
+            {error && (
+              <p style={{ textAlign: "center", fontFamily: "Poppins, sans-serif", color: "#e53e3e", fontSize: 14 }}>
+                Error: {error}
+              </p>
+            )}
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <AnimatePresence>
+                {invitadosPagina.map((inv) => (
+                  <CardInvitado
+                    key={inv.id}
+                    inv={inv}
+                    onRecordatorio={handleRecordatorio}
+                    onAutoConfirmar={handleAutoConfirmar}
+                    onSaveTheDate={handleSaveTheDate}
+                    onActualizacion={handleActualizacion}
+                    descripcionActualizacion={descripcionActualizacion}
+                    onEditar={(inv) => { setModalInvitado(inv); setModalError(null); }}
+                    onEliminar={handleEliminarInvitado}
+                  />
+                ))}
+              </AnimatePresence>
+            </div>
+
+            {totalPaginas > 1 && (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginTop: 20 }}>
+                <button
+                  onClick={() => setPagina((p) => Math.max(1, p - 1))}
+                  disabled={pagina === 1}
+                  style={btnStyle(pagina === 1, "#b49b6b")}
+                >
+                  ← Anterior
+                </button>
+                <span style={{ fontFamily: "Poppins, sans-serif", fontSize: 13, color: "#555" }}>
+                  {pagina} / {totalPaginas}
+                </span>
+                <button
+                  onClick={() => setPagina((p) => Math.min(totalPaginas, p + 1))}
+                  disabled={pagina === totalPaginas}
+                  style={btnStyle(pagina === totalPaginas, "#b49b6b")}
+                >
+                  Siguiente →
+                </button>
+              </div>
+            )}
+
+            {!loading && (
+              <div style={{ textAlign: "center", marginTop: 24 }}>
+                <button onClick={cargar} style={btnStyle(false, "#b49b6b")}>
+                  Actualizar lista
+                </button>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Pestaña: Detalles */}
+        {pestana === "detalles" && (
+          <div style={{ marginTop: 16 }}>
+            {loading ? (
+              <p style={{ textAlign: "center", fontFamily: "Poppins, sans-serif", color: "#aaa", fontSize: 14 }}>Cargando...</p>
+            ) : (
+              <TabDetalles invitados={invitados} pases={pases} onGuardarGrupo={handleGuardarGrupo} />
+            )}
           </div>
         )}
 
-        {/* Refresh */}
-        {!loading && (
-          <div style={{ textAlign: "center", marginTop: 24 }}>
-            <button onClick={cargar} style={btnStyle(false, "#b49b6b")}>
-              Actualizar lista
-            </button>
+        {/* Pestaña: Mesas */}
+        {pestana === "mesas" && (
+          <div style={{ marginTop: 16 }}>
+            {loading ? (
+              <p style={{ textAlign: "center", fontFamily: "Poppins, sans-serif", color: "#aaa", fontSize: 14 }}>Cargando...</p>
+            ) : (
+              <TabMesas invitados={invitados} pases={pases} onMesaChange={handlePaseMesaChange} />
+            )}
           </div>
         )}
 
