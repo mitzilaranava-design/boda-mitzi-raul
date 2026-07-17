@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { getAllInvitados, marcarInvitacionEnviada, marcarRecordatorio, autoConfirmar, marcarSaveTheDate, marcarActualizacion } from "../api/invitations";
+import { getAllInvitados, marcarInvitacionEnviada, marcarRecordatorio, autoConfirmar, marcarSaveTheDate, marcarActualizacion, crearInvitado, editarInvitado, eliminarInvitado } from "../api/invitations";
 import { getGalleryConfig, toggleGallery, getItinerarioConfig, toggleItinerario } from "../api/gallery";
 
 const ADMIN_KEY = "boda_admin";
@@ -76,8 +76,130 @@ function pill(bg) {
   };
 }
 
-function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate, onActualizacion, descripcionActualizacion }) {
+const modalInputStyle = {
+  width: "100%",
+  boxSizing: "border-box",
+  padding: "10px 14px",
+  fontFamily: "Poppins, sans-serif",
+  fontSize: 14,
+  color: "#222",
+  background: "#fafafa",
+  border: "1px solid #e8dcc8",
+  borderRadius: 8,
+  outline: "none",
+  minHeight: 44,
+};
+
+const modalLabelStyle = {
+  display: "block",
+  fontFamily: "Poppins, sans-serif",
+  fontSize: 12,
+  color: "#888",
+  marginBottom: 6,
+  marginTop: 16,
+};
+
+function ModalInvitado({ invitado, onGuardar, onCerrar, cargando, errorGuardar }) {
+  const esNuevo = !invitado?.id;
+  const [form, setForm] = useState({
+    nombre: invitado?.nombre ?? "",
+    celular: invitado?.celular ?? "",
+    num_invitados: invitado?.num_invitados ?? 1,
+    enviar_save_the_date: invitado?.enviar_save_the_date ?? true,
+  });
+
+  const set = (k, v) => setForm((p) => ({ ...p, [k]: v }));
+  const valido = form.nombre.trim().length > 0 && form.celular.trim().length > 0;
+
+  return (
+    <div
+      style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 9000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}
+      onClick={onCerrar}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 12 }}
+        transition={{ duration: 0.18 }}
+        style={{ background: "#fff", borderRadius: 16, padding: "28px 24px", width: "100%", maxWidth: 440, boxShadow: "0 20px 60px rgba(0,0,0,0.2)" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p style={{ margin: "0 0 4px", fontFamily: "'Playfair Display', serif", fontSize: 20, color: "#222", fontWeight: 600 }}>
+          {esNuevo ? "Nuevo invitado" : "Editar invitado"}
+        </p>
+        <p style={{ margin: "0 0 8px", fontFamily: "Poppins, sans-serif", fontSize: 13, color: "#aaa" }}>
+          {esNuevo ? "Completa los datos del nuevo invitado." : `Editando: ${invitado.nombre}`}
+        </p>
+
+        <label style={modalLabelStyle}>Nombre completo *</label>
+        <input
+          type="text"
+          value={form.nombre}
+          onChange={(e) => set("nombre", e.target.value)}
+          placeholder="Ej: Juan y María García"
+          style={modalInputStyle}
+          autoFocus
+        />
+
+        <label style={modalLabelStyle}>Celular (con código de país) *</label>
+        <input
+          type="tel"
+          value={form.celular}
+          onChange={(e) => set("celular", e.target.value)}
+          placeholder="+521234567890"
+          style={modalInputStyle}
+        />
+
+        <label style={modalLabelStyle}>Número de pases</label>
+        <select
+          value={form.num_invitados}
+          onChange={(e) => set("num_invitados", Number(e.target.value))}
+          style={modalInputStyle}
+        >
+          {Array.from({ length: 10 }, (_, i) => (
+            <option key={i + 1} value={i + 1}>
+              {i + 1} {i === 0 ? "persona" : "personas"}
+            </option>
+          ))}
+        </select>
+
+        <label style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 18, cursor: "pointer", fontFamily: "Poppins, sans-serif", fontSize: 13, color: "#555" }}>
+          <input
+            type="checkbox"
+            checked={form.enviar_save_the_date}
+            onChange={(e) => set("enviar_save_the_date", e.target.checked)}
+            style={{ width: 18, height: 18, accentColor: "#b49b6b", cursor: "pointer", flexShrink: 0 }}
+          />
+          Activar envío de invitación
+        </label>
+
+        {errorGuardar && (
+          <p style={{ margin: "12px 0 0", fontFamily: "Poppins, sans-serif", fontSize: 12, color: "#e53e3e" }}>
+            {errorGuardar}
+          </p>
+        )}
+
+        <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
+          <button onClick={onCerrar} disabled={cargando} style={btnStyle(cargando, "#9ca3af")}>
+            Cancelar
+          </button>
+          <button
+            onClick={() => onGuardar(form)}
+            disabled={!valido || cargando}
+            style={{ ...btnStyle(!valido || cargando, "#b49b6b"), flex: 1 }}
+          >
+            {cargando ? "Guardando..." : esNuevo ? "Crear invitado" : "Guardar cambios"}
+          </button>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate, onActualizacion, descripcionActualizacion, onEditar, onEliminar }) {
   const [loading, setLoading] = useState(false);
+  const [confirmandoEliminar, setConfirmandoEliminar] = useState(false);
+  const [eliminando, setEliminando] = useState(false);
 
   const handleSaveTheDate = async () => {
     setLoading(true);
@@ -125,6 +247,18 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate, onA
       onActualizacion(inv.id);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleEliminarConfirmado = async () => {
+    setEliminando(true);
+    try {
+      await eliminarInvitado(inv.id);
+      onEliminar(inv.id);
+    } catch {
+      setConfirmandoEliminar(false);
+    } finally {
+      setEliminando(false);
     }
   };
 
@@ -235,6 +369,44 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate, onA
           </div>
         </div>
       )}
+
+      {/* Editar / Eliminar */}
+      <div style={{ display: "flex", alignItems: "center", gap: 8, borderTop: "1px solid #f2e8d5", paddingTop: 8, flexWrap: "wrap" }}>
+        <button
+          onClick={() => onEditar(inv)}
+          disabled={loading || eliminando}
+          style={btnStyle(loading || eliminando, "#9d8558")}
+        >
+          Editar
+        </button>
+        {!confirmandoEliminar ? (
+          <button
+            onClick={() => setConfirmandoEliminar(true)}
+            disabled={loading || eliminando}
+            style={btnStyle(loading || eliminando, "#9ca3af")}
+          >
+            Eliminar
+          </button>
+        ) : (
+          <>
+            <span style={{ fontFamily: "Poppins, sans-serif", fontSize: 13, color: "#e53e3e" }}>¿Eliminar?</span>
+            <button
+              onClick={handleEliminarConfirmado}
+              disabled={eliminando}
+              style={btnStyle(eliminando, "#e53e3e")}
+            >
+              {eliminando ? "..." : "Sí, eliminar"}
+            </button>
+            <button
+              onClick={() => setConfirmandoEliminar(false)}
+              disabled={eliminando}
+              style={btnStyle(eliminando, "#6b7280")}
+            >
+              Cancelar
+            </button>
+          </>
+        )}
+      </div>
     </motion.div>
   );
 }
@@ -272,6 +444,9 @@ export default function Admin() {
   const [itinerarioActivo, setItinerarioActivo] = useState(false);
   const [itinerarioLoading, setItinerarioLoading] = useState(false);
   const [descripcionActualizacion, setDescripcionActualizacion] = useState("");
+  const [modalInvitado, setModalInvitado] = useState(null); // null=cerrado | {}=nuevo | inv=editar
+  const [modalCargando, setModalCargando] = useState(false);
+  const [modalError, setModalError] = useState(null);
 
   useEffect(() => {
     const tokenUrl = searchParams.get("t");
@@ -371,6 +546,29 @@ export default function Admin() {
     );
   };
 
+  const handleGuardarInvitado = async (form) => {
+    setModalCargando(true);
+    setModalError(null);
+    try {
+      if (modalInvitado?.id) {
+        const actualizado = await editarInvitado(modalInvitado.id, form);
+        setInvitados((prev) => prev.map((inv) => inv.id === actualizado.id ? actualizado : inv));
+      } else {
+        const nuevo = await crearInvitado(form);
+        setInvitados((prev) => [...prev, nuevo].sort((a, b) => a.nombre.localeCompare(b.nombre)));
+      }
+      setModalInvitado(null);
+    } catch (e) {
+      setModalError(e.message);
+    } finally {
+      setModalCargando(false);
+    }
+  };
+
+  const handleEliminarInvitado = (id) => {
+    setInvitados((prev) => prev.filter((inv) => inv.id !== id));
+  };
+
   if (!authorized) {
     return (
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>
@@ -399,6 +597,12 @@ export default function Admin() {
   const stdEnviados = invitados.filter((i) => i.save_the_date_enviado).length;
   const stdLeidos = invitados.filter((i) => i.save_the_date_leido).length;
 
+  // Totales de personas — solo invitados activos (enviar_save_the_date = true)
+  const activos = invitados.filter((i) => i.enviar_save_the_date);
+  const personasInvitadas = activos.reduce((s, i) => s + (i.num_invitados ?? 0), 0);
+  const personasAsisten = activos.filter((i) => i.confirmado).reduce((s, i) => s + (i.num_confirmados ?? 0), 0);
+  const personasNoAsisten = activos.filter((i) => i.no_asiste).reduce((s, i) => s + (i.num_invitados ?? 0), 0);
+
   return (
     <div style={{ minHeight: "100vh", background: "#f9f5ef", padding: "32px 16px" }}>
       <div style={{ maxWidth: 640, margin: "0 auto" }}>
@@ -424,7 +628,7 @@ export default function Admin() {
           className="admin-stats"
         >
           {[
-            { label: "Total", value: total, color: "#222" },
+            { label: "Total inv.", value: total, color: "#222" },
             { label: "STD Enviados", value: stdEnviados, color: "#9d8558" },
             { label: "STD Leídos", value: stdLeidos, color: "#0ea5e9" },
             { label: "Confirmados", value: confirmados, color: "#16a34a" },
@@ -439,8 +643,34 @@ export default function Admin() {
           ))}
         </motion.div>
 
+        {/* Stats personas */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginTop: 10 }}
+        >
+          {[
+            { label: "Personas invitadas", value: personasInvitadas, color: "#222" },
+            { label: "Personas asisten", value: personasAsisten, color: "#16a34a" },
+            { label: "Personas no asisten", value: personasNoAsisten, color: "#9ca3af" },
+          ].map(({ label, value, color }) => (
+            <div key={label} style={{ background: "#fff", border: "1px solid #e8dcc8", borderRadius: 10, padding: "14px 6px", textAlign: "center" }}>
+              <p style={{ margin: 0, fontFamily: "'Playfair Display', serif", fontSize: 26, color, fontWeight: 700 }}>{value}</p>
+              <p style={{ margin: 0, fontFamily: "Poppins, sans-serif", fontSize: 9, color: "#999", marginTop: 2 }}>{label}</p>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Nuevo invitado */}
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 20 }}>
+          <button onClick={() => { setModalInvitado({}); setModalError(null); }} style={btnStyle(false, "#b49b6b")}>
+            + Nuevo invitado
+          </button>
+        </div>
+
         {/* Filtro de búsqueda */}
-        <div style={{ margin: "20px 0 12px", position: "relative" }}>
+        <div style={{ margin: "12px 0 12px", position: "relative" }}>
           <input
             type="text"
             placeholder="Buscar por nombre o celular..."
@@ -510,6 +740,8 @@ export default function Admin() {
                 onSaveTheDate={handleSaveTheDate}
                 onActualizacion={handleActualizacion}
                 descripcionActualizacion={descripcionActualizacion}
+                onEditar={(inv) => { setModalInvitado(inv); setModalError(null); }}
+                onEliminar={handleEliminarInvitado}
               />
             ))}
           </AnimatePresence>
@@ -656,6 +888,19 @@ export default function Admin() {
           Intervalo de recordatorio: {import.meta.env.VITE_REMINDER_INTERVAL_MINUTES ?? 10080} min
         </p>
       </div>
+
+      {/* Modal crear / editar invitado */}
+      <AnimatePresence>
+        {modalInvitado !== null && (
+          <ModalInvitado
+            invitado={modalInvitado?.id ? modalInvitado : null}
+            onGuardar={handleGuardarInvitado}
+            onCerrar={() => setModalInvitado(null)}
+            cargando={modalCargando}
+            errorGuardar={modalError}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
