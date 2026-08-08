@@ -11,6 +11,7 @@ const ADMIN_KEY = "boda_admin";
 const VALID_ADMIN_TOKEN = import.meta.env.VITE_ADMIN_TOKEN;
 const SITE_URL = import.meta.env.VITE_SITE_URL ?? "http://localhost:5173";
 const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN ?? "";
+const FECHA_LIMITE = import.meta.env.VITE_FECHA_LIMITE ?? "21 de agosto de 2026";
 const INTERVAL_MS =
   Number(import.meta.env.VITE_REMINDER_INTERVAL_MINUTES ?? 10080) * 60 * 1000;
 
@@ -50,9 +51,10 @@ function buildWhatsAppLink(inv) {
   const celular = (inv.celular ?? "").replace(/[\s+\-()]/g, "");
   const link = `${SITE_URL}/intro/${inv.id}?t=${ACCESS_TOKEN}`;
   const esInvitacion = (inv.recordatorios_enviados ?? 0) === 0 && !inv.ultimo_recordatorio;
+  const fechaMsg = FECHA_LIMITE ? ` La fecha límite para confirmar es el ${FECHA_LIMITE}.` : "";
   const msg = esInvitacion
     ? `Hola ${inv.nombre} 💍 Mitzi y Raúl tienen el placer de invitarte a celebrar su boda. Esperamos contar con tu valiosa compañía en este día tan especial. Confirma tu asistencia aquí: ${link}`
-    : `Hola ${inv.nombre}, Mitzi y Raúl te recuerdan que aún no has confirmado tu asistencia a su boda 💍 ¡Nos encantaría contarte! Confirma aquí: ${link}`;
+    : `Hola ${inv.nombre}, Mitzi y Raúl te recuerdan que aún no has confirmado tu asistencia a su boda 💍 ¡Nos encantaría contarte!${fechaMsg} Confirma aquí: ${link}`;
   return `https://wa.me/${celular}?text=${encodeURIComponent(msg)}`;
 }
 
