@@ -10,17 +10,11 @@
  * CREATE POLICY "leer por id" ON invitados
  *   FOR SELECT USING (true);
  *
- * -- Permitir actualizar todos los campos (RSVP + admin)
+ * -- Permitir actualizar solo el campo de confirmación
  * CREATE POLICY "confirmar propio" ON invitados
  *   FOR UPDATE USING (true) WITH CHECK (true);
  *
- * -- Permitir INSERT desde el admin
- * CREATE POLICY "admin insert" ON invitados
- *   FOR INSERT WITH CHECK (true);
- *
- * -- Permitir DELETE desde el admin
- * CREATE POLICY "admin delete" ON invitados
- *   FOR DELETE USING (true);
+ * -- INSERT y DELETE quedan bloqueados (sin política = denegado con RLS activo)
  * ─────────────────────────────────────────────────────────────
  * IDs: la columna id usa DEFAULT gen_random_uuid()::text.
  * Al insertar sin especificar id, Supabase genera un UUID automáticamente.
@@ -212,12 +206,37 @@ export async function marcarActualizacion(id) {
   return { ok: true };
 }
 
-export async function crearInvitado({ nombre, celular, num_invitados, enviar_save_the_date }) {
-  const defaults = {
-    nombre,
-    celular,
-    num_invitados,
-    enviar_save_the_date,
+export async function crearInvitado(form) {
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("invitados")
+      .insert([{
+        nombre: form.nombre,
+        celular: form.celular,
+        num_invitados: form.num_invitados,
+        enviar_save_the_date: form.enviar_save_the_date ?? true,
+        num_confirmados: 0,
+        confirmado: false,
+        no_asiste: false,
+        recordatorios_enviados: 0,
+        ultimo_recordatorio: null,
+        auto_confirmado: false,
+        save_the_date_enviado: false,
+        save_the_date_leido: false,
+        actualizacion_enviada: false,
+      }])
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return data;
+  }
+  const id = crypto.randomUUID();
+  const nuevo = {
+    id,
+    nombre: form.nombre,
+    celular: form.celular,
+    num_invitados: form.num_invitados,
+    enviar_save_the_date: form.enviar_save_the_date ?? true,
     num_confirmados: 0,
     confirmado: false,
     no_asiste: false,
@@ -228,39 +247,38 @@ export async function crearInvitado({ nombre, celular, num_invitados, enviar_sav
     save_the_date_leido: false,
     actualizacion_enviada: false,
   };
-  if (supabase) {
-    const { data, error } = await supabase
-      .from("invitados")
-      .insert(defaults)
-      .select()
-      .single();
-    if (error) throw new Error(error.message);
-    return data;
-  }
-  const id = crypto.randomUUID();
-  MOCK_INVITADOS[id] = { id, ...defaults };
-  return MOCK_INVITADOS[id];
+  MOCK_INVITADOS[id] = nuevo;
+  return nuevo;
 }
 
-export async function editarInvitado(id, { nombre, celular, num_invitados, enviar_save_the_date }) {
+export async function editarInvitado(id, form) {
   if (supabase) {
     const { data, error } = await supabase
       .from("invitados")
-      .update({ nombre, celular, num_invitados, enviar_save_the_date })
+      .update({
+        nombre: form.nombre,
+        celular: form.celular,
+        num_invitados: form.num_invitados,
+        enviar_save_the_date: form.enviar_save_the_date,
+      })
       .eq("id", id)
       .select()
       .single();
     if (error) throw new Error(error.message);
     return data;
   }
-  if (!MOCK_INVITADOS[id]) throw new Error("Invitado no encontrado");
-  Object.assign(MOCK_INVITADOS[id], { nombre, celular, num_invitados, enviar_save_the_date });
+  if (MOCK_INVITADOS[id]) {
+    MOCK_INVITADOS[id] = { ...MOCK_INVITADOS[id], ...form };
+  }
   return MOCK_INVITADOS[id];
 }
 
 export async function eliminarInvitado(id) {
   if (supabase) {
-    const { error } = await supabase.from("invitados").delete().eq("id", id);
+    const { error } = await supabase
+      .from("invitados")
+      .delete()
+      .eq("id", id);
     if (error) throw new Error(error.message);
     return { ok: true };
   }

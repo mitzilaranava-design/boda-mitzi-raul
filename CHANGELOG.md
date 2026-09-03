@@ -19,6 +19,11 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-08-07 21:57 — Admin: fecha límite de confirmación en recordatorio de WhatsApp
+- **Quién**: Raúl / Claude
+- **Qué**: El mensaje de recordatorio de WhatsApp ahora incluye la frase "La fecha límite para confirmar es el 21 de agosto de 2026." Solo aplica al recordatorio, no a la invitación inicial. Configurable vía `VITE_FECHA_LIMITE` (default: "21 de agosto de 2026").
+- **Archivos**: `src/pages/Admin.jsx`
+
 ### 2026-07-09 22:45 — Admin: pestañas Detalles + Mesas (personas individuales por invitación)
 - **Quién**: Raúl / Claude
 - **Qué**: Dos nuevas pestañas en el panel admin. (1) **Detalles**: por cada invitación, registra los integrantes individuales con nombre y tipo (Adulto ♂/♀, Niño/Niña). Chips con nombre+emoji en cada card. Stats: adultos, adultas, menores, total registradas, inv. con/sin grupo. (2) **Mesas**: asigna personas individuales (de boda_pases) a mesas 1-20 (12 asientos c/u). Vista "Asignación" agrupada por invitación. Vista "Por mesa" con cards de capacidad. Botón imprimir/exportar genera tabla HTML con persona, tipo, invitación y ocupación por mesa. Nueva API `pases.js` (getAllPases, guardarGrupo, asignarMesaPase).
