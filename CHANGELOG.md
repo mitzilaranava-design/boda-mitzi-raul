@@ -19,6 +19,11 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-09-03 — Admin: botón "No asiste" + vista exclusiva para invitados que no asisten
+- **Quién**: Raúl / Claude
+- **Qué**: (1) Admin: nuevo botón "No asiste" con confirmación inline en cada card de invitado pendiente (aparece junto a recordatorio/auto-confirmar). Llama a `marcarNoAsiste` y actualiza estado local. (2) Invitation: invitados con `no_asiste=true` ven solo una página sencilla con su nombre y mensaje de agradecimiento — ya no ven la invitación completa. (3) invitations.js: restauradas funciones `crearInvitado`, `editarInvitado`, `eliminarInvitado` que se perdieron en un merge anterior.
+- **Archivos**: `src/pages/Admin.jsx`, `src/pages/Invitation.jsx`, `src/api/invitations.js`
+
 ### 2026-08-07 21:57 — Admin: fecha límite de confirmación en recordatorio de WhatsApp
 - **Quién**: Raúl / Claude
 - **Qué**: El mensaje de recordatorio de WhatsApp ahora incluye la frase "La fecha límite para confirmar es el 21 de agosto de 2026." Solo aplica al recordatorio, no a la invitación inicial. Configurable vía `VITE_FECHA_LIMITE` (default: "21 de agosto de 2026").
