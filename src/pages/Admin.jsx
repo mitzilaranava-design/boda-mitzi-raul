@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { getAllInvitados, marcarInvitacionEnviada, marcarRecordatorio, autoConfirmar, marcarSaveTheDate, marcarActualizacion, crearInvitado, editarInvitado, eliminarInvitado } from "../api/invitations";
+import { getAllInvitados, marcarInvitacionEnviada, marcarRecordatorio, autoConfirmar, marcarNoAsiste, marcarSaveTheDate, marcarActualizacion, crearInvitado, editarInvitado, eliminarInvitado } from "../api/invitations";
 import { getGalleryConfig, toggleGallery, getItinerarioConfig, toggleItinerario } from "../api/gallery";
 import TabMesas from "../components/admin/TabMesas";
 import TabDetalles from "../components/admin/TabDetalles";
@@ -201,10 +201,12 @@ function ModalInvitado({ invitado, onGuardar, onCerrar, cargando, errorGuardar }
   );
 }
 
-function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate, onActualizacion, descripcionActualizacion, onEditar, onEliminar }) {
+function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onNoAsiste, onSaveTheDate, onActualizacion, descripcionActualizacion, onEditar, onEliminar }) {
   const [loading, setLoading] = useState(false);
   const [confirmandoEliminar, setConfirmandoEliminar] = useState(false);
   const [eliminando, setEliminando] = useState(false);
+  const [confirmandoNoAsiste, setConfirmandoNoAsiste] = useState(false);
+  const [marcandoNoAsiste, setMarcandoNoAsiste] = useState(false);
 
   const handleSaveTheDate = async () => {
     setLoading(true);
@@ -240,6 +242,18 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate, onA
       onAutoConfirmar(inv.id);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleNoAsisteConfirmado = async () => {
+    setMarcandoNoAsiste(true);
+    try {
+      await marcarNoAsiste(inv.id);
+      onNoAsiste(inv.id);
+    } catch {
+      setConfirmandoNoAsiste(false);
+    } finally {
+      setMarcandoNoAsiste(false);
     }
   };
 
@@ -352,7 +366,7 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate, onA
           <p style={{ margin: 0, fontFamily: "Poppins, sans-serif", fontSize: 12, color: "#999" }}>
             Invitación/recordatorios: {recordatorios}/3 · {tiempoHastaProximo(inv)}
           </p>
-          <div style={{ display: "flex", gap: 8 }}>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {!necesitaAutoConfirmar && (
               <button
                 onClick={handleRecordatorio}
@@ -370,6 +384,33 @@ function CardInvitado({ inv, onRecordatorio, onAutoConfirmar, onSaveTheDate, onA
               >
                 {loading ? "..." : "Auto-confirmar"}
               </button>
+            )}
+            {!confirmandoNoAsiste ? (
+              <button
+                onClick={() => setConfirmandoNoAsiste(true)}
+                disabled={loading || marcandoNoAsiste}
+                style={btnStyle(loading || marcandoNoAsiste, "#9ca3af")}
+              >
+                No asiste
+              </button>
+            ) : (
+              <>
+                <span style={{ fontFamily: "Poppins, sans-serif", fontSize: 13, color: "#e53e3e", alignSelf: "center" }}>¿Confirmar?</span>
+                <button
+                  onClick={handleNoAsisteConfirmado}
+                  disabled={marcandoNoAsiste}
+                  style={btnStyle(marcandoNoAsiste, "#e53e3e")}
+                >
+                  {marcandoNoAsiste ? "..." : "Sí, no asiste"}
+                </button>
+                <button
+                  onClick={() => setConfirmandoNoAsiste(false)}
+                  disabled={marcandoNoAsiste}
+                  style={btnStyle(marcandoNoAsiste, "#6b7280")}
+                >
+                  Cancelar
+                </button>
+              </>
             )}
           </div>
         </div>
@@ -533,6 +574,14 @@ export default function Admin() {
         inv.id === id
           ? { ...inv, confirmado: true, auto_confirmado: true, num_confirmados: inv.num_invitados }
           : inv
+      )
+    );
+  };
+
+  const handleNoAsiste = (id) => {
+    setInvitados((prev) =>
+      prev.map((inv) =>
+        inv.id === id ? { ...inv, no_asiste: true } : inv
       )
     );
   };
@@ -783,6 +832,7 @@ export default function Admin() {
                     inv={inv}
                     onRecordatorio={handleRecordatorio}
                     onAutoConfirmar={handleAutoConfirmar}
+                    onNoAsiste={handleNoAsiste}
                     onSaveTheDate={handleSaveTheDate}
                     onActualizacion={handleActualizacion}
                     descripcionActualizacion={descripcionActualizacion}

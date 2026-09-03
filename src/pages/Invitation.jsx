@@ -122,6 +122,29 @@ export default function Invitation() {
     );
   }
 
+  if (invitado?.no_asiste) {
+    return (
+      <div className="app invitation-page" style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: "#f9f5ef", padding: "40px 20px" }}>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          style={{ textAlign: "center", maxWidth: 440 }}
+        >
+          <p style={{ fontFamily: "Poppins, sans-serif", fontSize: 11, letterSpacing: 3, color: "#b49b6b", textTransform: "uppercase", margin: "0 0 12px" }}>
+            Mitzi &amp; Raúl · 21 de noviembre de 2026
+          </p>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, color: "#222", margin: "0 0 16px", fontWeight: 600 }}>
+            {invitado.nombre}
+          </h2>
+          <p style={{ fontFamily: "Poppins, sans-serif", fontSize: 15, color: "#555", lineHeight: 1.7, margin: 0 }}>
+            Ya nos avisaste que no podrás acompañarnos. ¡Te deseamos lo mejor! 💛
+          </p>
+        </motion.div>
+      </div>
+    );
+  }
+
   // ── Main Invitation ───────────────────────────────────────────
   return (
     <div className="app inv">
