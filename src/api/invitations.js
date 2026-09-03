@@ -206,6 +206,86 @@ export async function marcarActualizacion(id) {
   return { ok: true };
 }
 
+export async function crearInvitado(form) {
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("invitados")
+      .insert([{
+        nombre: form.nombre,
+        celular: form.celular,
+        num_invitados: form.num_invitados,
+        enviar_save_the_date: form.enviar_save_the_date ?? true,
+        num_confirmados: 0,
+        confirmado: false,
+        no_asiste: false,
+        recordatorios_enviados: 0,
+        ultimo_recordatorio: null,
+        auto_confirmado: false,
+        save_the_date_enviado: false,
+        save_the_date_leido: false,
+        actualizacion_enviada: false,
+      }])
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return data;
+  }
+  const id = crypto.randomUUID();
+  const nuevo = {
+    id,
+    nombre: form.nombre,
+    celular: form.celular,
+    num_invitados: form.num_invitados,
+    enviar_save_the_date: form.enviar_save_the_date ?? true,
+    num_confirmados: 0,
+    confirmado: false,
+    no_asiste: false,
+    recordatorios_enviados: 0,
+    ultimo_recordatorio: null,
+    auto_confirmado: false,
+    save_the_date_enviado: false,
+    save_the_date_leido: false,
+    actualizacion_enviada: false,
+  };
+  MOCK_INVITADOS[id] = nuevo;
+  return nuevo;
+}
+
+export async function editarInvitado(id, form) {
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("invitados")
+      .update({
+        nombre: form.nombre,
+        celular: form.celular,
+        num_invitados: form.num_invitados,
+        enviar_save_the_date: form.enviar_save_the_date,
+      })
+      .eq("id", id)
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return data;
+  }
+  if (MOCK_INVITADOS[id]) {
+    MOCK_INVITADOS[id] = { ...MOCK_INVITADOS[id], ...form };
+  }
+  return MOCK_INVITADOS[id];
+}
+
+export async function eliminarInvitado(id) {
+  if (supabase) {
+    const { error } = await supabase
+      .from("invitados")
+      .delete()
+      .eq("id", id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  }
+  delete MOCK_INVITADOS[id];
+  return { ok: true };
+}
+
 export async function autoConfirmar(id) {
   if (supabase) {
     const { data: current, error: fetchError } = await supabase
