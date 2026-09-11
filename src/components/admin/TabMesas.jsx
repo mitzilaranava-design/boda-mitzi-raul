@@ -31,6 +31,87 @@ function CapacidadBar({ ocupados }) {
   );
 }
 
+function abrirReporteInvitados(invitados, pases) {
+  const invOrdenados = [...invitados]
+    .filter((inv) => inv.enviar_save_the_date && !inv.no_asiste)
+    .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+
+  const filas = invOrdenados.map((inv, idx) => {
+    const pasesInv = pases.filter((p) => p.invitado_id === inv.id);
+    const adultos = pasesInv.filter(
+      (p) => p.tipo === "adulto_hombre" || p.tipo === "adulto_mujer"
+    ).length;
+    const ninos = pasesInv.filter(
+      (p) => p.tipo === "nino" || p.tipo === "nina"
+    ).length;
+    const mesas = [...new Set(pasesInv.map((p) => p.mesa).filter(Boolean))].sort(
+      (a, b) => a - b
+    );
+    const mesaStr = mesas.length > 0 ? mesas.join("/") : "—";
+    const confirmadoStr = inv.confirmado ? "SI" : "NO";
+    const c = idx % 2 === 0 ? "#fff" : "#fafaf8";
+
+    return `<tr style="background:${c}">
+      <td style="text-align:center">${idx + 1}</td>
+      <td><strong>${inv.nombre}</strong></td>
+      <td>${inv.celular ?? ""}</td>
+      <td style="text-align:center">${inv.num_invitados ?? ""}</td>
+      <td></td>
+      <td style="text-align:center">${mesaStr}</td>
+      <td style="text-align:center">${adultos || "—"}</td>
+      <td style="text-align:center">${ninos || "—"}</td>
+      <td style="text-align:center">${inv.num_confirmados ?? ""}</td>
+      <td style="text-align:center;font-weight:600;color:${inv.confirmado ? "#16a34a" : "#e53e3e"}">${confirmadoStr}</td>
+      <td></td>
+      <td style="color:#888">${inv.nombre}</td>
+    </tr>`;
+  }).join("");
+
+  const win = window.open("", "_blank");
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+<title>Lista de invitados — Mitzi &amp; Raúl</title>
+<style>
+  body{font-family:Arial,sans-serif;padding:28px;color:#222;max-width:1200px;margin:0 auto;font-size:12px}
+  h1{font-family:Georgia,serif;font-size:22px;text-align:center;margin:0 0 2px}
+  .sub{text-align:center;color:#888;font-size:11px;margin:0 0 6px}
+  .total{text-align:center;font-size:13px;font-weight:600;color:#b49b6b;margin:0 0 18px;letter-spacing:0.5px}
+  table{width:100%;border-collapse:collapse}
+  th{background:#f9f5ef;padding:7px 8px;text-align:left;border-bottom:2px solid #e8dcc8;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#b49b6b;white-space:nowrap}
+  th.center{text-align:center}
+  td{padding:5px 8px;border-bottom:1px solid #f0eee8;vertical-align:middle}
+  .footer{margin-top:16px;text-align:center;font-size:10px;color:#bbb}
+  @media print{body{padding:10px}@page{size:landscape}}
+</style></head><body>
+<h1>Mitzi &amp; Raúl</h1>
+<p class="sub">Lista de invitados · 21 de noviembre de 2026</p>
+<p class="total">Número de Invitados: ${invOrdenados.length}</p>
+<table>
+  <thead><tr>
+    <th class="center">#</th>
+    <th>Invitado</th>
+    <th>Teléfono Celular</th>
+    <th class="center">Núm. de Personas</th>
+    <th>Parentesco</th>
+    <th class="center">Núm. de Mesa</th>
+    <th class="center">Adulto</th>
+    <th class="center">Niño</th>
+    <th class="center">Confirmado</th>
+    <th class="center">SI / NO</th>
+    <th>Observaciones</th>
+    <th>Invitación</th>
+  </tr></thead>
+  <tbody>${filas}</tbody>
+</table>
+<p class="footer">
+  Generado el ${new Date().toLocaleDateString("es-MX", { day: "2-digit", month: "long", year: "numeric" })} ·
+  ${invOrdenados.filter((i) => i.confirmado).length} confirmados de ${invOrdenados.length}
+</p>
+</body></html>`);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 300);
+}
+
 function abrirReporte(invitados, pases) {
   const invMap = Object.fromEntries(invitados.map((i) => [i.id, i.nombre]));
 
@@ -197,12 +278,20 @@ export default function TabMesas({ invitados, pases, onMesaChange }) {
         <button style={tabBtn(vista === "reporte")} onClick={() => setVista("reporte")}>
           Vista por mesa
         </button>
-        <button
-          onClick={() => abrirReporte(invitados, pasesActivos)}
-          style={{ marginLeft: "auto", background: "#f9f5ef", color: "#b49b6b", border: "1px solid #e8dcc8", borderRadius: 99, padding: "8px 16px", fontFamily: "Poppins, sans-serif", fontSize: 13, cursor: "pointer", minHeight: 40 }}
-        >
-          Imprimir / Exportar
-        </button>
+        <div style={{ marginLeft: "auto", display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <button
+            onClick={() => abrirReporteInvitados(invitados, pasesActivos)}
+            style={{ background: "#f9f5ef", color: "#b49b6b", border: "1px solid #e8dcc8", borderRadius: 99, padding: "8px 16px", fontFamily: "Poppins, sans-serif", fontSize: 13, cursor: "pointer", minHeight: 40 }}
+          >
+            Lista invitados
+          </button>
+          <button
+            onClick={() => abrirReporte(invitados, pasesActivos)}
+            style={{ background: "#f9f5ef", color: "#b49b6b", border: "1px solid #e8dcc8", borderRadius: 99, padding: "8px 16px", fontFamily: "Poppins, sans-serif", fontSize: 13, cursor: "pointer", minHeight: 40 }}
+          >
+            Plan de mesas
+          </button>
+        </div>
       </div>
 
       {/* Stats */}

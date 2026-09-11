@@ -19,6 +19,11 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-09-10 — Admin/Mesas: nuevo reporte "Lista invitados" por invitación
+- **Quién**: Raúl / Claude
+- **Qué**: Agregado segundo botón de exportación en pestaña Mesas ("Lista invitados"). Genera tabla imprimible con una fila por invitación, ordenada alfabéticamente, con columnas: #, Invitado, Teléfono Celular, Núm. de Personas, Parentesco, Núm. de Mesa, Adulto, Niño, Confirmado, SI/NO, Observaciones, Invitación. Renombrado botón anterior a "Plan de mesas".
+- **Archivos**: `src/components/admin/TabMesas.jsx`
+
 ### 2026-09-03 — Admin: botón "No asiste" + vista exclusiva para invitados que no asisten
 - **Quién**: Raúl / Claude
 - **Qué**: (1) Admin: nuevo botón "No asiste" con confirmación inline en cada card de invitado pendiente (aparece junto a recordatorio/auto-confirmar). Llama a `marcarNoAsiste` y actualiza estado local. (2) Invitation: invitados con `no_asiste=true` ven solo una página sencilla con su nombre y mensaje de agradecimiento — ya no ven la invitación completa. (3) invitations.js: restauradas funciones `crearInvitado`, `editarInvitado`, `eliminarInvitado` que se perdieron en un merge anterior.
