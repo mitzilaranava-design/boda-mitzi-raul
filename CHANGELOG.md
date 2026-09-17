@@ -19,6 +19,11 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-09-16 — Galería: protección iOS, zona de upload, swipe, contador
+- **Quién**: Raúl / Claude
+- **Qué**: (1) Overlay transparente sobre cada foto (`gallery-item__shield`, `lightbox-img-shield`) bloquea el long-press "Guardar imagen" en iOS — `pointer-events: none` en la imagen, el div captura el gesto. (2) Upload modal: input nativo reemplazado por zona estilizada con icono + preview de la foto seleccionada antes de subir; botón "Subir" deshabilitado hasta seleccionar archivo. (3) Lightbox: swipe horizontal en móvil (umbral 50px, evita cierre accidental); contador "X / Y" arriba-centro. (4) Timestamp de fotos movido a abajo-izquierda. (5) Botón regresar movido a arriba-izquierda del header. (6) `safe-area-inset-bottom` en padding del grid.
+- **Archivos**: `src/pages/Gallery.jsx`, `src/styles/Gallery.css`
+
 ### 2026-09-10 — Admin/Mesas: nuevo reporte "Lista invitados" por invitación
 - **Quién**: Raúl / Claude
 - **Qué**: Agregado segundo botón de exportación en pestaña Mesas ("Lista invitados"). Genera tabla imprimible con una fila por invitación, ordenada alfabéticamente, con columnas: #, Invitado, Teléfono Celular, Núm. de Personas, Parentesco, Núm. de Mesa, Adulto, Niño, Confirmado, SI/NO, Observaciones, Invitación. Renombrado botón anterior a "Plan de mesas".
