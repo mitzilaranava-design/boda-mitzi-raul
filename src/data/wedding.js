@@ -44,11 +44,11 @@ export const WEDDING = {
   ],
 
   schedule: [
-    { time: "4:00 PM", event: "Ceremonia Religiosa", icon: "church"  },
-    { time: "5:30 PM", event: "Ceremonia Civil",     icon: "rings"   },
-    { time: "6:00 PM", event: "Recepción",           icon: "glasses" },
-    { time: "7:00 PM", event: "Cena",                icon: "cloche"  },
-    { time: "8:00 PM", event: "Fiesta",              icon: "disco"   },
+    { time: "4:00 PM", event: "Ceremonia Religiosa",  icon: "church"  },
+    { time: "5:15 PM", event: "Cóctel de Bienvenida", icon: "glasses" },
+    { time: "5:30 PM", event: "Ceremonia Civil",      icon: "rings"   },
+    { time: "6:15 PM", event: "Cena",                 icon: "cloche"  },
+    { time: "8:00 PM", event: "Fiesta",               icon: "disco"   },
   ],
 
   venues: {
