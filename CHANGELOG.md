@@ -19,6 +19,11 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-09-20 — Programa: ajuste de horarios (Cóctel 5:15 PM, Cena 6:15 PM)
+- **Quién**: Raúl
+- **Qué**: Actualizado `schedule` en wedding.js — agrega Cóctel de Bienvenida a las 5:15 PM y ajusta Cena de 7:00 a 6:15 PM. Se elimina "Recepción" como evento separado.
+- **Archivos**: `src/data/wedding.js`
+
 ### 2026-09-16 20:00 — Docs: tarjetas de retos fotográficos (55 retos, 9 categorías)
 - **Quién**: Raúl / Claude
 - **Qué**: Nuevo archivo `docs/tarjeta-retos-fotos.html` — tarjetas landscape 90×58mm, una por reto, con QR a galería. Actualizada URL de `tarjeta-galeria-qr.html` a dominio Vercel definitivo.
