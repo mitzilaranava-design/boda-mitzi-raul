@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tarjetas Retos Fotográficos — Mitzi &amp; Raúl</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --burgundy:   #7d1a2c;
+      --burgundy-dk:#5a1020;
+      --gold:       #c4a048;
+      --gold-border:rgba(196,160,72,0.3);
+      --marfil:     #f5f2e5;
+      --champagne:  #f0e4c0;
+      --text:       #1e0a10;
+      --muted:      #5a4a50;
+      --font-serif: 'Playfair Display', serif;
+      --font-sans:  'Poppins', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #cfc8bb;
+      font-family: var(--font-sans);
+      padding: 32px 20px 48px;
+    }
+
+    /* ── Setup (no se imprime) ──────────────────────────────── */
+    .setup {
+      max-width: 520px;
+      margin: 0 auto 28px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+    .setup h3 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--burgundy);
+      margin-bottom: 14px;
+    }
+    .setup label {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .setup input, .setup select {
+      width: 100%;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      color: var(--text);
+      border: 1px solid rgba(125,26,44,0.22);
+      border-radius: 8px;
+      padding: 8px 12px;
+      background: var(--marfil);
+      margin-bottom: 10px;
+      outline: none;
+    }
+    .setup input:focus, .setup select:focus { border-color: var(--gold); }
+    .url-preview {
+      font-size: 0.64rem;
+      color: var(--muted);
+      background: #f0f0ed;
+      border-radius: 6px;
+      padding: 7px 10px;
+      word-break: break-all;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .url-preview span { color: var(--burgundy); font-weight: 500; }
+    .setup-note {
+      font-size: 0.62rem;
+      color: var(--muted);
+      line-height: 1.55;
+      padding: 7px 10px;
+      background: rgba(196,160,72,0.09);
+      border-left: 2px solid var(--gold-border);
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 12px;
+    }
+    .btn-print {
+      background: var(--burgundy);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 22px;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-print:hover { background: var(--burgundy-dk); }
+
+    /* ── Grid ───────────────────────────────────────────────── */
+    .cards-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    /* ── Tarjeta — landscape 90mm × 58mm ─────────────────────
+       Estructura:
+         [header completo — franja burgundy]
+         [cuerpo izquierdo] | [panel QR derecho]
+    ────────────────────────────────────────────────────────── */
+    .card {
+      width: 90mm;
+      height: 58mm;
+      background: var(--marfil);
+      border-radius: 9px;
+      overflow: hidden;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.16);
+      display: flex;
+      flex-direction: column;
+      page-break-inside: avoid;
+      flex-shrink: 0;
+    }
+
+    /* Franja superior */
+    .card__header {
+      background: var(--burgundy);
+      padding: 5px 12px 4px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .card__header-names {
+      font-family: var(--font-serif);
+      font-size: 0.72rem;
+      color: #fff;
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+    .card__header-names em {
+      font-style: italic;
+      color: var(--gold);
+      font-size: 0.78rem;
+    }
+    .card__header-date {
+      font-size: 0.46rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+    .card__header-label {
+      font-size: 0.46rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* Cuerpo */
+    .card__body {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+    }
+
+    /* Lado izquierdo — reto */
+    .card__left {
+      flex: 1;
+      padding: 9px 12px 9px 13px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 0;
+    }
+    .card__cat {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .card__cat-emoji { font-size: 0.8rem; line-height: 1; }
+    .card__cat-name {
+      font-size: 0.46rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .card__reto {
+      font-family: var(--font-serif);
+      font-size: 0.98rem;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.38;
+      font-weight: 400;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 4px 0;
+    }
+    .card__inst {
+      font-size: 0.46rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      opacity: 0.75;
+    }
+
+    /* Panel derecho — QR */
+    .card__right {
+      width: 26mm;
+      flex-shrink: 0;
+      background: var(--burgundy);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 7px 6px;
+    }
+    .card__qr-box {
+      width: 20mm;
+      height: 20mm;
+      background: #fff;
+      border-radius: 5px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .card__qr-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .card__qr-pending {
+      font-size: 1.2rem;
+      opacity: 0.3;
+    }
+    .card__qr-note {
+      font-size: 0.44rem;
+      color: rgba(255,255,255,0.65);
+      text-align: center;
+      line-height: 1.45;
+    }
+    .card__qr-note strong {
+      display: block;
+      color: var(--gold);
+      font-weight: 500;
+      font-size: 0.48rem;
+    }
+
+    /* ── Print ──────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; padding: 7mm; }
+      .setup { display: none; }
+      .cards-wrap { gap: 5mm; }
+      .card { box-shadow: none; border: 0.5px solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Panel de configuración ── -->
+  <div class="setup">
+    <h3>⚙️ Configurar antes de imprimir</h3>
+
+    <label>Token de galería (valor de VITE_GALLERY_TOKEN en tu .env)</label>
+    <input id="token-input" type="text" placeholder="Ej: mi-token-2026" oninput="renderCards()" />
+
+    <p class="url-preview">
+      URL del QR: <span id="preview-url">https://boda-mitzi-raul.vercel.app/galeria?t=<em>[escribe el token arriba]</em></span>
+    </p>
+
+    <label>Copias del mazo completo</label>
+    <select id="sets-input" onchange="renderCards()">
+      <option value="1">1 copia — 55 tarjetas</option>
+      <option value="2">2 copias — 110 tarjetas</option>
+    </select>
+
+    <p class="setup-note">
+      📐 Formato landscape 90 × 58 mm · 3 columnas × 4 filas = 12 por hoja A4 (≈ 4 hojas por copia)<br>
+      ✂️ Corta por las tarjetas y distribuye una por mesa o en grupos variados.
+    </p>
+
+    <button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
+  </div>
+
+  <!-- ── Tarjetas ── -->
+  <div class="cards-wrap" id="cards-wrap"></div>
+
+  <script>
+    const BASE_URL = "https://boda-mitzi-raul.vercel.app/galeria";
+    const QR_API   = "https://api.qrserver.com/v1/create-qr-code/";
+
+    const RETOS = [
+      // ── Romper el hielo ─────────────────────────────────────
+      { cat: "🧊", cat_name: "Romper el hielo", reto: "Foto con la persona más mayor del evento" },
+      { cat: "🧊", cat_name: "Romper el hielo", reto: "Foto con alguien que conociste hoy" },
+      { cat: "🧊", cat_name: "Romper el hielo", reto: "Foto grupal con al menos 5 invitados" },
+      { cat: "🧊", cat_name: "Romper el hielo", reto: "Alguien con tu mismo mes de cumpleaños" },
+      { cat: "🧊", cat_name: "Romper el hielo", reto: "Foto con familia del novio y la novia" },
+      { cat: "🧊", cat_name: "Romper el hielo", reto: "Foto con el invitado más joven" },
+      { cat: "🧊", cat_name: "Romper el hielo", reto: "Foto con alguien de tu mismo color de pelo" },
+
+      // ── Pista de baile ──────────────────────────────────────
+      { cat: "💃", cat_name: "Pista de baile", reto: "Capta el baile más loco de la noche" },
+      { cat: "💃", cat_name: "Pista de baile", reto: "Fotografía el trenecito o baile grupal" },
+      { cat: "💃", cat_name: "Pista de baile", reto: "Foto del DJ o la música del evento" },
+      { cat: "💃", cat_name: "Pista de baile", reto: "El momento en que todos cantan igual" },
+      { cat: "💃", cat_name: "Pista de baile", reto: "La pista vacía antes de empezar la fiesta" },
+      { cat: "💃", cat_name: "Pista de baile", reto: "Los bailarines más cansados al final" },
+
+      // ── El jardín ───────────────────────────────────────────
+      { cat: "🌿", cat_name: "El jardín", reto: "Fotografía el jardín desde la entrada" },
+      { cat: "🌿", cat_name: "El jardín", reto: "Las guirnaldas o iluminación del lugar" },
+      { cat: "🌿", cat_name: "El jardín", reto: "Foto panorámica del jardín con invitados" },
+      { cat: "🌿", cat_name: "El jardín", reto: "El arreglo floral más bonito del evento" },
+      { cat: "🌿", cat_name: "El jardín", reto: "El plano de mesas o tarjetas de sitio" },
+
+      // ── Comida y brindis ────────────────────────────────────
+      { cat: "🍽️", cat_name: "Comida y brindis", reto: "Fotografía tu plato favorito de la noche" },
+      { cat: "🍽️", cat_name: "Comida y brindis", reto: "El momento del brindis en tu mesa" },
+      { cat: "🍽️", cat_name: "Comida y brindis", reto: "La tarta nupcial desde tu lugar" },
+      { cat: "🍽️", cat_name: "Comida y brindis", reto: "El bufé de postres visto desde arriba" },
+      { cat: "🍽️", cat_name: "Comida y brindis", reto: "Tu bebida favorita de la noche" },
+
+      // ── Emociones ───────────────────────────────────────────
+      { cat: "💛", cat_name: "Emociones", reto: "Capta a alguien riendo a carcajadas" },
+      { cat: "💛", cat_name: "Emociones", reto: "Fotografía a alguien llorando de alegría" },
+      { cat: "💛", cat_name: "Emociones", reto: "Fotografía un abrazo cálido y sincero" },
+      { cat: "💛", cat_name: "Emociones", reto: "Los padres orgullosos de los novios" },
+      { cat: "💛", cat_name: "Emociones", reto: "La puesta de sol más bonita de la noche" },
+
+      // ── Creativo ────────────────────────────────────────────
+      { cat: "🎨", cat_name: "Creativo", reto: "La foto más creativa de la noche" },
+      { cat: "🎨", cat_name: "Creativo", reto: "Una foto desde un ángulo muy bajo" },
+      { cat: "🎨", cat_name: "Creativo", reto: "Foto en blanco y negro — filtros OK" },
+      { cat: "🎨", cat_name: "Creativo", reto: "Capta un reflejo en un espejo o vidrio" },
+      { cat: "🎨", cat_name: "Creativo", reto: "Un detalle que nadie más notó" },
+      { cat: "🎨", cat_name: "Creativo", reto: "Foto con un accesorio o prop inusual" },
+
+      // ── Divertido ───────────────────────────────────────────
+      { cat: "😄", cat_name: "Divertido", reto: "Pilla a alguien picando algo a escondidas" },
+      { cat: "😄", cat_name: "Divertido", reto: "La mejor mueca de la noche" },
+      { cat: "😄", cat_name: "Divertido", reto: "Los calcetines más originales del evento" },
+      { cat: "😄", cat_name: "Divertido", reto: "Alguien casi dormido en su silla" },
+      { cat: "😄", cat_name: "Divertido", reto: "Los niños jugando en el jardín" },
+      { cat: "😄", cat_name: "Divertido", reto: "Selfie creativo desde tu punto de vista" },
+      { cat: "😄", cat_name: "Divertido", reto: "El sombrero o accesorio más gracioso" },
+      { cat: "😄", cat_name: "Divertido", reto: "Alguien arrasando en la pista de baile" },
+
+      // ── Clásicos ────────────────────────────────────────────
+      { cat: "💍", cat_name: "Clásicos", reto: "Selfie con los novios" },
+      { cat: "💍", cat_name: "Clásicos", reto: "Fotografía el primer baile" },
+      { cat: "💍", cat_name: "Clásicos", reto: "Capta el momento de cortar la tarta" },
+      { cat: "💍", cat_name: "Clásicos", reto: "Fotografía el ramo de la novia" },
+      { cat: "💍", cat_name: "Clásicos", reto: "Fotografía las alianzas" },
+      { cat: "💍", cat_name: "Clásicos", reto: "Fotografía el coche de los novios" },
+      { cat: "💍", cat_name: "Clásicos", reto: "Capta el primer beso de los novios" },
+      { cat: "💍", cat_name: "Clásicos", reto: "Capta la entrada de los novios al banquete" },
+      { cat: "💍", cat_name: "Clásicos", reto: "La salida con confeti o pétalos" },
+
+      // ── Detalles de la boda ─────────────────────────────────
+      { cat: "📸", cat_name: "Detalles", reto: "Los zapatos de los novios" },
+      { cat: "📸", cat_name: "Detalles", reto: "Un detalle del vestido de novia" },
+      { cat: "📸", cat_name: "Detalles", reto: "Fotografía el cielo o la luna" },
+      { cat: "📸", cat_name: "Detalles", reto: "Algo viejo, nuevo, prestado y azul" },
+    ];
+
+    function qrSrc(token) {
+      if (!token) return null;
+      const params = new URLSearchParams({
+        size: "160x160",
+        data: `${BASE_URL}?t=${encodeURIComponent(token)}`,
+        color: "7d1a2c",
+        bgcolor: "ffffff",
+        margin: "5",
+        ecc: "M",
+      });
+      return `${QR_API}?${params}`;
+    }
+
+    function cardHTML(r, token) {
+      const src = qrSrc(token);
+      const qrInner = src
+        ? `<img src="${src}" alt="QR galería" />`
+        : `<div class="card__qr-pending">📷</div>`;
+
+      return `
+        <div class="card">
+          <div class="card__header">
+            <span class="card__header-names">Mitzi <em>&amp;</em> Raúl</span>
+            <span class="card__header-label">reto fotográfico</span>
+            <span class="card__header-date">21 · 11 · 2026</span>
+          </div>
+          <div class="card__body">
+            <div class="card__left">
+              <div class="card__cat">
+                <span class="card__cat-emoji">${r.cat}</span>
+                <span class="card__cat-name">${r.cat_name}</span>
+              </div>
+              <p class="card__reto">${r.reto}</p>
+              <span class="card__inst">Sube la foto a la galería al completarlo</span>
+            </div>
+            <div class="card__right">
+              <div class="card__qr-box">${qrInner}</div>
+              <p class="card__qr-note">
+                <strong>¿Sin invitación?</strong>
+                Escanea para subir tu foto
+              </p>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderCards() {
+      const token = document.getElementById("token-input").value.trim();
+      const sets  = parseInt(document.getElementById("sets-input").value, 10);
+      const wrap  = document.getElementById("cards-wrap");
+      const prev  = document.getElementById("preview-url");
+
+      prev.innerHTML = token
+        ? `${BASE_URL}?t=${token}`
+        : `${BASE_URL}?t=<em>[escribe el token arriba]</em>`;
+
+      let html = "";
+      for (let s = 0; s < sets; s++) {
+        for (const r of RETOS) html += cardHTML(r, token);
+      }
+      wrap.innerHTML = html;
+    }
+
+    renderCards();
+  </script>
+
+</body>
+</html>

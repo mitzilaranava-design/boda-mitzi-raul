@@ -19,6 +19,21 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-09-20 — Programa: ajuste de horarios (Cóctel 5:15 PM, Cena 6:15 PM)
+- **Quién**: Raúl
+- **Qué**: Actualizado `schedule` en wedding.js — agrega Cóctel de Bienvenida a las 5:15 PM y ajusta Cena de 7:00 a 6:15 PM. Se elimina "Recepción" como evento separado.
+- **Archivos**: `src/data/wedding.js`
+
+### 2026-09-16 20:00 — Docs: tarjetas de retos fotográficos (55 retos, 9 categorías)
+- **Quién**: Raúl / Claude
+- **Qué**: Nuevo archivo `docs/tarjeta-retos-fotos.html` — tarjetas landscape 90×58mm, una por reto, con QR a galería. Actualizada URL de `tarjeta-galeria-qr.html` a dominio Vercel definitivo.
+- **Archivos**: `docs/tarjeta-retos-fotos.html` (nuevo), `docs/tarjeta-galeria-qr.html`
+
+### 2026-09-16 — Galería: protección iOS, zona de upload, swipe, contador
+- **Quién**: Raúl / Claude
+- **Qué**: (1) Overlay transparente sobre cada foto (`gallery-item__shield`, `lightbox-img-shield`) bloquea el long-press "Guardar imagen" en iOS — `pointer-events: none` en la imagen, el div captura el gesto. (2) Upload modal: input nativo reemplazado por zona estilizada con icono + preview de la foto seleccionada antes de subir; botón "Subir" deshabilitado hasta seleccionar archivo. (3) Lightbox: swipe horizontal en móvil (umbral 50px, evita cierre accidental); contador "X / Y" arriba-centro. (4) Timestamp de fotos movido a abajo-izquierda. (5) Botón regresar movido a arriba-izquierda del header. (6) `safe-area-inset-bottom` en padding del grid.
+- **Archivos**: `src/pages/Gallery.jsx`, `src/styles/Gallery.css`
+
 ### 2026-09-10 — Admin/Mesas: nuevo reporte "Lista invitados" por invitación
 - **Quién**: Raúl / Claude
 - **Qué**: Agregado segundo botón de exportación en pestaña Mesas ("Lista invitados"). Genera tabla imprimible con una fila por invitación, ordenada alfabéticamente, con columnas: #, Invitado, Teléfono Celular, Núm. de Personas, Parentesco, Núm. de Mesa, Adulto, Niño, Confirmado, SI/NO, Observaciones, Invitación. Renombrado botón anterior a "Plan de mesas".
