@@ -19,6 +19,11 @@ Control de cambios para trabajo en equipo (2 personas). Ordenado por fecha, más
 
 ## Registro
 
+### 2026-09-23 — Admin/Mesas: drag & drop, nombres de mesa, tipo y persistencia
+- **Quién**: Raúl / Claude
+- **Qué**: Vista por mesa rediseñada — drag & drop entre mesas (bloquea si llena), nombres editables por mesa, tipo de mesa (redonda/cuadrada/rectangular), botón "Guardar cambios" que persiste en Supabase. Nueva tabla `boda_mesas`. Reportes actualizados con nombre y tipo.
+- **Archivos**: `src/components/admin/TabMesas.jsx`, `src/api/mesas.js` (nuevo)
+
 ### 2026-09-20 — Programa: ajuste de horarios (Cóctel 5:15 PM, Cena 6:15 PM)
 - **Quién**: Raúl
 - **Qué**: Actualizado `schedule` en wedding.js — agrega Cóctel de Bienvenida a las 5:15 PM y ajusta Cena de 7:00 a 6:15 PM. Se elimina "Recepción" como evento separado.
